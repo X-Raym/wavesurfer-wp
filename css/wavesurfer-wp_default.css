@@ -1,0 +1,100 @@
+/**
+ * WaveSurfer-WP Default Theme
+ * Author: X-Raym
+ * Author URl: http://www.extremraym.com
+ * Date: 2015-11-23
+ * Version: 1.0
+ */
+
+wavesurfer audio {
+  display: none; /* In CSS because it may not be initialized in jQuery */
+}
+
+.wavesurfer-buttons_set {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.wavesurfer-block button:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+}
+
+.wavesurfer-block button,
+.wavesurfer-time,
+.wavesurfer-duration {
+  font-family: Arial;
+  font-size: 1em;
+  margin: 1em 1em 2em;
+  padding: 0.5em 1em;
+  border-width: 0;
+  outline: none;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+  background-color: #2ecc71;
+  transition: .3s ease all;
+  color: white;
+  font-weight: bold;
+}
+
+.wavesurfer-time,
+.wavesurfer-duration {
+  font-family: Arial;
+  background-color: #4444F0;
+}
+
+button.wavesurfer-active-button {
+  background-color: #FF4081;
+}
+
+code {
+  background-color: #F9F4A2;
+}
+
+.wavesurfer-block button:before,
+.wavesurfer-time:before,
+.wavesurfer-duration:before {
+  font-family: "FontAwesome";
+  font-weight: normal;
+  font-style: normal;
+  padding-right: 0.3em;
+}
+
+button.wavesurfer-play:before {
+  content: "\f04b";
+}
+
+button.wavesurfer-pause:before {
+  content: "\f04c";
+}
+
+button.wavesurfer-stop:before {
+  content: "\f04d";
+}
+
+div.wavesurfer-time:before {
+  content: "\f041";
+}
+
+div.wavesurfer-duration:before {
+  content: "\f017";
+}
+
+.wavesurfer-time {
+  margin-left: Auto;
+}
+
+@media (max-width: 950px) {
+    .wavesurfer-duration {
+       display:none;
+    }
+    .wavesurfer-time {
+       display:none;
+    }
+    .wavesurfer-play span,  .wavesurfer-pause span,  .wavesurfer-stop span {
+       display:none;
+    }
+}
