@@ -16,7 +16,7 @@
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
 
 
-HTML5 Audio controler with waveform preview (mixed or split channels), using WordPress native audio shortcode.
+HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio shortcode.
 
 ## Description ##
 This plugins replace default WordPress audio player with a player capable of displaying the audio waveform.
@@ -27,6 +27,7 @@ By working with the default audio shortcode, you have two great advantages:
 - It works with all your previous posts
 - You still have the default player in the Visual Editor (not just shortcode)
 - It supports every audio format supported by WordPress (wav, ogg, mp3, m4a).
+- Safe deactivation: if you deactivate the plugin, your shortcode will fallback to the WordPress default audio player.
 
 Global colors and style settings can be overridden by dedicated shortcode attributes.
 - `progress_color="purple"`

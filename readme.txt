@@ -8,7 +8,7 @@ Stable tag: trunk
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-HTML5 Audio controler with waveform preview (mixed or split channels), using WordPress native audio shortcode.
+HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio shortcode.
 
 == Description ==
 This plugins replace default WordPress audio player with a player capable of displaying the audio waveform.
