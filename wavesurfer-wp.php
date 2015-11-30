@@ -2,7 +2,7 @@
 
 /**
  * @package Wavesurfer
- * @version 1.0
+ * @version 1.1
  */
 
 /**
@@ -10,11 +10,11 @@
  * Plugin URI: http://www.extremraym.com/
  * Description: HTML5 Audio controler with waveform preview (mixed or split channels), using WordPress native audio shortcode.
  * Author: X-Raym
- * Version: 1.0
+ * Version: 1.1
  * Author URI: http://www.extremraym.com/
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2015-10-28
+ * Date: 2015-11-29
  * Text Domain: wavesurfer
  */
 
@@ -68,9 +68,10 @@ class WaveSurfer {
 		// Do some activation things
 		if ( false === get_option('wavesurfer_settings') ) {
 			$arg = array(
-				'wave_color'	 			=> '#EE82EE',
-				'progress_color'		=> '#800080',
-				'front_theme'		=> 'wavesurfer_default'
+				'wave_color'	 		=> '#EE82EE',
+				'progress_color'	=> '#800080',
+				'cursor_color'		=> '#333',
+				'front_theme'			=> 'wavesurfer_default'
 			);
 		update_option( 'wavesurfer_settings', $arg, '', 'yes' );
 		}
@@ -118,8 +119,10 @@ class WaveSurfer {
 
 			wp_register_script( 'wavesurfer', plugin_dir_url( __FILE__ ) . '/js/wavesurfer.min.js', array( 'jquery' ), '1.8.0', true );
 			wp_register_script('wavesurfer_scripts', plugin_dir_url( __FILE__ ) . '/js/wavesurfer-wp.js', array( 'jquery' ), '1.8.0', true );
+			wp_register_script('download-js', plugin_dir_url( __FILE__ ) . '/js/download.min.js', array( 'jquery' ), '1.8.0', true );
 
 			wp_register_style( 'wavesurfer_default', plugin_dir_url( __FILE__ ) . '/css/wavesurfer-wp_default.css' );
+			wp_register_style( 'wavesurfer_flat-icons', plugin_dir_url( __FILE__ ) . '/css/wavesurfer-wp_flat-icons.css' );
 		}
 	}
 
@@ -131,6 +134,7 @@ class WaveSurfer {
 			//wp_enqueue_script('jquery');
 	  	wp_enqueue_script( 'wavesurfer' );
 	   	wp_enqueue_script( 'wavesurfer_scripts' );
+			wp_enqueue_script( 'download-js' );
 
 			//wp_enqueue_style( 'dashicons' );
 
@@ -231,6 +235,15 @@ class WaveSurfer {
 
 			// Progress Color
 			add_settings_field( // 1
+					'cursor_color',
+					__( 'Cursor Color', 'wavesurfer' ),
+					array( $this, 'render_cursor_color_field' ),
+					'wavesurfer',
+					'colors_section'
+			);
+
+			// Progress Color
+			add_settings_field( // 1
 					'front_theme',
 					__( 'Front Theme', 'wavesurfer' ),
 					array( $this, 'render_theme_field' ),
@@ -275,6 +288,16 @@ class WaveSurfer {
 
 	}
 
+	public function render_cursor_color_field(	) { // 1
+
+		$options = get_option( 'wavesurfer_settings' );
+		$val = ( isset( $options['cursor_color'] ) ) ? $options['cursor_color'] : '';
+
+		echo '<input type="text" name="wavesurfer_settings[cursor_color]" value="' . $val .'" class="my-color-field" >';
+		echo '<p>' . __( 'This setting can be locally overridden with the <code>cursor_color="#123456"</code> [audio] shortcode attribute', 'wavesurfer' ) .'.</p>';
+
+	}
+
 	public function render_theme_field(	) { // 2
 
 		$options = get_option( 'wavesurfer_settings' );
@@ -283,6 +306,7 @@ class WaveSurfer {
 		?>
 		<select name='wavesurfer_settings[front_theme]'>
 			<option value='wavesurfer_default' <?php selected( $options['front_theme'], 'wavesurfer_default' ); ?>><?php _e('Default', 'wavesurfer'); ?></option>
+			<option value='wavesurfer_flat-icons' <?php selected( $options['front_theme'], 'wavesurfer_flat-icons' ); ?>><?php _e('Flat Icons', 'wavesurfer'); ?></option>
 			<option value='wavesurfer_none' <?php selected( $options['front_theme'], 'wavesurfer_none' ); ?>><?php _e('None', 'wavesurfer'); ?></option>
 		</select>
 		<p><?php _e( 'Style of the buttons. Default theme requires Font-Awesome 1.0.', 'wavesurfer' ) ?></p>
@@ -342,8 +366,7 @@ class WaveSurfer {
 			$html = ''; // Value for not overring render
 
 			// Check if shortcode render must be override or not
-			if ( isset( $attr['player'] ) ) {
-				if ( $attr['player'] === 'default' )
+			if ( ! empty( $attr['player'] ) && $attr['player'] === 'default' ) {
 					return $html;
 			}
 
@@ -373,6 +396,14 @@ class WaveSurfer {
 			$html .= 'data-wave-color="' . $wave_color . '" ';
 
 			// Progress color
+			if ( isset( $attr['cursor_color'] ) ) {
+				$cursor_color = esc_attr( $attr['cursor_color'] );
+			} else {
+				$cursor_color = ( isset( $options['cursor_color'] ) ) ? $options['cursor_color'] : '#333'; // Get color value from Settings
+			}
+			$html .= 'data-cursor-color="' . $cursor_color . '" ';
+
+			// Progress color
 			if ( isset( $attr['progress_color'] ) ) {
 				$progress_color = esc_attr( $attr['progress_color'] );
 			} else {
@@ -384,9 +415,27 @@ class WaveSurfer {
 			$html .= 'data-url="' . $link . '"';
 			$html .= '></wavesurfer>';
 			$html .= '<div class="wavesurfer-buttons_set">';
-			$html .= '<button type="button" class="wavesurfer-play"><span>' . __('Play', 'wavesurfer') . '</span></button>';
-			$html .= '<button type="button" class="wavesurfer-pause"><span>' . __('Pause', 'wavesurfer') . '</span></button>';
+			$html .= '<button type="button" class="wavesurfer-play"><span>' . __('Play/Pause', 'wavesurfer') . '</span></button>';
 			$html .= '<button type="button" class="wavesurfer-stop"><span>' . __('Stop', 'wavesurfer') . '</span></button>';
+
+			// Mute button
+			if ( isset( $attr['mute_button'] ) ) {
+				if( $attr['mute_button'] == true )
+				$html .= '<button type="button" class="wavesurfer-mute"><span>' . __('Mute', 'wavesurfer') . '</span></button>';
+			}
+
+			// Loop button channels
+			if ( isset( $attr['loop_button'] ) ) {
+				if( $attr['loop_button'] == true )
+				$html .= '<button type="button" class="wavesurfer-loop"><span>' . __('Loop', 'wavesurfer') . '</span></button>';
+			}
+
+			// Download button
+			if ( isset( $attr['download_button'] ) ) {
+				if( $attr['download_button'] == true )
+				$html .= '<button type="button" class="wavesurfer-download"><a href="" download=""><span>' . __('Download', 'wavesurfer') . '</span></a></button>';
+			}
+
 			$html .= '<div class="wavesurfer-time"></div>';
 			$html .= '<div class="wavesurfer-duration"></div>';
 			$html .= '</div>';

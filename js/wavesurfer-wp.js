@@ -3,7 +3,7 @@
  * Author: X-Raym
  * Author URl: http://www.extremraym.com
  * Date: 2015-11-23
- * Version: 1.0
+ * Version: 1.1
  */
 $j = jQuery.noConflict();
 
@@ -21,6 +21,9 @@ jQuery( document ).ready( function( $ ) {
   var buttonPlay = $( 'button.wavesurfer-play' );
   var buttonPause = $( 'button.wavesurfer-pause' );
   var buttonStop = $( 'button.wavesurfer-stop' );
+  var buttonDownload = $( 'button.wavesurfer-download' );
+  var buttonLoop = $( 'button.wavesurfer-loop' );
+  var buttonMute = $( 'button.wavesurfer-mute' );
 
   // Add Active class on all stop button at init stage
   buttonStop.addClass( 'wavesurfer-active-button' );
@@ -33,32 +36,30 @@ jQuery( document ).ready( function( $ ) {
       // Get parent <audio> element
       var audio = $( this ).parent().parent( '.wavesurfer-block' ).children( 'wavesurfer' ).children( 'audio' );
 
-      // Play the sound
-      audio.trigger( 'play' );
+      // IF IS PLAYING
+      if ($( this ).hasClass('wavesurfer-active-button')) {
+        $( this ).removeClass( 'wavesurfer-active-button' );
 
-      // Add an active class
-      $( this ).addClass( 'wavesurfer-active-button' );
+        audio.trigger( 'pause' );
 
-      // Remove active class from the other buttons
-      $( this ).parent().children( 'button.wavesurfer-pause' ).removeClass( 'wavesurfer-active-button' );
-      $( this ).parent().children( 'button.wavesurfer-stop' ).removeClass( 'wavesurfer-active-button' );
+      	$( this ).addClass( 'wavesurfer-paused-button' );
 
-    } );
-  } );
+      	$( this ).parent().children( 'button.wavesurfer-play' ).removeClass( 'wavesurfer-active-button' );
+      	$( this ).parent().children( 'button.wavesurfer-stop' ).removeClass( 'wavesurfer-active-button' );
 
-  // Define Pause button
-  buttonPause.each( function() {
-    $( this ).click( function() {
+      // IF NOT PLAYING
+      } else {
+        $( this ).addClass( 'wavesurfer-active-button' );
+              // Play the sound
+      	audio.trigger( 'play' );
 
-      var audio = $( this ).parent().parent( '.wavesurfer-block' ).children( 'wavesurfer' ).children( 'audio' );
+	      // Add an active class
+	      $( this ).addClass( 'wavesurfer-active-button' );
 
-      audio.trigger( 'pause' );
-
-      $( this ).addClass( 'wavesurfer-active-button' );
-
-      $( this ).parent().children( 'button.wavesurfer-play' ).removeClass( 'wavesurfer-active-button' );
-      $( this ).parent().children( 'button.wavesurfer-stop' ).removeClass( 'wavesurfer-active-button' );
-
+	      // Remove active class from the other buttons
+	      $( this ).parent().children( 'button.wavesurfer-play' ).removeClass( 'wavesurfer-paused-button' );
+	      $( this ).parent().children( 'button.wavesurfer-stop' ).removeClass( 'wavesurfer-active-button' );
+	      };
 
     } );
   } );
@@ -75,8 +76,53 @@ jQuery( document ).ready( function( $ ) {
 
       $( this ).addClass( 'wavesurfer-active-button' );
       $( this ).parent().children( 'button.wavesurfer-play' ).removeClass( 'wavesurfer-active-button' );
-      $( this ).parent().children( 'button.wavesurfer-pause' ).removeClass( 'wavesurfer-active-button' );
+      $( this ).parent().children( 'button.wavesurfer-play' ).removeClass( 'wavesurfer-paused-button' );
 
+    } );
+  } );
+
+	// Define Stop button
+	buttonDownload.each( function() {
+    var audio = $( this ).parent().parent( '.wavesurfer-block' ).children( 'wavesurfer' );
+
+    var download_url = audio.attr( 'data-url' );
+		// Get FileName from URL
+		var index = download_url.lastIndexOf( "/" ) + 1;
+		var file_name = download_url.substr( index );
+    $( this ).children( 'a' ).attr( 'href', download_url );
+		$( this ).children( 'a' ).attr( 'download', file_name );
+    $( this ).click( function() {
+       download( download_url );
+    } );
+  } );
+
+  // Button Loop
+  buttonLoop.each( function() {
+    $( this ).click( function() {
+      var audio = $( this ).parent().parent( '.wavesurfer-block' ).children( 'wavesurfer' ).find('audio');
+      // IF LOOP
+      if ($( this ).hasClass('wavesurfer-active-button')) {
+      	$( this ).removeClass( 'wavesurfer-active-button' );
+      	audio[0].loop = false;
+      } else {
+      	$( this ).addClass( 'wavesurfer-active-button' );
+      	audio[0].loop = true;
+      };
+    } );
+} );
+
+   // Button Loop
+  buttonMute.each( function() {
+    $( this ).click( function() {
+      var audio = $( this ).parent().parent( '.wavesurfer-block' ).children( 'wavesurfer' ).find('audio');
+      // IF LOOP
+      if ($( this ).hasClass('wavesurfer-active-button')) {
+        $( this ).removeClass( 'wavesurfer-active-button' );
+      	audio[0].muted = false;
+      } else {
+        $( this ).addClass( 'wavesurfer-active-button' );
+        audio[0].muted = true;
+      };
     } );
   } );
 

@@ -1,10 +1,14 @@
 /**
- * WaveSurfer-WP Default Theme
+ * WaveSurfer-WP Flat Icons Theme
  * Author: X-Raym
  * Author URl: http://www.extremraym.com
- * Date: 2015-11-28
- * Version: 1.0
+ * Date: 2015-11-29
+ * Version: 1.1
  */
+
+.wavesurfer-block {
+  box-sizing: border-box;
+}
 
 wavesurfer audio {
   display: none;
@@ -16,6 +20,10 @@ wavesurfer audio {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: baseline;
+}
+
+.wavesurfer-buttons_set button {
+  width: 50px;
 }
 
 .wavesurfer-block button:hover {
@@ -36,8 +44,10 @@ wavesurfer audio {
   transition: .3s ease all;
   color: white;
   font-weight: bold;
+  /*
 	border-radius: 2px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+	*/
 }
 
 .wavesurfer-download a {
@@ -130,16 +140,11 @@ button.wavesurfer-mute.wavesurfer-active-button:before {
   .wavesurfer-time {
     display: none;
   }
-	.wavesurfer-block button span,
-	.wavesurfer-time span,
-	.wavesurfer-duration span {
-	  padding-left: 0.3em;
-	  display: none;
-	}
 }
 
 .wavesurfer-block button span,
 .wavesurfer-time span,
 .wavesurfer-duration span {
-  padding-left:0.3em;
+  padding-left: 0.3em;
+  display: none;
 }

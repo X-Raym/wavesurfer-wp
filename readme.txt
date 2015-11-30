@@ -11,29 +11,35 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio shortcode.
 
 == Description ==
-This plugins replace default WordPress audio player with a player capable of displaying the audio waveform.
-This is useful in a lot of circumstances: podcast, e-learning, music...
-It can also display the waveform of each channel of a multi-tracks sound file, which can be especially useful for sound tutorial, sounds-packs showcases, products demo etc...
+This plugin replaces the default WordPress audio player with a player capable of displaying audio waveforms. It can display a mix of the different audio channels (for podcast, radio, e-learning, music), or all channels simultaneously (for sound tutorial, sounds-packs showcases, products demo etc...), which is is main purpose.
 
 By working with the default audio shortcode, you have two great advantages:
-- It works with all your previous posts
-- You still have the default player in the Visual Editor (not just shortcode)
-- It supports every audio format supported by WordPress (wav, ogg, mp3, m4a).
-- Safe deactivation: if you deactivate the plugin, your shortcode will fallback to the WordPress default audio player.
+
+*   It works with all your previous posts
+*   You still have the default player in the Visual Editor (not just shortcode)
+*   It supports every audio format supported by WordPress (wav, ogg, mp3, m4a).
+*   Safe deactivation: if you deactivate the plugin, your shortcode will fallback to the WordPress default audio player.
 
 Global colors and style settings can be overridden by dedicated shortcode attributes.
-- `progress_color="purple"`
-- `wave_color="#FF0000"`
+
+*   `progress_color="purple"`
+*   `wave_color="#FF0000"`
+*   `cursor_color="#FF0000"`
+*   `download_button="true"`
+*   `mute_button="true"`
+*   `loop_button="true"`
 
 The default style requires [Font-Awesome 1.0](https://fortawesome.github.io/). Because this icon-font is already used in a lot of themes and plugins, it is not included in this pack. However, if your themes and plugins doesn't have it, you can use the [Enqueue Font Awesome CDN](https://wordpress.org/plugins/font-awesome-4-menus/) WordPress plugin, or any other plugin that loads on every page.
 
 You can deactivate the default WaveSurder-WP theme, and use your main theme style.
 You can also write your own style a lot of dedicated selectors. This will allow you to have more control on icons, responsivity, mouse hover behavior etc...
 
-[More Infos & Demo](https://www.extremraym.com/en/wavesurfer-wp)
+[More Infos & Demo](http://www.extremraym.com/en/wavesurfer-wp)
 
 It is a port for WordPress of WaveSurfer by katspaugh.
 [wavesurfer.js](http://wavesurfer-js.org/)
+
+It also contains [Download-js](http://danml.com/download.html) by dandavis.
 
 You can contribute by to WaveSurfer-WP development on github:
 [WaveSurfer-WP on GitHub](https://github.com/x-raym/wavesurfer-wp)
@@ -68,9 +74,17 @@ Be the first to ask!
 1. Back-End Settings Page
 
 == Changelog ==
-= 1.0 (2015-11-24) =
+= 1.1.0 (2015-11-30) =
++ Cursor Color setting and shortcode
++ Download Button shortcode
++ Loop Button shortcode
++ Mute Button shortcode
++ Flat Icons theme
+# Play/Pause buttons have merged
+
+= 1.0.0 (2015-11-24) =
 First release.
 
 == Upgrade Notice ==
-= 1.0 =
+= 1.0.0 =
 Initial release.
