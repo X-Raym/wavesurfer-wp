@@ -70,7 +70,7 @@ class WaveSurfer {
 			$arg = array(
 				'wave_color'	 		=> '#EE82EE',
 				'progress_color'	=> '#800080',
-				'cursor_color'		=> '#333',
+				'cursor_color'		=> '#333333',
 				'front_theme'			=> 'wavesurfer_default'
 			);
 		update_option( 'wavesurfer_settings', $arg, '', 'yes' );
@@ -399,7 +399,7 @@ class WaveSurfer {
 			if ( isset( $attr['cursor_color'] ) ) {
 				$cursor_color = esc_attr( $attr['cursor_color'] );
 			} else {
-				$cursor_color = ( isset( $options['cursor_color'] ) ) ? $options['cursor_color'] : '#333'; // Get color value from Settings
+				$cursor_color = ( isset( $options['cursor_color'] ) ) ? $options['cursor_color'] : '#333333'; // Get color value from Settings
 			}
 			$html .= 'data-cursor-color="' . $cursor_color . '" ';
 
