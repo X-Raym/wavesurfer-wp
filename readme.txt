@@ -72,6 +72,7 @@ Be the first to ask!
 == Screenshots ==
 1. Front-End Settings Page
 1. Back-End Settings Page
+1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
 = 1.1.0 (2015-11-30) =
