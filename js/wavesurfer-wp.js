@@ -2,209 +2,193 @@
  * WaveSurfer-WP Front-End Script
  * Author: X-Raym
  * Author URl: http://www.extremraym.com
- * Date: 2015-11-23
- * Version: 1.1
+ * Date: 2015-12-29
+ * Version: 2.0
  */
+
+// No conflcit for WordPress
 $j = jQuery.noConflict();
 
-jQuery( document ).ready( function( $ ) {
+// Init table for storing wavesurfer objects
+var wavesurfer = [];
 
-  // Define all wavesurfer blocks as jQuery elements
-  var wavesurfer = $( '.wavesurfer-block' );
+// On window load
+window.onload = function () {
 
-  // Add unique class to all wavesurfer blocks. Can be useful but not necessary for the render.
-  wavesurfer.each( function( i ) {
-    $( this ).addClass( "wavesurfer-player-" + ( i + 1 ) );
-  } );
+	// Loop in each wavesurfer block
+	$j('.wavesurfer-block').each(function(i) {
 
-  // Set button as jQuery elements
-  var buttonPlay = $( 'button.wavesurfer-play' );
-  var buttonPause = $( 'button.wavesurfer-pause' );
-  var buttonStop = $( 'button.wavesurfer-stop' );
-  var buttonDownload = $( 'button.wavesurfer-download' );
-  var buttonLoop = $( 'button.wavesurfer-loop' );
-  var buttonMute = $( 'button.wavesurfer-mute' );
+	  // Text selector for the player
+	  var selector = '#wavesurfer-player-' + i;
 
-  // Add Active class on all stop button at init stage
-  buttonStop.addClass( 'wavesurfer-active-button' );
+	  // Get WaveSurfer block for datas attribute
+	  var container = $j(this).children(container);
 
-  // Define Buttons trigger
-  // Define Play button
-  buttonPlay.each( function() {
-    $( this ).click( function() {
+	  // Add unique ID to WaveSurfer Block
+	  container.attr("id", "wavesurfer-player-" + i);
 
-      // Get parent <audio> element
-      var audio = $( this ).parent().parent( '.wavesurfer-block' ).children( 'wavesurfer' ).children( 'audio' );
+	  // Get data attribute
+	  var wave_color = container.attr('data-wave-color');
+	  var progress_color = container.attr('data-progress-color');
+	  var cursor_color = container.attr('data-cursor-color');
+	  var file_url = container.attr('data-url');
+	  var split = container.attr('data-split-channels');
+	  if (split == "true") {
+	    split = true;
+	  } else {
+	    split = false;
+	  }
 
-      // IF IS PLAYING
-      if ($( this ).hasClass('wavesurfer-active-button')) {
-        $( this ).removeClass( 'wavesurfer-active-button' );
+	  // Init and Control
+	  var options = {
+	    container: selector,
+	    splitChannels: split,
+	    waveColor: wave_color,
+	    progressColor: progress_color,
+	    cursorColor: cursor_color,
+			backend: 'MediaElement'
+	  };
 
-        audio.trigger( 'pause' );
+	  // Create WaveSurfer object
+	  wavesurfer[i] = WaveSurfer.create(options);
 
-      	$( this ).addClass( 'wavesurfer-paused-button' );
+	  // File
+	  wavesurfer[i].load(file_url);
 
-      	$( this ).parent().children( 'button.wavesurfer-play' ).removeClass( 'wavesurfer-active-button' );
-      	$( this ).parent().children( 'button.wavesurfer-stop' ).removeClass( 'wavesurfer-active-button' );
+	});
 
-      // IF NOT PLAYING
-      } else {
-        $( this ).addClass( 'wavesurfer-active-button' );
-              // Play the sound
-      	audio.trigger( 'play' );
+	// Buttons
+	$j('.wavesurfer-block').each(function(i) {
+
+	  // Timecode blocks
+	  var timeblock = $j(this).find('.wavesurfer-time');
+	  var duration = $j(this).find('.wavesurfer-duration');
+
+	  // Controls Definition
+	  var buttonPlay = $j(this).find('button.wavesurfer-play');
+	  var buttonStop = $j(this).find('button.wavesurfer-stop');
+	  var buttonMute = $j(this).find('button.wavesurfer-mute');
+	  var buttonDownload = $j(this).find('button.wavesurfer-download');
+	  var buttonLoop = $j(this).find('button.wavesurfer-loop');
+
+	  // Timecode and duration at Ready
+	  wavesurfer[i].on('ready', function() {
+	    var audio_duration = wavesurfer[i].getDuration();
+	    duration.html(secondsTimeSpanToMS(audio_duration));
+	    var current_time = wavesurfer[i].getCurrentTime();
+	    timeblock.html(secondsTimeSpanToMS(current_time));
+	  });
+
+	  // Timecode during Play
+	  wavesurfer[i].on('audioprocess', function() {
+	    var current_time = wavesurfer[i].getCurrentTime();
+	    timeblock.html(secondsTimeSpanToMS(current_time));
+	  });
+
+	  // Timecode during pause + seek
+	  wavesurfer[i].on('seek', function() {
+	    var current_time = wavesurfer[i].getCurrentTime();
+	    timeblock.html(secondsTimeSpanToMS(current_time));
+	  });
+
+	  // Add Active class on all stop button at init stage
+	  buttonStop.addClass('wavesurfer-active-button');
+
+	  // Controls Functions
+	  buttonPlay.click(function() {
+	    wavesurfer[i].playPause();
+
+	    // IF IS PLAYING
+	    if ($j(this).hasClass('wavesurfer-active-button')) {
+	      $j(this).removeClass('wavesurfer-active-button');
+
+	      $j(this).addClass('wavesurfer-paused-button');
+
+	      $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-active-button');
+	      $j(this).parent().children('button.wavesurfer-stop').removeClass('wavesurfer-active-button');
+
+	      // IF NOT PLAYING
+	    } else {
+	      $j(this).addClass('wavesurfer-active-button');
 
 	      // Add an active class
-	      $( this ).addClass( 'wavesurfer-active-button' );
+	      $j(this).addClass('wavesurfer-active-button');
 
 	      // Remove active class from the other buttons
-	      $( this ).parent().children( 'button.wavesurfer-play' ).removeClass( 'wavesurfer-paused-button' );
-	      $( this ).parent().children( 'button.wavesurfer-stop' ).removeClass( 'wavesurfer-active-button' );
-	      };
+	      $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-paused-button');
+	      $j(this).parent().children('button.wavesurfer-stop').removeClass('wavesurfer-active-button');
+	    };
 
-    } );
-  } );
+	  });
+	  buttonStop.click(function() {
+	    wavesurfer[i].stop();
 
-  // Define Stop button
-  buttonStop.each( function() {
-    $( this ).click( function() {
+	    $j(this).addClass('wavesurfer-active-button');
+	    $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-active-button');
+	    $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-paused-button');
+	    var current_time = wavesurfer[i].getCurrentTime();
+	    timeblock.html(secondsTimeSpanToMS(current_time));
+	  });
 
-      var audio = $( this ).parent().parent( '.wavesurfer-block' ).children( 'wavesurfer' ).children( 'audio' );
+	  // Button Mute
+	  buttonMute.click(function() {
+	    wavesurfer[i].toggleMute();
 
-      audio.prop( "currentTime", 0 );
+	    // IF ACTIVE
+	    if ($j(this).hasClass('wavesurfer-active-button')) {
+	      $j(this).removeClass('wavesurfer-active-button');
+	    } else {
+	      $j(this).addClass('wavesurfer-active-button');
+	    };
 
-      audio.trigger( 'pause' );
+	  });
 
-      $( this ).addClass( 'wavesurfer-active-button' );
-      $( this ).parent().children( 'button.wavesurfer-play' ).removeClass( 'wavesurfer-active-button' );
-      $( this ).parent().children( 'button.wavesurfer-play' ).removeClass( 'wavesurfer-paused-button' );
+	  // Define Stop button
+	  buttonDownload.click(function() {
+	    var audio = $j(this).parent().parent('.wavesurfer-block').children('.wavesurfer-player');
 
-    } );
-  } );
+	    var download_url = audio.attr('data-url');
+	    // Get FileName from URL
+	    var index = download_url.lastIndexOf("/") + 1;
+	    var file_name = download_url.substr(index);
+	    $j(this).children('a').attr('href', download_url);
+	    $j(this).children('a').attr('download', file_name);
 
-	// Define Stop button
-	buttonDownload.each( function() {
-    var audio = $( this ).parent().parent( '.wavesurfer-block' ).children( 'wavesurfer' );
+	    // then download
+	    download(download_url);
+	  });
 
-    var download_url = audio.attr( 'data-url' );
-		// Get FileName from URL
-		var index = download_url.lastIndexOf( "/" ) + 1;
-		var file_name = download_url.substr( index );
-    $( this ).children( 'a' ).attr( 'href', download_url );
-		$( this ).children( 'a' ).attr( 'download', file_name );
-    $( this ).click( function() {
-       download( download_url );
-    } );
-  } );
+	  // On finish, remove active class on play
+	  wavesurfer[i].on('finish', function() {
+	    if (buttonLoop.hasClass('wavesurfer-active-button') == false) {
+	      buttonPlay.removeClass('wavesurfer-active-button');
+	      buttonStop.addClass('wavesurfer-active-button');
+	    };
+	  });
 
-  // Button Loop
-  buttonLoop.each( function() {
-    $( this ).click( function() {
-      var audio = $( this ).parent().parent( '.wavesurfer-block' ).children( 'wavesurfer' ).find('audio');
-      // IF LOOP
-      if ($( this ).hasClass('wavesurfer-active-button')) {
-      	$( this ).removeClass( 'wavesurfer-active-button' );
-      	audio[0].loop = false;
-      } else {
-      	$( this ).addClass( 'wavesurfer-active-button' );
-      	audio[0].loop = true;
-      };
-    } );
-} );
+	  // Button Loop
+	  buttonLoop.click(function() {
+	    // IF LOOP
+	    if ($j(this).hasClass('wavesurfer-active-button')) {
+	      $j(this).removeClass('wavesurfer-active-button');
+	      wavesurfer[i].on('finish', function() {
+	        wavesurfer[i].pause();
+	      });
+	    } else {
+	      $j(this).addClass('wavesurfer-active-button');
+	      wavesurfer[i].on('finish', function() {
+	        wavesurfer[i].play();
+	      });
+	    };
+	  });
+	});
 
-   // Button Loop
-  buttonMute.each( function() {
-    $( this ).click( function() {
-      var audio = $( this ).parent().parent( '.wavesurfer-block' ).children( 'wavesurfer' ).find('audio');
-      // IF LOOP
-      if ($( this ).hasClass('wavesurfer-active-button')) {
-        $( this ).removeClass( 'wavesurfer-active-button' );
-      	audio[0].muted = false;
-      } else {
-        $( this ).addClass( 'wavesurfer-active-button' );
-        audio[0].muted = true;
-      };
-    } );
-  } );
-
-  // Check if audio are initialized
-  waitForElementToDisplay( 'audio', 1000 );
-
-} ); // End Ready
-
-
-
-/* FUNCTIONS DECLARATIONS */
-
-// Wait Initialization of Audio
-function waitForElementToDisplay( selector, time ) {
-  if ( document.querySelector( selector ) != null ) {
-    $j( 'audio' ).hide(); // facultative
-    updateTimeCode();
-  } else {
-    setTimeout( function() {
-      waitForElementToDisplay( selector, time );
-    }, time ); // Check again.
-  }
-} // End waitForElementToDisplay()
-
-// Update Timecode
-function updateTimeCode() {
-  var wavesurfer = $j( '.wavesurfer-block' );
-  wavesurfer.each( function() {
-
-    // Get infos blocks
-    var audio = $j( this ).children( 'wavesurfer' ).children( 'audio' );
-    var timeblock = $j( this ).find( '.wavesurfer-time' );
-    var duration = $j( this ).find( '.wavesurfer-duration' );
-
-    // Get buttons
-    var buttonPlay = $j( this ).find( 'button.wavesurfer-play' );
-    var buttonPause = $j( this ).find( 'button.wavesurfer-pause' );
-    var buttonStop = $j( this ).find( 'button.wavesurfer-stop' );
-
-    // Write duration and timecode
-    var audio_duration = waitForAudio( audio, 1000 );
-    duration.html( secondsTimeSpanToMS( audio_duration ) );
-
-    timeblock.html( secondsTimeSpanToMS( audio[0].currentTime ) );
-
-    // Trigger events at play
-    audio.bind( "timeupdate", function() {
-      var audio_time = audio[0].currentTime;
-      // Prevent a bug that make current time one second higher than duration at audio end
-      if ( audio_time > audio_duration ) {
-        audio_time = audio_duration;
-      };
-      timeblock.text( secondsTimeSpanToMS( audio_time ) );
-    } );
-
-    // Trigger events when audio ends
-    audio.bind( "ended", function() {
-      buttonPlay.removeClass( 'wavesurfer-active-button' );
-      buttonPause.removeClass( 'wavesurfer-active-button' );
-      buttonStop.addClass( 'wavesurfer-active-button' );
-    } );
-
-  } );
-} // End updateTimeCode()
+};
 
 // Convert seconds into MS
-function secondsTimeSpanToMS( s ) {
-  var m = Math.floor( s / 60 ); //Get remaining minutes
+function secondsTimeSpanToMS(s) {
+  var m = Math.floor(s / 60); //Get remaining minutes
   s -= m * 60;
-  s = Math.floor( s );
-  return ( m < 10 ? '0' + m : m ) + ":" + ( s < 10 ? '0' + s : s ); //zero padding on minutes and seconds
+  s = Math.floor(s);
+  return (m < 10 ? '0' + m : m) + ":" + (s < 10 ? '0' + s : s); //zero padding on minutes and seconds
 } // End secondsTimeSpanToMS
-
-// Wait Initialization of Audio
-function waitForAudio( object, time ) {
-  duration_val = object[0].duration;
-  // If duration is not numeric, then the audio element is not ready and it returns NaN.
-  if ( $j.isNumeric( duration_val ) ) {
-    return duration_val;
-  } else {
-    setTimeout( function() {
-      waitForAudio( object, time ); // Check again.
-    }, time );
-  }
-} // End waitForAudio()

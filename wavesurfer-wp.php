@@ -2,7 +2,7 @@
 
 /**
  * @package Wavesurfer
- * @version 1.1.0
+ * @version 2.0.0
  */
 
 /**
@@ -10,11 +10,11 @@
  * Plugin URI: http://www.extremraym.com/
  * Description: HTML5 Audio controler with waveform preview (mixed or split channels), using WordPress native audio shortcode.
  * Author: X-Raym
- * Version: 1.1.0
+ * Version: 2.0.0
  * Author URI: http://www.extremraym.com/
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2015-11-29
+ * Date: 2015-12-29
  * Text Domain: wavesurfer
  */
 
@@ -379,7 +379,7 @@ class WaveSurfer {
 
 			// Begin render
 			$html .= '<div class="wavesurfer-block">';
-			$html .= '<wavesurfer ';
+			$html .= '<div class="wavesurfer-player" ';
 
 			// Split channels
 			if ( isset( $attr['split_channels'] ) ) {
@@ -413,7 +413,7 @@ class WaveSurfer {
 
 			// Buttons
 			$html .= 'data-url="' . $link . '"';
-			$html .= '></wavesurfer>';
+			$html .= '></div>';
 			$html .= '<div class="wavesurfer-buttons_set">';
 			$html .= '<button type="button" class="wavesurfer-play"><span>' . __('Play/Pause', 'wavesurfer') . '</span></button>';
 			$html .= '<button type="button" class="wavesurfer-stop"><span>' . __('Stop', 'wavesurfer') . '</span></button>';

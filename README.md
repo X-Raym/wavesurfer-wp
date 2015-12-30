@@ -90,6 +90,11 @@ Be the first to ask!
 
 
 ## Changelog ##
+### 2.0.0 (2015-12-29) ###
+# New WebAudio rendering for better performance
++ Play while loading
+# wavesurfer.js 1.0.48
+
 ### 1.1.0 (2015-11-30) ###
 + Cursor Color setting and shortcode
 + Download Button shortcode

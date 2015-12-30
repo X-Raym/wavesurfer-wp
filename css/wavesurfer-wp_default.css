@@ -2,14 +2,9 @@
  * WaveSurfer-WP Default Theme
  * Author: X-Raym
  * Author URl: http://www.extremraym.com
- * Date: 2015-11-28
- * Version: 1.0
+ * Date: 2015-12-30
+ * Version: 2.0
  */
-
-wavesurfer audio {
-  display: none;
-  /* In CSS because it may not be initialized in jQuery */
-}
 
 .wavesurfer-buttons_set {
   display: flex;
