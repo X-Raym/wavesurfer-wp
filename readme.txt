@@ -8,12 +8,12 @@ Stable tag: trunk
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio shortcode.
+Customizable HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio and playlist shortcode.
 
 == Description ==
 This plugin replaces the default WordPress audio player with a player capable of displaying audio waveforms. It can display a mix of the different audio channels (for podcast, radio, e-learning, music), or all channels simultaneously (for sound tutorial, sounds-packs showcases, products demo etc...), which is is main purpose.
 
-By working with the default audio shortcode, you have two great advantages:
+By working with the default audio/playlist shortcode, you have two great advantages:
 
 *   It works with all your previous posts
 *   You still have the default player in the Visual Editor (not just shortcode)
@@ -31,8 +31,8 @@ Global colors and style settings can be overridden by dedicated shortcode attrib
 
 The default style requires [Font-Awesome 1.0](https://fortawesome.github.io/). Because this icon-font is already used in a lot of themes and plugins, it is not included in this pack. However, if your themes and plugins doesn't have it, you can use the [Enqueue Font Awesome CDN](https://wordpress.org/plugins/font-awesome-4-menus/) WordPress plugin, or any other plugin that loads on every page.
 
-You can deactivate the default WaveSurder-WP theme, and use your main theme style.
-You can also write your own style a lot of dedicated selectors. This will allow you to have more control on icons, responsivity, mouse hover behavior etc...
+You can deactivate the default WaveSurder-WP theme, and use your own theme style. I strongly encourage you to do that as custom CSS is the only way to make it fir your theme perfectly. There is a lot of dedicated CSS selectors for that. You can take one of the included theme as reference.
+This will allow you to have more control on icons, responsivity, mouse hover behavior etc...
 
 [More Infos & Demo](http://www.extremraym.com/en/wavesurfer-wp)
 
@@ -47,6 +47,9 @@ Themes and Translations are welcome !
 
 Optimization trick: if you only use this plugin on a couple of pages, I invite you to use a plugin like [Plugin Organizer](https://wordpress.org/plugins/plugin-organizer/) to globally deactivate the plugin, and make it load resources only on pages which need it.
 No need for that on the back-end, only for front-end.
+
+This player doesn't have and will not have Like Button, Sharing Button, Play count and Download count.
+If you are looking for a WordPress player with such Social Features and advanced statistics like [SoundCloud](http://www.soundcloud.com) or [Hearthis.at](http://www.hearthis.at), take a look at [ZoomSounds](http://codecanyon.net/item/zoomsounds-neat-html5-audio-player/4525354).
 
 Notes: Some audio formats / browsers combo are not possible. This cannot be fixed by our side. (For ex, wav 24 bits in FireFox).
 
@@ -75,22 +78,32 @@ Be the first to ask!
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.1.0 (2016-01-03) =
+* Playlist shortcode support
+* Responsive waveform
+* Deleted Lang Packs (now hosted by WordPress.org)
+
 = 2.0.0 (2015-12-29) =
-# New WebAudio rendering for better performance
-+ Play while loading
-# wavesurfer.js 1.0.48
+* New WebAudio rendering for better performance
+* wavesurfer.js 1.0.48
 
 = 1.1.0 (2015-11-30) =
-+ Cursor Color setting and shortcode
-+ Download Button shortcode
-+ Loop Button shortcode
-+ Mute Button shortcode
-+ Flat Icons theme
-# Play/Pause buttons have merged
+* Cursor Color setting and shortcode
+* Download Button shortcode
+* Loop Button shortcode
+* Mute Button shortcode
+* Flat Icons theme
+* Play/Pause buttons have merged
 
 = 1.0.0 (2015-11-24) =
-First release.
+* First release.
 
 == Upgrade Notice ==
+= 2.1.0 =
+Playlist shortcode support
+
+= 2.0.0 =
+New WebAudio rendering for better performance
+
 = 1.0.0 =
 Initial release.

@@ -2,9 +2,19 @@
  * WaveSurfer-WP Front-End Script
  * Author: X-Raym
  * Author URl: http://www.extremraym.com
- * Date: 2015-12-29
- * Version: 2.0
+ * Date: 2015-01-01
+ * Version: 2.1
  */
+
+// TO DO
+// PLAYLIST : Repeat playlist button ?
+// PLAYLIST : Navigation buttons ? First, Next, Previous
+// PLAYLIST : Download button on every track ?
+// PLAYLIST : Shuffle Button ?
+// Overide Download Link ?
+// Permanent Play Bar ?
+// Extract infos from ID3v2 ?
+// Regions plugins + WebTT Integration ?
 
 // No conflcit for WordPress
 $j = jQuery.noConflict();
@@ -13,178 +23,268 @@ $j = jQuery.noConflict();
 var wavesurfer = [];
 
 // On window load
-window.onload = function () {
+window.onload = function() {
 
-	// Loop in each wavesurfer block
-	$j('.wavesurfer-block').each(function(i) {
+  // Loop in each wavesurfer block
+  $j('.wavesurfer-block').each(function(i) {
 
-	  // Text selector for the player
-	  var selector = '#wavesurfer-player-' + i;
+    // Text selector for the player
+    var selector = '#wavesurfer-player-' + i;
 
-	  // Get WaveSurfer block for datas attribute
-	  var container = $j(this).children(container);
+    // Get WaveSurfer block for datas attribute
+    var container = $j(this).children(container);
 
-	  // Add unique ID to WaveSurfer Block
-	  container.attr("id", "wavesurfer-player-" + i);
+    // Add unique ID to WaveSurfer Block
+    container.attr("id", "wavesurfer-player-" + i);
 
-	  // Get data attribute
-	  var wave_color = container.attr('data-wave-color');
-	  var progress_color = container.attr('data-progress-color');
-	  var cursor_color = container.attr('data-cursor-color');
-	  var file_url = container.attr('data-url');
-	  var split = container.attr('data-split-channels');
-	  if (split == "true") {
-	    split = true;
-	  } else {
-	    split = false;
-	  }
+    // Get data attribute
+    var wave_color = container.attr('data-wave-color');
+    var progress_color = container.attr('data-progress-color');
+    var cursor_color = container.attr('data-cursor-color');
+    var file_url = container.attr('data-url');
+    var split = container.attr('data-split-channels');
+    if (split == "true") {
+      split = true;
+    } else {
+      split = false;
+    }
 
-	  // Init and Control
-	  var options = {
-	    container: selector,
-	    splitChannels: split,
-	    waveColor: wave_color,
-	    progressColor: progress_color,
-	    cursorColor: cursor_color,
-			backend: 'MediaElement'
-	  };
+    // Init and Control
+    var options = {
+      container: selector,
+      splitChannels: split,
+      waveColor: wave_color,
+      progressColor: progress_color,
+      cursorColor: cursor_color
+    };
 
-	  // Create WaveSurfer object
-	  wavesurfer[i] = WaveSurfer.create(options);
+    // Create WaveSurfer object
+    wavesurfer[i] = WaveSurfer.create(options);
 
-	  // File
-	  wavesurfer[i].load(file_url);
+    // File
+    wavesurfer[i].load(file_url);
 
-	});
+    // Responsive Waveform
+    $j(window).resize(function() {
+      wavesurfer[i].drawer.containerWidth = wavesurfer[i].drawer.container.clientWidth;
+      wavesurfer[i].drawBuffer();
+    });
 
-	// Buttons
-	$j('.wavesurfer-block').each(function(i) {
+  });
 
-	  // Timecode blocks
-	  var timeblock = $j(this).find('.wavesurfer-time');
-	  var duration = $j(this).find('.wavesurfer-duration');
+  // Buttons
+  $j('.wavesurfer-block').each(function(i) {
 
-	  // Controls Definition
-	  var buttonPlay = $j(this).find('button.wavesurfer-play');
-	  var buttonStop = $j(this).find('button.wavesurfer-stop');
-	  var buttonMute = $j(this).find('button.wavesurfer-mute');
-	  var buttonDownload = $j(this).find('button.wavesurfer-download');
-	  var buttonLoop = $j(this).find('button.wavesurfer-loop');
+    // Timecode blocks
+    var timeblock = $j(this).find('.wavesurfer-time');
+    var duration = $j(this).find('.wavesurfer-duration');
 
-	  // Timecode and duration at Ready
-	  wavesurfer[i].on('ready', function() {
-	    var audio_duration = wavesurfer[i].getDuration();
-	    duration.html(secondsTimeSpanToMS(audio_duration));
-	    var current_time = wavesurfer[i].getCurrentTime();
-	    timeblock.html(secondsTimeSpanToMS(current_time));
-	  });
+    // Controls Definition
+    var buttonPlay = $j(this).find('button.wavesurfer-play');
+    var buttonStop = $j(this).find('button.wavesurfer-stop');
+    var buttonMute = $j(this).find('button.wavesurfer-mute');
+    var buttonDownload = $j(this).find('button.wavesurfer-download');
+    var buttonLoop = $j(this).find('button.wavesurfer-loop');
+    var debugBlock = $j(this).find('.debug');
+    var progressBar = $j(this).find('progress');
 
-	  // Timecode during Play
-	  wavesurfer[i].on('audioprocess', function() {
-	    var current_time = wavesurfer[i].getCurrentTime();
-	    timeblock.html(secondsTimeSpanToMS(current_time));
-	  });
+    wavesurfer[i].on('loading', function(percent) {
+      progressBar.attr('value', percent);
+    });
+    wavesurfer[i].on('error', function() {
+      progressBar.hide();
+    });
 
-	  // Timecode during pause + seek
-	  wavesurfer[i].on('seek', function() {
-	    var current_time = wavesurfer[i].getCurrentTime();
-	    timeblock.html(secondsTimeSpanToMS(current_time));
-	  });
+    // Timecode and duration at Ready
+    wavesurfer[i].on('ready', function() {
+      progressBar.hide();
+      var audio_duration = wavesurfer[i].getDuration();
+      duration.html(secondsTimeSpanToMS(audio_duration));
+      var current_time = wavesurfer[i].getCurrentTime();
+      timeblock.html(secondsTimeSpanToMS(current_time));
+    });
 
-	  // Add Active class on all stop button at init stage
-	  buttonStop.addClass('wavesurfer-active-button');
+    // Timecode during Play
+    wavesurfer[i].on('audioprocess', function() {
+      var current_time = wavesurfer[i].getCurrentTime();
+      timeblock.html(secondsTimeSpanToMS(current_time));
+    });
 
-	  // Controls Functions
-	  buttonPlay.click(function() {
-	    wavesurfer[i].playPause();
+    // Timecode during pause + seek
+    wavesurfer[i].on('seek', function() {
+      var current_time = wavesurfer[i].getCurrentTime();
+      timeblock.html(secondsTimeSpanToMS(current_time));
+    });
 
-	    // IF IS PLAYING
-	    if ($j(this).hasClass('wavesurfer-active-button')) {
-	      $j(this).removeClass('wavesurfer-active-button');
+    // Add Active class on all stop button at init stage
+    buttonStop.addClass('wavesurfer-active-button');
 
-	      $j(this).addClass('wavesurfer-paused-button');
+    // Controls Functions
+    buttonPlay.click(function() {
+      wavesurfer[i].playPause();
 
-	      $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-active-button');
-	      $j(this).parent().children('button.wavesurfer-stop').removeClass('wavesurfer-active-button');
+      // IF IS PLAYING
+      if ($j(this).hasClass('wavesurfer-active-button')) {
+        $j(this).removeClass('wavesurfer-active-button');
 
-	      // IF NOT PLAYING
-	    } else {
-	      $j(this).addClass('wavesurfer-active-button');
+        $j(this).addClass('wavesurfer-paused-button');
 
-	      // Add an active class
-	      $j(this).addClass('wavesurfer-active-button');
+        $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-active-button');
+        $j(this).parent().children('button.wavesurfer-stop').removeClass('wavesurfer-active-button');
 
-	      // Remove active class from the other buttons
-	      $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-paused-button');
-	      $j(this).parent().children('button.wavesurfer-stop').removeClass('wavesurfer-active-button');
-	    };
+        // IF NOT PLAYING
+      } else {
+        $j(this).addClass('wavesurfer-active-button');
 
-	  });
-	  buttonStop.click(function() {
-	    wavesurfer[i].stop();
+        // Add an active class
+        $j(this).addClass('wavesurfer-active-button');
 
-	    $j(this).addClass('wavesurfer-active-button');
-	    $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-active-button');
-	    $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-paused-button');
-	    var current_time = wavesurfer[i].getCurrentTime();
-	    timeblock.html(secondsTimeSpanToMS(current_time));
-	  });
+        // Remove active class from the other buttons
+        $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-paused-button');
+        $j(this).parent().children('button.wavesurfer-stop').removeClass('wavesurfer-active-button');
+      };
 
-	  // Button Mute
-	  buttonMute.click(function() {
-	    wavesurfer[i].toggleMute();
+    });
+    buttonStop.click(function() {
+      wavesurfer[i].stop();
 
-	    // IF ACTIVE
-	    if ($j(this).hasClass('wavesurfer-active-button')) {
-	      $j(this).removeClass('wavesurfer-active-button');
-	    } else {
-	      $j(this).addClass('wavesurfer-active-button');
-	    };
+      $j(this).addClass('wavesurfer-active-button');
+      $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-active-button');
+      $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-paused-button');
+      var current_time = wavesurfer[i].getCurrentTime();
+      timeblock.html(secondsTimeSpanToMS(current_time));
+    });
 
-	  });
+    // Button Mute
+    buttonMute.click(function() {
+      wavesurfer[i].toggleMute();
 
-	  // Define Stop button
-	  buttonDownload.click(function() {
-	    var audio = $j(this).parent().parent('.wavesurfer-block').children('.wavesurfer-player');
+      // IF ACTIVE
+      if ($j(this).hasClass('wavesurfer-active-button')) {
+        $j(this).removeClass('wavesurfer-active-button');
+      } else {
+        $j(this).addClass('wavesurfer-active-button');
+      };
 
-	    var download_url = audio.attr('data-url');
-	    // Get FileName from URL
-	    var index = download_url.lastIndexOf("/") + 1;
-	    var file_name = download_url.substr(index);
-	    $j(this).children('a').attr('href', download_url);
-	    $j(this).children('a').attr('download', file_name);
+    });
 
-	    // then download
-	    download(download_url);
-	  });
+    // Define Stop button
+    buttonDownload.click(function() {
+      var audio = $j(this).parent().parent('.wavesurfer-block').children('.wavesurfer-player');
 
-	  // On finish, remove active class on play
-	  wavesurfer[i].on('finish', function() {
-	    if (buttonLoop.hasClass('wavesurfer-active-button') == false) {
-	      buttonPlay.removeClass('wavesurfer-active-button');
-	      buttonStop.addClass('wavesurfer-active-button');
-	    };
-	  });
+      var download_url = audio.attr('data-url');
+      // Get FileName from URL
+      var index = download_url.lastIndexOf("/") + 1;
+      var file_name = download_url.substr(index);
+      $j(this).children('a').attr('href', download_url);
+      $j(this).children('a').attr('download', file_name);
 
-	  // Button Loop
-	  buttonLoop.click(function() {
-	    // IF LOOP
-	    if ($j(this).hasClass('wavesurfer-active-button')) {
-	      $j(this).removeClass('wavesurfer-active-button');
-	      wavesurfer[i].on('finish', function() {
-	        wavesurfer[i].pause();
-	      });
-	    } else {
-	      $j(this).addClass('wavesurfer-active-button');
-	      wavesurfer[i].on('finish', function() {
-	        wavesurfer[i].play();
-	      });
-	    };
-	  });
-	});
+      // then download
+      download(download_url);
+    });
+
+    // On finish, remove active class on play
+    wavesurfer[i].on('finish', function() {
+      if (buttonLoop.hasClass('wavesurfer-active-button') == false) {
+        buttonPlay.removeClass('wavesurfer-active-button');
+        buttonStop.addClass('wavesurfer-active-button');
+      };
+    });
+
+    // Button Loop
+    buttonLoop.click(function() {
+      // IF LOOP
+      if ($j(this).hasClass('wavesurfer-active-button')) {
+        $j(this).removeClass('wavesurfer-active-button');
+        wavesurfer[i].on('finish', function() {
+          wavesurfer[i].pause();
+        });
+      } else {
+        $j(this).addClass('wavesurfer-active-button');
+        wavesurfer[i].on('finish', function() {
+          wavesurfer[i].play();
+        });
+      };
+    });
+
+    // Check if playlist
+    if ($j(this).hasClass('wavesurfer-playlist')) {
+      // The playlist links
+      var tracks = $j(this).find('.wavesurfer-list-group li');
+      var current = 0;
+      tracks.eq(current).addClass('wavesurfer-active-track');
+
+      // When cliking on an item
+      tracks.click(function() {
+        if ($j(this).hasClass('wavesurfer-active-track') == false) {
+
+          tracks.each(function() {
+            $j(this).removeClass('wavesurfer-active-track');
+          });
+          var url = $j(this).attr('data-url');
+          current = $j(this).index();
+          wavesurfer[i].load(url);
+          progressBar.attr('value', '0');
+          progressBar.show();
+
+          // Remove active tracks from all tracks
+          wavesurfer[i].on('loading', function(percent) {
+            progressBar.attr('value', percent);
+          });
+          wavesurfer[i].on('ready', function() {
+            progressBar.hide();
+            wavesurfer[i].play();
+          });
+          $j(this).addClass('wavesurfer-active-track');
+          buttonPlay.addClass('wavesurfer-active-button');
+
+          // Add an active class
+          buttonPlay.addClass('wavesurfer-active-button');
+
+          // Remove active class from the other buttons
+          buttonPlay.parent().children('button.wavesurfer-play').removeClass('wavesurfer-paused-button');
+          buttonPlay.parent().children('button.wavesurfer-stop').removeClass('wavesurfer-active-button');
+
+          buttonDownload.parent().parent('.wavesurfer-block').children('.wavesurfer-player').attr('data-url', url);
+        }; // ENDIF active track
+      });
+
+      wavesurfer[i].on('finish', function() {
+        // Increment current track number
+        current++;
+
+        // Get track URL
+        var url = '';
+        url = tracks.eq(current).attr('data-url');
+        // If there no other tracks after
+        if (url != undefined) {
+          wavesurfer[i].load(url);
+          progressBar.attr('value', '0');
+          progressBar.show();
+
+          // Remove active tracks from all tracks
+          wavesurfer[i].on('loading', function(percent) {
+            progressBar.attr('value', percent);
+          });
+
+          tracks.eq(current - 1).removeClass('wavesurfer-active-track');
+          tracks.eq(current).addClass('wavesurfer-active-track');
+
+          buttonDownload.parent().parent('.wavesurfer-block').children('.wavesurfer-player').attr('data-url', url);
+          // Check if continuous PLay is on.
+          // TO DO
+
+          // When it is loaded, play.
+          wavesurfer[i].on('ready', function() {
+            wavesurfer[i].play();
+
+          });
+        };
+      });
+    };
+  });
 
 };
-
 // Convert seconds into MS
 function secondsTimeSpanToMS(s) {
   var m = Math.floor(s / 60); //Get remaining minutes

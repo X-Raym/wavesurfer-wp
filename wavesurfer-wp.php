@@ -10,11 +10,11 @@
  * Plugin URI: http://www.extremraym.com/
  * Description: HTML5 Audio controler with waveform preview (mixed or split channels), using WordPress native audio shortcode.
  * Author: X-Raym
- * Version: 2.0.0
+ * Version: 2.1.0
  * Author URI: http://www.extremraym.com/
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2015-12-29
+ * Date: 2016-01-03
  * Text Domain: wavesurfer
  */
 
@@ -97,9 +97,10 @@ class WaveSurfer {
 			// Add Color Pickers Scripts
 			add_action( 'admin_enqueue_scripts', array( $this, 'load_color_picker' ) );
 
-			//
+			// Shortcode Override Functions
 			if ( !is_admin() ) {
 				add_filter( 'wp_audio_shortcode_override' , array( $this, 'wp_audio_shortcode_override' ), 10, 2 );
+				add_filter( 'post_playlist' , array( $this, 'wp_playlist_shortcode_override' ), 10, 3 );
 			}
 
 			// Load Front End Ressources
@@ -358,91 +359,217 @@ class WaveSurfer {
 	}
 
 	/**
-	 * Shortcode output
+	 * Audio Shortcode output
 	 */
 	public function wp_audio_shortcode_override( $html, $attr ) {
 
-			//self::$load_front_ressources = true;
-			$html = ''; // Value for not overring render
+		//self::$load_front_ressources = true;
+		$html = ''; // Value for not overring render
 
-			// Check if shortcode render must be override or not
-			if ( ! empty( $attr['player'] ) && $attr['player'] === 'default' ) {
-					return $html;
-			}
+		// Check if shortcode render must be override or not
+		if ( ! empty( $attr['player'] ) && $attr['player'] === 'default' ) {
+				return $html;
+		}
 
-			// Check audio type to determine the link
-			$options = get_option( 'wavesurfer_settings' );
-			if ( isset( $attr['wav'] ) ) { $link = $attr['wav']; }
-			if ( isset( $attr['mp3'] ) ) { $link = $attr['mp3']; }
-			if ( isset( $attr['m4a'] ) ) { $link = $attr['m4a']; }
-			if ( isset( $attr['ogg'] ) ) { $link = $attr['ogg']; }
+		// Check audio type to determine the link
+		if ( isset( $attr['wav'] ) ) { $link = $attr['wav']; }
+		if ( isset( $attr['mp3'] ) ) { $link = $attr['mp3']; }
+		if ( isset( $attr['m4a'] ) ) { $link = $attr['m4a']; }
+		if ( isset( $attr['ogg'] ) ) { $link = $attr['ogg']; }
 
-			// Begin render
-			$html .= '<div class="wavesurfer-block">';
-			$html .= '<div class="wavesurfer-player" ';
+		// Begin render
+		$html .= '<div class="wavesurfer-block wavesurfer-audio">';
+		$html .= '<div class="wavesurfer-player" ';
 
-			// Split channels
-			if ( isset( $attr['split_channels'] ) ) {
-				if( $attr['split_channels'] == true )
-				$html .= 'data-split-channels="true" ';
-			}
+		// Split channels
+		if ( isset( $attr['split_channels'] ) ) {
+			if( $attr['split_channels'] == true )
+			$html .= 'data-split-channels="true" ';
+		}
 
-			// Wave color
-			if ( isset( $attr['wave_color'] ) ) {
-				$wave_color = esc_attr( $attr['wave_color'] );
-			} else {
-				$wave_color = ( isset( $options['wave_color'] ) ) ? $options['wave_color'] : 'violet'; // Get color value from Settings
-			}
-			$html .= 'data-wave-color="' . $wave_color . '" ';
+		// Get Options
+		$options = get_option( 'wavesurfer_settings' );
 
-			// Progress color
-			if ( isset( $attr['cursor_color'] ) ) {
-				$cursor_color = esc_attr( $attr['cursor_color'] );
-			} else {
-				$cursor_color = ( isset( $options['cursor_color'] ) ) ? $options['cursor_color'] : '#333333'; // Get color value from Settings
-			}
-			$html .= 'data-cursor-color="' . $cursor_color . '" ';
+		// Wave color
+		if ( isset( $attr['wave_color'] ) ) {
+			$wave_color = esc_attr( $attr['wave_color'] );
+		} else {
+			$wave_color = ( isset( $options['wave_color'] ) ) ? $options['wave_color'] : 'violet'; // Get color value from Settings
+		}
+		$html .= 'data-wave-color="' . $wave_color . '" ';
 
-			// Progress color
-			if ( isset( $attr['progress_color'] ) ) {
-				$progress_color = esc_attr( $attr['progress_color'] );
-			} else {
-				$progress_color = ( isset( $options['progress_color'] ) ) ? $options['progress_color'] : 'purple'; // Get color value from Settings
-			}
-			$html .= 'data-progress-color="' . $progress_color . '" ';
+		// Cursor color
+		if ( isset( $attr['cursor_color'] ) ) {
+			$cursor_color = esc_attr( $attr['cursor_color'] );
+		} else {
+			$cursor_color = ( isset( $options['cursor_color'] ) ) ? $options['cursor_color'] : '#333333'; // Get color value from Settings
+		}
+		$html .= 'data-cursor-color="' . $cursor_color . '" ';
 
-			// Buttons
-			$html .= 'data-url="' . $link . '"';
-			$html .= '></div>';
-			$html .= '<div class="wavesurfer-buttons_set">';
-			$html .= '<button type="button" class="wavesurfer-play"><span>' . __('Play/Pause', 'wavesurfer') . '</span></button>';
-			$html .= '<button type="button" class="wavesurfer-stop"><span>' . __('Stop', 'wavesurfer') . '</span></button>';
+		// Progress color
+		if ( isset( $attr['progress_color'] ) ) {
+			$progress_color = esc_attr( $attr['progress_color'] );
+		} else {
+			$progress_color = ( isset( $options['progress_color'] ) ) ? $options['progress_color'] : 'purple'; // Get color value from Settings
+		}
+		$html .= 'data-progress-color="' . $progress_color . '" ';
 
-			// Mute button
-			if ( isset( $attr['mute_button'] ) ) {
-				if( $attr['mute_button'] == true )
-				$html .= '<button type="button" class="wavesurfer-mute"><span>' . __('Mute', 'wavesurfer') . '</span></button>';
-			}
+		// File URL
+		$html .= 'data-url="' . $link . '"';
+		$html .= '></div>';
 
-			// Loop button channels
-			if ( isset( $attr['loop_button'] ) ) {
-				if( $attr['loop_button'] == true )
-				$html .= '<button type="button" class="wavesurfer-loop"><span>' . __('Loop', 'wavesurfer') . '</span></button>';
-			}
+		// Progress Bar
+		$html .= '<div class="wavesurfer-progress"><progress class="wavesurfer-loading" value="0" max="100"></progress></div>';
 
-			// Download button
-			if ( isset( $attr['download_button'] ) ) {
-				if( $attr['download_button'] == true )
-				$html .= '<button type="button" class="wavesurfer-download"><a href="" download=""><span>' . __('Download', 'wavesurfer') . '</span></a></button>';
-			}
+		// Buttons
+		$html .= '<div class="wavesurfer-buttons_set">';
+		$html .= '<button type="button" class="wavesurfer-play"><span>' . __('Play/Pause', 'wavesurfer') . '</span></button>';
+		$html .= '<button type="button" class="wavesurfer-stop"><span>' . __('Stop', 'wavesurfer') . '</span></button>';
 
-			$html .= '<div class="wavesurfer-time"></div>';
-			$html .= '<div class="wavesurfer-duration"></div>';
-			$html .= '</div>';
-			$html .= '</div>';
+		// Mute button
+		if ( isset( $attr['mute_button'] ) ) {
+			if( $attr['mute_button'] == true )
+			$html .= '<button type="button" class="wavesurfer-mute"><span>' . __('Mute', 'wavesurfer') . '</span></button>';
+		}
 
-			// Output
-			return $html;
+		// Loop button channels
+		if ( isset( $attr['loop_button'] ) ) {
+			if( $attr['loop_button'] == true )
+			$html .= '<button type="button" class="wavesurfer-loop"><span>' . __('Loop', 'wavesurfer') . '</span></button>';
+		}
+
+		// Download button
+		if ( isset( $attr['download_button'] ) ) {
+			if( $attr['download_button'] == true )
+			$html .= '<button type="button" class="wavesurfer-download"><a href="" download=""><span>' . __('Download', 'wavesurfer') . '</span></a></button>';
+		}
+
+		// Time buttons
+		$html .= '<div class="wavesurfer-time"></div>';
+		$html .= '<div class="wavesurfer-duration"></div>';
+		$html .= '</div>';
+
+		// End WaveSurfer Block
+		$html .= '</div>';
+
+		// Output
+		return $html;
+
+	}
+
+
+	/**
+	 * Audio Shortcode output
+	 *
+	 * https://github.com/WordPress/WordPress/blob/master/wp-includes/media.php#L1892
+	 * https://developer.wordpress.org/reference/hooks/post_playlist/
+	 */
+	public function wp_playlist_shortcode_override( $html, $attr, $instance ) {
+
+		//self::$load_front_ressources = true;
+		$html = ''; // Value for not overring render
+
+		// Check if shortcode render must be override or not - Check for Video Playlist
+		if ( (! empty( $attr['player'] ) && $attr['player'] === 'default' ) || ( ! empty( $attr['type'] ) && $atts['type'] !== 'audio' ) || ( empty( $attr['ids'] ) ) ) {
+				return $html;
+		}
+
+		// Parse IDs
+		if ( ! empty( $attr['ids'] ) ) {
+			$ids = explode( ',', $attr['ids'] );
+			$attachments = array();
+			foreach ( $ids as $id ) {
+				array_push( $attachments, get_post( $include = $id ) );
+			};
+		};
+
+		// Check audio type to determine the link
+		$link = $attachments[0]->guid;
+
+		// Begin render
+		$html .= '<div class="wavesurfer-block wavesurfer-playlist">';
+		$html .= '<div class="wavesurfer-player" ';
+
+		// Split channels
+		if ( isset( $attr['split_channels'] ) ) {
+			if( $attr['split_channels'] == true )
+			$html .= 'data-split-channels="true" ';
+		}
+
+		// Get Options
+		$options = get_option( 'wavesurfer_settings' );
+
+		// Wave color
+		if ( isset( $attr['wave_color'] ) ) {
+			$wave_color = esc_attr( $attr['wave_color'] );
+		} else {
+			$wave_color = ( isset( $options['wave_color'] ) ) ? $options['wave_color'] : 'violet'; // Get color value from Settings
+		}
+		$html .= 'data-wave-color="' . $wave_color . '" ';
+
+		// Cursor color
+		if ( isset( $attr['cursor_color'] ) ) {
+			$cursor_color = esc_attr( $attr['cursor_color'] );
+		} else {
+			$cursor_color = ( isset( $options['cursor_color'] ) ) ? $options['cursor_color'] : '#333333'; // Get color value from Settings
+		}
+		$html .= 'data-cursor-color="' . $cursor_color . '" ';
+
+		// Progress color
+		if ( isset( $attr['progress_color'] ) ) {
+			$progress_color = esc_attr( $attr['progress_color'] );
+		} else {
+			$progress_color = ( isset( $options['progress_color'] ) ) ? $options['progress_color'] : 'purple'; // Get color value from Settings
+		}
+		$html .= 'data-progress-color="' . $progress_color . '" ';
+
+		// File URL
+		$html .= 'data-url="' . $link . '"';
+		$html .= '></div>';
+
+		// Progress Bar
+		$html .= '<div class="wavesurfer-progress"><progress class="wavesurfer-loading" value="0" max="100"></progress></div>';
+
+		// Buttons
+		$html .= '<div class="wavesurfer-buttons_set">';
+		$html .= '<button type="button" class="wavesurfer-play"><span>' . __('Play/Pause', 'wavesurfer') . '</span></button>';
+		$html .= '<button type="button" class="wavesurfer-stop"><span>' . __('Stop', 'wavesurfer') . '</span></button>';
+
+		// Mute button
+		if ( isset( $attr['mute_button'] ) ) {
+			if( $attr['mute_button'] == true )
+			$html .= '<button type="button" class="wavesurfer-mute"><span>' . __('Mute', 'wavesurfer') . '</span></button>';
+		}
+
+		// Loop button channels
+		if ( isset( $attr['loop_button'] ) ) {
+			if( $attr['loop_button'] == true )
+			$html .= '<button type="button" class="wavesurfer-loop"><span>' . __('Loop', 'wavesurfer') . '</span></button>';
+		}
+
+		// Download button
+		if ( isset( $attr['download_button'] ) ) {
+			if( $attr['download_button'] == true )
+			$html .= '<button type="button" class="wavesurfer-download"><a href="" download=""><span>' . __('Download', 'wavesurfer') . '</span></a></button>';
+		}
+
+		// Time buttons
+		$html .= '<div class="wavesurfer-time"></div>';
+		$html .= '<div class="wavesurfer-duration"></div>';
+		$html .= '</div>';
+
+		// Playlist
+		$html .= '<ol class="wavesurfer-list-group">';
+		foreach ( $attachments as $attachment ) {
+	  	$html .= '<li data-url="' . $attachment->guid . '" class="list-group-item">' . $attachment->post_title . '</li>';
+		};
+	  $html .= '</ol>';
+
+		// End WaveSurfer Block
+		$html .= '</div>';
+
+		// Output
+		return $html;
 
 	}
 

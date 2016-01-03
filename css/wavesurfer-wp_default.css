@@ -2,9 +2,14 @@
  * WaveSurfer-WP Default Theme
  * Author: X-Raym
  * Author URl: http://www.extremraym.com
- * Date: 2015-12-30
- * Version: 2.0
+ * Date: 2016-01-03
+ * Version: 2.1
  */
+
+.wavesurfer-block {
+  box-sizing: border-box;
+ 	margin-bottom: 2em;
+ }
 
 .wavesurfer-buttons_set {
   display: flex;
@@ -23,7 +28,7 @@
 .wavesurfer-duration {
   font-family: Arial;
   font-size: 1em;
-  margin: 1em 1em 2em;
+  margin: 1em 1em 1em;
   padding: 0.5em 1em 0.5em;
   border-width: 0;
   outline: none;
@@ -137,4 +142,55 @@ button.wavesurfer-mute.wavesurfer-active-button:before {
 .wavesurfer-time span,
 .wavesurfer-duration span {
   padding-left:0.3em;
+}
+
+.wavesurfer-block wave:hover{
+  cursor:pointer;
+}
+
+/* Playlist */
+.wavesurfer-list-group {
+  counter-reset: section;
+  list-style-type: none;
+	padding: 0;
+	margin-left: 1em;
+  margin-right: 1em;
+}
+
+.wavesurfer-list-group li:hover{
+  cursor:pointer;
+}
+
+.wavesurfer-list-group li:before {
+  counter-increment: section;
+  content: counters(section, ".") ". ";
+}
+
+.wavesurfer-active-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.wavesurfer-list-group li.wavesurfer-active-track:before {
+  counter-increment: section;
+  content: counters(section, ".") ". ";
+}
+
+#waveform {
+  position: relative;
+}
+
+.wavesurfer-progress {
+  position:relative;
+}
+
+.wavesurfer-loading[value] {
+  border: none;
+  appearance: none;
+  width: 100%;
+  height: 20px;
+  background-color: #eee;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) inset;
+  position: absolute;
+  z-index: 10;
+  margin-top: -80px;
 }

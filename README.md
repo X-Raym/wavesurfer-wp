@@ -9,8 +9,6 @@
 
 **Tested up to:** 4.3.1
 
-**Stable tag:** trunk
-
 **License:** GPL2
 
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
@@ -80,19 +78,21 @@ Be the first to ask!
 ## Screenshots ##
 ###1. Front-End Settings Page
 ###
-![Front-End Settings Page
-](https://ps.w.org/wavesurfer-wp/assets/screenshot-1.png)
+![Front-End Settings Page](https://ps.w.org/wavesurfer-wp/assets/screenshot-1.png)
 
 ###2. Back-End Settings Page
 ###
-![Back-End Settings Page
-](https://ps.w.org/wavesurfer-wp/assets/screenshot-2.png)
+![Back-End Settings Page](https://ps.w.org/wavesurfer-wp/assets/screenshot-2.png)
 
 
 ## Changelog ##
+###  2.1.0 (2016-01-03) ###
++ Playlist shortcode support
++ Responsive waveform
++ Deleted Lang Packs (now hosted by WordPress.org)
+
 ### 2.0.0 (2015-12-29) ###
 # New WebAudio rendering for better performance
-+ Play while loading
 # wavesurfer.js 1.0.48
 
 ### 1.1.0 (2015-11-30) ###
@@ -105,7 +105,3 @@ Be the first to ask!
 
 ### 1.0.0 (2015-11-24) ###
 First release.
-
-## Upgrade Notice ##
-### 1.0.0 ###
-Initial release.
