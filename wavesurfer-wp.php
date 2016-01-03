@@ -2,7 +2,7 @@
 
 /**
  * @package Wavesurfer
- * @version 2.0.0
+ * @version 2.1.1
  */
 
 /**
@@ -10,7 +10,7 @@
  * Plugin URI: http://www.extremraym.com/
  * Description: HTML5 Audio controler with waveform preview (mixed or split channels), using WordPress native audio shortcode.
  * Author: X-Raym
- * Version: 2.1.0
+ * Version: 2.1.1
  * Author URI: http://www.extremraym.com/
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
@@ -376,6 +376,7 @@ class WaveSurfer {
 		if ( isset( $attr['mp3'] ) ) { $link = $attr['mp3']; }
 		if ( isset( $attr['m4a'] ) ) { $link = $attr['m4a']; }
 		if ( isset( $attr['ogg'] ) ) { $link = $attr['ogg']; }
+		if ( isset( $attr['src'] ) ) { $link = $attr['src']; }
 
 		// Begin render
 		$html .= '<div class="wavesurfer-block wavesurfer-audio">';

@@ -78,6 +78,9 @@ Be the first to ask!
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.1.1 (2016-01-03) =
+* Src attribute in audio shortcode is now valid
+
 = 2.1.0 (2016-01-03) =
 * Playlist shortcode support
 * Responsive waveform
@@ -99,6 +102,9 @@ Be the first to ask!
 * First release.
 
 == Upgrade Notice ==
+= 2.1.1 =
+Src attribute in audio shortcode is now valid
+
 = 2.1.0 =
 Playlist shortcode support
 
