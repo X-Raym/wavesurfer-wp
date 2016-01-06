@@ -70,7 +70,23 @@ To upload the plugin through WordPress, instead of FTP:
 1. Upload the downloaded zip file on the Add New* plugins screen (see the *Upload* tab) in your WordPress admin area and activate.
 
 == Frequently Asked Questions ==
-Be the first to ask!
+= The buttons appear but not the Waveform =
+There shortcode is interpreted but there is problem for loading the file.
+
+I/ The most common error is that the file is hosted on a CDN that isn't set to allow the kind of requests made by WaveSurfer-js.
+
+So, you have three solutions :
+
+*   Deactivate WaveSurfer for this particular instance using player="default" in the shortcode
+*   Go to your CDN settings panel and allow Access-Control-Allow-Origin for XMLHttpRequest
+*   Host your file on your main server
+
+II/ This problem may also occurs if your file is not supported by your browser.
+Convert the file to a more web-friendly format and try again.
+
+III/ Also, check that your file is accessible via http (aka, check if the link is valid).
+
+Please report other problems on the support forum.
 
 == Screenshots ==
 1. Front-End Settings Page
@@ -78,6 +94,10 @@ Be the first to ask!
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.1.2 (2016-01-05) =
+* AJAX pages loading compatible
+* Few HTML optimizations
+
 = 2.1.1 (2016-01-03) =
 * Src attribute in audio shortcode is now valid
 
@@ -102,6 +122,9 @@ Be the first to ask!
 * First release.
 
 == Upgrade Notice ==
+= 2.1.2 =
+AJAX pages loading compatible
+
 = 2.1.1 =
 Src attribute in audio shortcode is now valid
 
@@ -113,3 +136,10 @@ New WebAudio rendering for better performance
 
 = 1.0.0 =
 Initial release.
+
+== Additional Info ==
+Thanks to our generous donators for supporting this plugin development !
+
+1. [SignalToNoize.com](http://signaltonoize.com/)
+
+Do you want to contribute ? See you on the [donation page](http://www.extremraym.com/en/donation/). Thanks !

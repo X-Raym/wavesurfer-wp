@@ -2,8 +2,8 @@
  * WaveSurfer-WP Front-End Script
  * Author: X-Raym
  * Author URl: http://www.extremraym.com
- * Date: 2015-01-01
- * Version: 2.1
+ * Date: 2015-01-05
+ * Version: 2.1.2
  */
 
 // TO DO
@@ -16,23 +16,33 @@
 // Extract infos from ID3v2 ?
 // Regions plugins + WebTT Integration ?
 
-// No conflcit for WordPress
-$j = jQuery.noConflict();
+// No conflict for WordPress
+var $j = jQuery.noConflict();
 
-// Init table for storing wavesurfer objects
-var wavesurfer = [];
+// On Document Ready and Ajax Complete
+$j(document).on("ready ajaxComplete", function() {
+    if ( $j( "#wavesurfer-player-0" ).find('canvas').length == 0) {
+	    WaveSurferInit();
+    }
+});
 
-// On window load
-window.onload = function() {
 
-  // Loop in each wavesurfer block
-  $j('.wavesurfer-block').each(function(i) {
+/* FUNCTIONS */
+
+// WaveSurfer Init
+function WaveSurferInit() {
+
+	// Init table for storing wavesurfer objects
+	var wavesurfer = [];
+
+	// Loop in each wavesurfer block
+	$j('.wavesurfer-block').each(function(i) {
 
     // Text selector for the player
     var selector = '#wavesurfer-player-' + i;
 
     // Get WaveSurfer block for datas attribute
-    var container = $j(this).children(container);
+    var container = $j(this).children('.wavesurfer-player');
 
     // Add unique ID to WaveSurfer Block
     container.attr("id", "wavesurfer-player-" + i);
@@ -142,7 +152,7 @@ window.onload = function() {
         // Remove active class from the other buttons
         $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-paused-button');
         $j(this).parent().children('button.wavesurfer-stop').removeClass('wavesurfer-active-button');
-      };
+      }
 
     });
     buttonStop.click(function() {
@@ -164,7 +174,7 @@ window.onload = function() {
         $j(this).removeClass('wavesurfer-active-button');
       } else {
         $j(this).addClass('wavesurfer-active-button');
-      };
+      }
 
     });
 
@@ -188,7 +198,7 @@ window.onload = function() {
       if (buttonLoop.hasClass('wavesurfer-active-button') == false) {
         buttonPlay.removeClass('wavesurfer-active-button');
         buttonStop.addClass('wavesurfer-active-button');
-      };
+      }
     });
 
     // Button Loop
@@ -204,7 +214,7 @@ window.onload = function() {
         wavesurfer[i].on('finish', function() {
           wavesurfer[i].play();
         });
-      };
+      }
     });
 
     // Check if playlist
@@ -246,7 +256,7 @@ window.onload = function() {
           buttonPlay.parent().children('button.wavesurfer-stop').removeClass('wavesurfer-active-button');
 
           buttonDownload.parent().parent('.wavesurfer-block').children('.wavesurfer-player').attr('data-url', url);
-        }; // ENDIF active track
+        } // ENDIF active track
       });
 
       wavesurfer[i].on('finish', function() {
@@ -279,12 +289,14 @@ window.onload = function() {
             wavesurfer[i].play();
 
           });
-        };
+        }
       });
-    };
+    }
   });
 
-};
+}
+
+
 // Convert seconds into MS
 function secondsTimeSpanToMS(s) {
   var m = Math.floor(s / 60); //Get remaining minutes
