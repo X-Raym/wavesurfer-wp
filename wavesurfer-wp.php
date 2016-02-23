@@ -2,7 +2,7 @@
 
 /**
  * @package Wavesurfer
- * @version 2.1.2
+ * @version 2.1.3
  */
 
 /**
@@ -10,11 +10,11 @@
  * Plugin URI: http://www.extremraym.com/
  * Description: HTML5 Audio controler with waveform preview (mixed or split channels), using WordPress native audio shortcode.
  * Author: X-Raym
- * Version: 2.1.2
+ * Version: 2.1.3
  * Author URI: http://www.extremraym.com/
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2016-01-05
+ * Date: 2016-02-23
  * Text Domain: wavesurfer
  */
 
@@ -107,7 +107,6 @@ class WaveSurfer {
 			add_action( 'wp_enqueue_scripts',  array( $this, 'wavesurfer_register_ressources' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'wavesurfer_load_front_ressources' ) );
 
-
 	} /* includes() */
 
 
@@ -118,12 +117,12 @@ class WaveSurfer {
 
 		if ( !is_admin() ) {
 
-			wp_register_script( 'wavesurfer', plugin_dir_url( __FILE__ ) . '/js/wavesurfer.min.js', array( 'jquery' ), '1.8.0', true );
-			wp_register_script('wavesurfer_scripts', plugin_dir_url( __FILE__ ) . '/js/wavesurfer-wp.js', array( 'jquery' ), '1.8.0', true );
-			wp_register_script('download-js', plugin_dir_url( __FILE__ ) . '/js/download.min.js', array( 'jquery' ), '1.8.0', true );
+			wp_register_script( 'wavesurfer', plugin_dir_url( __FILE__ ) . 'js/wavesurfer.min.js', array( 'jquery' ), '1.8.0', true );
+			wp_register_script('wavesurfer_scripts', plugin_dir_url( __FILE__ ) . 'js/wavesurfer-wp.js', array( 'jquery' ), '1.8.0', true );
+			wp_register_script('download-js', plugin_dir_url( __FILE__ ) . 'js/download.min.js', array( 'jquery' ), '1.8.0', true );
 
-			wp_register_style( 'wavesurfer_default', plugin_dir_url( __FILE__ ) . '/css/wavesurfer-wp_default.css' );
-			wp_register_style( 'wavesurfer_flat-icons', plugin_dir_url( __FILE__ ) . '/css/wavesurfer-wp_flat-icons.css' );
+			wp_register_style( 'wavesurfer_default', plugin_dir_url( __FILE__ ) . 'css/wavesurfer-wp_default.css' );
+			wp_register_style( 'wavesurfer_flat-icons', plugin_dir_url( __FILE__ ) . 'css/wavesurfer-wp_flat-icons.css' );
 		}
 	}
 

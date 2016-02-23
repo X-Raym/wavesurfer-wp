@@ -94,6 +94,9 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.1.3 (2016-02-23) =
+* Fix double slash in URL (thanks to Glen Rowell)
+
 = 2.1.2 (2016-01-05) =
 * AJAX pages loading compatible
 * Few HTML optimizations
