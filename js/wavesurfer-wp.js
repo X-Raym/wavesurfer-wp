@@ -2,8 +2,8 @@
  * WaveSurfer-WP Front-End Script
  * Author: X-Raym
  * Author URl: http://www.extremraym.com
- * Date: 2015-01-05
- * Version: 2.1.2
+ * Date: 2016-03-15
+ * Version: 2.2
  */
 
 // TO DO
@@ -48,12 +48,15 @@ function WaveSurferInit() {
     container.attr("id", "wavesurfer-player-" + i);
 
     // Get data attribute
-    var wave_color = container.attr('data-wave-color');
-    var progress_color = container.attr('data-progress-color');
-    var cursor_color = container.attr('data-cursor-color');
-    var file_url = container.attr('data-url');
-    var split = container.attr('data-split-channels');
-    if (split == "true") {
+    var wave_color = container.data('wave-color');
+    var progress_color = container.data('progress-color');
+    var cursor_color = container.data('cursor-color');
+    var file_url = container.data('url');
+    var split = container.data('split-channels');
+		var height = container.data('height');
+
+		// Split channels
+		if (split == "true") {
       split = true;
     } else {
       split = false;
@@ -65,7 +68,9 @@ function WaveSurferInit() {
       splitChannels: split,
       waveColor: wave_color,
       progressColor: progress_color,
-      cursorColor: cursor_color
+      cursorColor: cursor_color,
+			height: height,
+			backend: 'MediaElement'
     };
 
     // Create WaveSurfer object
@@ -80,10 +85,8 @@ function WaveSurferInit() {
       wavesurfer[i].drawBuffer();
     });
 
-  });
 
-  // Buttons
-  $j('.wavesurfer-block').each(function(i) {
+		// Buttons
 
     // Timecode blocks
     var timeblock = $j(this).find('.wavesurfer-time');
@@ -99,7 +102,7 @@ function WaveSurferInit() {
     var progressBar = $j(this).find('progress');
 
     wavesurfer[i].on('loading', function(percent) {
-      progressBar.attr('value', percent);
+			progressBar.attr('value', percent);
     });
     wavesurfer[i].on('error', function() {
       progressBar.hide();
@@ -133,18 +136,20 @@ function WaveSurferInit() {
     buttonPlay.click(function() {
       wavesurfer[i].playPause();
 
-      // IF IS PLAYING
+      // IF IS NOT PLAYING
       if ($j(this).hasClass('wavesurfer-active-button')) {
         $j(this).removeClass('wavesurfer-active-button');
 
         $j(this).addClass('wavesurfer-paused-button');
 
+				$j(this).children('span').text('Play');
+
         $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-active-button');
         $j(this).parent().children('button.wavesurfer-stop').removeClass('wavesurfer-active-button');
 
-        // IF NOT PLAYING
+      // IF PLAYING
       } else {
-        $j(this).addClass('wavesurfer-active-button');
+				$j(this).children('span').text('Pause');
 
         // Add an active class
         $j(this).addClass('wavesurfer-active-button');
@@ -172,8 +177,10 @@ function WaveSurferInit() {
       // IF ACTIVE
       if ($j(this).hasClass('wavesurfer-active-button')) {
         $j(this).removeClass('wavesurfer-active-button');
+				$j(this).children('span').text('Mute');
       } else {
         $j(this).addClass('wavesurfer-active-button');
+				$j(this).children('span').text('Unmute');
       }
 
     });
@@ -182,7 +189,7 @@ function WaveSurferInit() {
     buttonDownload.click(function() {
       var audio = $j(this).parent().parent('.wavesurfer-block').children('.wavesurfer-player');
 
-      var download_url = audio.attr('data-url');
+      var download_url = audio.data('url');
       // Get FileName from URL
       var index = download_url.lastIndexOf("/") + 1;
       var file_name = download_url.substr(index);
@@ -206,15 +213,17 @@ function WaveSurferInit() {
       // IF LOOP
       if ($j(this).hasClass('wavesurfer-active-button')) {
         $j(this).removeClass('wavesurfer-active-button');
+				$j(this).children('span').text('Loop');
         wavesurfer[i].on('finish', function() {
           wavesurfer[i].pause();
         });
       } else {
         $j(this).addClass('wavesurfer-active-button');
+				$j(this).children('span').text('Unloop');
         wavesurfer[i].on('finish', function() {
           wavesurfer[i].play();
         });
-      }
+      };
     });
 
     // Check if playlist
@@ -231,11 +240,11 @@ function WaveSurferInit() {
           tracks.each(function() {
             $j(this).removeClass('wavesurfer-active-track');
           });
-          var url = $j(this).attr('data-url');
+          var url = $j(this).data('url');
           current = $j(this).index();
           wavesurfer[i].load(url);
           progressBar.attr('value', '0');
-          progressBar.show();
+          // progressBar.show(); -- hidden since 2.2 for BackEnd element
 
           // Remove active tracks from all tracks
           wavesurfer[i].on('loading', function(percent) {
@@ -255,7 +264,7 @@ function WaveSurferInit() {
           buttonPlay.parent().children('button.wavesurfer-play').removeClass('wavesurfer-paused-button');
           buttonPlay.parent().children('button.wavesurfer-stop').removeClass('wavesurfer-active-button');
 
-          buttonDownload.parent().parent('.wavesurfer-block').children('.wavesurfer-player').attr('data-url', url);
+          buttonDownload.parent().parent('.wavesurfer-block').children('.wavesurfer-player').data('url', url);
         } // ENDIF active track
       });
 
@@ -265,12 +274,12 @@ function WaveSurferInit() {
 
         // Get track URL
         var url = '';
-        url = tracks.eq(current).attr('data-url');
+        url = tracks.eq(current).data('url');
         // If there no other tracks after
         if (url != undefined) {
           wavesurfer[i].load(url);
           progressBar.attr('value', '0');
-          progressBar.show();
+          // progressBar.show(); -- hidden since 2.2 for BackEnd element
 
           // Remove active tracks from all tracks
           wavesurfer[i].on('loading', function(percent) {
@@ -280,21 +289,24 @@ function WaveSurferInit() {
           tracks.eq(current - 1).removeClass('wavesurfer-active-track');
           tracks.eq(current).addClass('wavesurfer-active-track');
 
-          buttonDownload.parent().parent('.wavesurfer-block').children('.wavesurfer-player').attr('data-url', url);
+          buttonDownload.parent().parent('.wavesurfer-block').children('.wavesurfer-player').data('url', url);
           // Check if continuous PLay is on.
           // TO DO
 
           // When it is loaded, play.
           wavesurfer[i].on('ready', function() {
             wavesurfer[i].play();
-
           });
-        }
-      });
-    }
-  });
 
-}
+				} // End if url not undefined
+
+			}); // End of wavesurfer.on('finish')
+
+		} // End if playlist
+
+	}); // End loop in each wavesurfer-block
+
+} // End function WaveSurferInit
 
 
 // Convert seconds into MS

@@ -10,11 +10,11 @@
  * Plugin URI: http://www.extremraym.com/
  * Description: HTML5 Audio controler with waveform preview (mixed or split channels), using WordPress native audio shortcode.
  * Author: X-Raym
- * Version: 2.1.3
+ * Version: 2.2
  * Author URI: http://www.extremraym.com/
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2016-02-23
+ * Date: 2016-03-15
  * Text Domain: wavesurfer
  */
 
@@ -71,7 +71,8 @@ class WaveSurfer {
 				'wave_color'	 		=> '#EE82EE',
 				'progress_color'	=> '#800080',
 				'cursor_color'		=> '#333333',
-				'front_theme'			=> 'wavesurfer_default'
+				'front_theme'			=> 'wavesurfer_default',
+				'height'					=> '128'
 			);
 		update_option( 'wavesurfer_settings', $arg, '', 'yes' );
 		}
@@ -233,7 +234,7 @@ class WaveSurfer {
 					'colors_section'
 			);
 
-			// Progress Color
+			// Cursor Color
 			add_settings_field( // 1
 					'cursor_color',
 					__( 'Cursor Color', 'wavesurfer' ),
@@ -242,11 +243,20 @@ class WaveSurfer {
 					'colors_section'
 			);
 
-			// Progress Color
+			// Theme
 			add_settings_field( // 1
 					'front_theme',
 					__( 'Front Theme', 'wavesurfer' ),
 					array( $this, 'render_theme_field' ),
+					'wavesurfer',
+					'colors_section'
+			);
+
+			// Height
+			add_settings_field( // 1
+					'height',
+					__( 'Height', 'wavesurfer' ),
+					array( $this, 'render_height_field' ),
 					'wavesurfer',
 					'colors_section'
 			);
@@ -298,7 +308,7 @@ class WaveSurfer {
 
 	}
 
-	public function render_theme_field(	) { // 2
+	public function render_theme_field(	) { // 3
 
 		$options = get_option( 'wavesurfer_settings' );
 		//$val = ( isset( $options['front_theme'] ) ) ? $options['front_theme'] : '';
@@ -311,6 +321,16 @@ class WaveSurfer {
 		</select>
 		<p><?php _e( 'Style of the buttons. Default theme requires Font-Awesome 1.0.', 'wavesurfer' ) ?></p>
 		<?php
+
+	}
+
+	public function render_height_field(	) { // 4
+
+			$options = get_option( 'wavesurfer_settings' );
+			$val = ( isset( $options['height'] ) ) ? $options['height'] : '128';
+
+			echo '<input type="number" name="wavesurfer_settings[height]" min="0" max="2048" value="' . $val .'" class="height" >';
+			echo '<p>' . __( 'This setting can be locally overridden with the <code>height="128"</code> [audio] shortcode attribute', 'wavesurfer' ) .'.</p>';
 
 	}
 
@@ -414,6 +434,14 @@ class WaveSurfer {
 		}
 		$html .= 'data-progress-color="' . $progress_color . '" ';
 
+		// Height
+		if ( isset( $attr['height'] ) ) {
+			$height = esc_attr( $attr['height'] );
+		} else {
+			$height = ( isset( $options['height'] ) ) ? $options['height'] : '128'; // Get color value from Settings
+		}
+		$html .= 'data-height="' . $height . '" ';
+
 		// File URL
 		$html .= 'data-url="' . $link . '"';
 		$html .= '></div>';
@@ -423,7 +451,7 @@ class WaveSurfer {
 
 		// Buttons
 		$html .= '<div class="wavesurfer-buttons_set">';
-		$html .= '<button type="button" class="wavesurfer-play"><span>' . __('Play/Pause', 'wavesurfer') . '</span></button>';
+		$html .= '<button type="button" class="wavesurfer-play"><span>' . __('Play', 'wavesurfer') . '</span></button>';
 		$html .= '<button type="button" class="wavesurfer-stop"><span>' . __('Stop', 'wavesurfer') . '</span></button>';
 
 		// Mute button
@@ -441,7 +469,7 @@ class WaveSurfer {
 		// Download button
 		if ( isset( $attr['download_button'] ) ) {
 			if( $attr['download_button'] == true )
-			$html .= '<button type="button" class="wavesurfer-download"><a href="" download=""><span>' . __('Download', 'wavesurfer') . '</span></a></button>';
+			$html .= '<button type="button" class="wavesurfer-download"><span>' . __('Download', 'wavesurfer') . '</span></button>';
 		}
 
 		// Time buttons
@@ -523,6 +551,14 @@ class WaveSurfer {
 		}
 		$html .= 'data-progress-color="' . $progress_color . '" ';
 
+		// Height
+		if ( isset( $attr['height'] ) ) {
+			$height = esc_attr( $attr['height'] );
+		} else {
+			$height = ( isset( $options['height'] ) ) ? $options['height'] : '128'; // Get color value from Settings
+		}
+		$html .= 'data-height="' . $height . '" ';
+
 		// File URL
 		$html .= 'data-url="' . $link . '"';
 		$html .= '></div>';
@@ -532,7 +568,7 @@ class WaveSurfer {
 
 		// Buttons
 		$html .= '<div class="wavesurfer-buttons_set">';
-		$html .= '<button type="button" class="wavesurfer-play"><span>' . __('Play/Pause', 'wavesurfer') . '</span></button>';
+		$html .= '<button type="button" class="wavesurfer-play"><span>' . __('Play', 'wavesurfer') . '</span></button>';
 		$html .= '<button type="button" class="wavesurfer-stop"><span>' . __('Stop', 'wavesurfer') . '</span></button>';
 
 		// Mute button
@@ -550,7 +586,7 @@ class WaveSurfer {
 		// Download button
 		if ( isset( $attr['download_button'] ) ) {
 			if( $attr['download_button'] == true )
-			$html .= '<button type="button" class="wavesurfer-download"><a href="" download=""><span>' . __('Download', 'wavesurfer') . '</span></a></button>';
+			$html .= '<button type="button" class="wavesurfer-download"><span>' . __('Download', 'wavesurfer') . '</span></button>';
 		}
 
 		// Time buttons

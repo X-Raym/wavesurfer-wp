@@ -2,13 +2,21 @@
  * WaveSurfer-WP Flat Icons Theme
  * Author: X-Raym
  * Author URl: http://www.extremraym.com
- * Date: 2016-01-03
- * Version: 2.1
+ * Date: 2016-03-15
+ * Version: 2.2
  */
 
 .wavesurfer-block {
   box-sizing: border-box;
 	margin-bottom: 2em;
+}
+
+.wavesurfer-player wave {
+  z-index: 0;
+}
+
+.wavesurfer-player canvas {
+  max-width: none;
 }
 
 .wavesurfer-buttons_set {
@@ -182,6 +190,7 @@ button.wavesurfer-mute.wavesurfer-active-button:before {
 
 .wavesurfer-progress {
   position:relative;
+	display: none; /* since 2.2 */
 }
 
 .wavesurfer-loading[value] {

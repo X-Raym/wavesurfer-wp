@@ -11,7 +11,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Customizable HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio and playlist shortcode.
 
 == Description ==
-This plugin replaces the default WordPress audio player with a player capable of displaying audio waveforms. It can display a mix of the different audio channels (for podcast, radio, e-learning, music), or all channels simultaneously (for sound tutorial, sounds-packs showcases, products demo etc...), which is is main purpose.
+This plugin replaces the default WordPress audio player with a player capable of displaying audio waveforms. It can display a mix of the different audio channels (for podcast, radio, e-learning, music), or all channels simultaneously (for sound tutorial, sounds-packs showcases, products demo etc...), which is its main purpose.
 
 By working with the default audio/playlist shortcode, you have two great advantages:
 
@@ -26,20 +26,19 @@ Global colors and style settings can be overridden by dedicated shortcode attrib
 *   `wave_color="#FF0000"`
 *   `cursor_color="#FF0000"`
 *   `download_button="true"`
+*   `height="128"`
+
+Also, there is two attributes accessible at shortcode level:
+
 *   `mute_button="true"`
 *   `loop_button="true"`
 
 The default style requires [Font-Awesome 1.0](https://fortawesome.github.io/). Because this icon-font is already used in a lot of themes and plugins, it is not included in this pack. However, if your themes and plugins doesn't have it, you can use the [Enqueue Font Awesome CDN](https://wordpress.org/plugins/font-awesome-4-menus/) WordPress plugin, or any other plugin that loads on every page.
 
-You can deactivate the default WaveSurder-WP theme, and use your own theme style. I strongly encourage you to do that as custom CSS is the only way to make it fir your theme perfectly. There is a lot of dedicated CSS selectors for that. You can take one of the included theme as reference.
+You can deactivate the default WaveSurder-WP theme, and use your own theme style. I strongly encourage you to do that as custom CSS is the only way to make it fit your theme perfectly. There is a lot of dedicated CSS selectors for that. You can take one of the included theme as reference.
 This will allow you to have more control on icons, responsivity, mouse hover behavior etc...
 
 [More Infos & Demo](http://www.extremraym.com/en/wavesurfer-wp)
-
-It is a port for WordPress of WaveSurfer by katspaugh.
-[wavesurfer.js](http://wavesurfer-js.org/)
-
-It also contains [Download-js](http://danml.com/download.html) by dandavis.
 
 You can contribute by to WaveSurfer-WP development on github:
 [WaveSurfer-WP on GitHub](https://github.com/x-raym/wavesurfer-wp)
@@ -94,6 +93,16 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.2 (2016-03-15) =
+* Backend: back MediaElement instead of WebAudio, which make it possible to play while file is loading. No progressbar while loading needed anymore, and maybe less restrictions with CDN.
+* height shortcode and setting
+* Play/Pause button is now only Play or Pause according to its state. Same for Mute button and Loop buttons, with Unmute and Unloop, for better accessibility.
+* Prevent z-index error in style
+* Prevent max-width canvas error
+* Script init optimization
+* WaveSurfer-js 1.0.58 from 2016-02-28
+
+
 = 2.1.3 (2016-02-23) =
 * Fix double slash in URL (thanks to Glen Rowell)
 
@@ -125,6 +134,9 @@ Please report other problems on the support forum.
 * First release.
 
 == Upgrade Notice ==
+= 2.2 =
+Fixes, enhancements, possibility to play while file is loading, and Height attribute
+
 = 2.1.2 =
 AJAX pages loading compatible
 
@@ -140,9 +152,15 @@ New WebAudio rendering for better performance
 = 1.0.0 =
 Initial release.
 
-== Additional Info ==
+== Additional Infos ==
+It is a port for WordPress of [WaveSurfer-js](http://wavesurfer-js.org/) by katspaugh.
+
+It also contains [Download-js](http://danml.com/download.html) by dandavis.
+
+== Donators ==
 Thanks to our generous donators for supporting this plugin development !
 
 1. [SignalToNoize.com](http://signaltonoize.com/)
+2. [hawthonn](http://theopod.com)
 
-Do you want to contribute ? See you on the [donation page](http://www.extremraym.com/en/donation/). Thanks !
+Do you want to contribute or sponsor one particular feature ? See you on the [donation page](http://www.extremraym.com/en/donation/). Thanks !
