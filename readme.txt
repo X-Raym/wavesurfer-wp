@@ -94,7 +94,7 @@ Please report other problems on the support forum.
 
 == Changelog ==
 = 2.2 (2016-03-15) =
-* Backend: back MediaElement instead of WebAudio, which make it possible to play while file is loading. No progressbar while loading needed anymore, and maybe less restrictions with CDN.
+* Backend: to back MediaElement instead of WebAudio, which make it possible to play while file is loading. No progress bar while loading needed anymore, and maybe less restrictions with CDN.
 * height shortcode and setting
 * Play/Pause button is now only Play or Pause according to its state. Same for Mute button and Loop buttons, with Unmute and Unloop, for better accessibility.
 * Prevent z-index error in style
