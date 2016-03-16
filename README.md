@@ -13,8 +13,8 @@
 
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
 
-
-HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio shortcode.
+## Concept ##
+Customizable HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio and playlist shortcode.
 
 ## Description ##
 This plugin replaces the default WordPress audio player with a player capable of displaying audio waveforms. It can display a mix of the different audio channels (for podcast, radio, e-learning, music), or all channels simultaneously (for sound tutorial, sounds-packs showcases, products demo etc...), which is its main purpose.
@@ -26,7 +26,7 @@ By working with the default audio shortcode, you have two great advantages:
 *   It supports every audio format supported by WordPress (wav, ogg, mp3, m4a).
 *   Safe deactivation: if you deactivate the plugin, your shortcode will fallback to the WordPress default audio player.
 
-[More Infos & Demo](http://www.extremraym.com/en/wavesurfer-wp)
+More Infos & Demos on [WordPress Repo](https://wordpress.org/plugins/wavesurfer-wp/)
 
 ## Additional Infos ##
 It is a port for WordPress of [WaveSurfer-js](http://wavesurfer-js.org/) by katspaugh.
