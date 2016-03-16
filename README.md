@@ -26,19 +26,6 @@ By working with the default audio shortcode, you have two great advantages:
 *   It supports every audio format supported by WordPress (wav, ogg, mp3, m4a).
 *   Safe deactivation: if you deactivate the plugin, your shortcode will fallback to the WordPress default audio player.
 
-Global colors and style settings can be overridden by dedicated shortcode attributes.
-
-*   `progress_color="purple"`
-*   `wave_color="#FF0000"`
-*   `cursor_color="#FF0000"`
-*   `download_button="true"`
-*   `height="128"`
-
-Also, there is two attributes accessible at shortcode level:
-
-*   `mute_button="true"`
-*   `loop_button="true"`
-
 [More Infos & Demo](http://www.extremraym.com/en/wavesurfer-wp)
 
 ## Additional Infos ##
