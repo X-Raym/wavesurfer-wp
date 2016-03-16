@@ -25,13 +25,13 @@ Global colors and style settings can be overridden by dedicated shortcode attrib
 *   `progress_color="purple"`
 *   `wave_color="#FF0000"`
 *   `cursor_color="#FF0000"`
-*   `download_button="true"`
 *   `height="128"`
 
-Also, there is two attributes accessible at shortcode level:
+Also, there is some attributes accessible at shortcode level:
 
 *   `mute_button="true"`
 *   `loop_button="true"`
+*   `download_button="true"`
 
 The default style requires [Font-Awesome 1.0](https://fortawesome.github.io/). Because this icon-font is already used in a lot of themes and plugins, it is not included in this pack. However, if your themes and plugins doesn't have it, you can use the [Enqueue Font Awesome CDN](https://wordpress.org/plugins/font-awesome-4-menus/) WordPress plugin, or any other plugin that loads on every page.
 
