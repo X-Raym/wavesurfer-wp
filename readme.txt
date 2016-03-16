@@ -13,14 +13,14 @@ Customizable HTML5 Audio controller with waveform preview (mixed or split channe
 == Description ==
 This plugin replaces the default WordPress audio player with a player capable of displaying audio waveforms. It can display a mix of the different audio channels (for podcast, radio, e-learning, music), or all channels simultaneously (for sound tutorial, sounds-packs showcases, products demo etc...), which is its main purpose.
 
-By working with the default audio/playlist shortcode, you have two great advantages:
+By working with the default audio/playlist shortcode, you have great advantages:
 
 *   It works with all your previous posts
 *   You still have the default player in the Visual Editor (not just shortcode)
 *   It supports every audio format supported by WordPress (wav, ogg, mp3, m4a).
 *   Safe deactivation: if you deactivate the plugin, your shortcode will fallback to the WordPress default audio player.
 
-Global colors and style settings can be overridden by dedicated shortcode attributes.
+Global colors and style settings can be overridden locally by dedicated shortcode attributes.
 
 *   `progress_color="purple"`
 *   `wave_color="#FF0000"`
@@ -38,13 +38,13 @@ The default style requires [Font-Awesome 1.0](https://fortawesome.github.io/). B
 You can deactivate the default WaveSurder-WP theme, and use your own theme style. I strongly encourage you to do that as custom CSS is the only way to make it fit your theme perfectly. There is a lot of dedicated CSS selectors for that. You can take one of the included theme as reference.
 This will allow you to have more control on icons, responsivity, mouse hover behavior etc...
 
-[More Infos & Demo](http://www.extremraym.com/en/wavesurfer-wp)
+[More Infos & Demos](http://www.extremraym.com/en/wavesurfer-wp)
 
-You can contribute by to WaveSurfer-WP development on github:
-[WaveSurfer-WP on GitHub](https://github.com/x-raym/wavesurfer-wp)
+You can contribute by to WaveSurfer-WP development on [GitHub](https://github.com/x-raym/wavesurfer-wp)
+
 Themes and Translations are welcome !
 
-Optimization trick: if you only use this plugin on a couple of pages, I invite you to use a plugin like [Plugin Organizer](https://wordpress.org/plugins/plugin-organizer/) to globally deactivate the plugin, and make it load resources only on pages which need it.
+Optimization trick: if you only use this plugin on a couple of pages, I invite you to use a plugin like [Plugin Organizer](https://wordpress.org/plugins/plugin-organizer/) or [Gonzales](http://tomasz-dobrzynski.com/wordpress-gonzales) to globally deactivate the plugin or its style, and make it load resources only on pages which need it.
 No need for that on the back-end, only for front-end.
 
 This player doesn't have and will not have Like Button, Sharing Button, Play count and Download count.
@@ -70,11 +70,11 @@ To upload the plugin through WordPress, instead of FTP:
 
 == Frequently Asked Questions ==
 = The buttons appear but not the Waveform =
-There shortcode is interpreted but there is problem for loading the file.
+Shortcode are interpreted but there is problem for loading the file.
 
 I/ The most common error is that the file is hosted on a CDN that isn't set to allow the kind of requests made by WaveSurfer-js.
 
-So, you have three solutions :
+So, you choose one of these solutions :
 
 *   Deactivate WaveSurfer for this particular instance using player="default" in the shortcode
 *   Go to your CDN settings panel and allow Access-Control-Allow-Origin for XMLHttpRequest
