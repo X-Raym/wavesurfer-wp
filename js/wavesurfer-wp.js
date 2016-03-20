@@ -2,41 +2,30 @@
  * WaveSurfer-WP Front-End Script
  * Author: X-Raym
  * Author URl: http://www.extremraym.com
- * Date: 2016-03-15
- * Version: 2.2
+ * Date: 2016-03-20
+ * Version: 2.3
  */
-
-// TO DO
-// PLAYLIST : Repeat playlist button ?
-// PLAYLIST : Navigation buttons ? First, Next, Previous
-// PLAYLIST : Download button on every track ?
-// PLAYLIST : Shuffle Button ?
-// Overide Download Link ?
-// Permanent Play Bar ?
-// Extract infos from ID3v2 ?
-// Regions plugins + WebTT Integration ?
 
 // No conflict for WordPress
 var $j = jQuery.noConflict();
 
 // On Document Ready and Ajax Complete
 $j(document).on("ready ajaxComplete", function() {
-    if ( $j( "#wavesurfer-player-0" ).find('canvas').length == 0) {
-	    WaveSurferInit();
-    }
+  if ($j("#wavesurfer-player-0").find('canvas').length == 0) {
+    WaveSurferInit();
+  }
 });
-
 
 /* FUNCTIONS */
 
 // WaveSurfer Init
 function WaveSurferInit() {
 
-	// Init table for storing wavesurfer objects
-	var wavesurfer = [];
+  // Init table for storing wavesurfer objects
+  var wavesurfer = [];
 
-	// Loop in each wavesurfer block
-	$j('.wavesurfer-block').each(function(i) {
+  // Loop in each wavesurfer block
+  $j('.wavesurfer-block').each(function(i) {
 
     // Text selector for the player
     var selector = '#wavesurfer-player-' + i;
@@ -53,14 +42,10 @@ function WaveSurferInit() {
     var cursor_color = container.data('cursor-color');
     var file_url = container.data('url');
     var split = container.data('split-channels');
-		var height = container.data('height');
-
-		// Split channels
-		if (split == "true") {
-      split = true;
-    } else {
-      split = false;
-    }
+    var height = container.data('height');
+    //var backend = container.data('backend');
+    var backend = 'MediaElement';
+    // Checking for empty strings is not needed as this value will be output from the database by the WordPress plugin.
 
     // Init and Control
     var options = {
@@ -69,8 +54,8 @@ function WaveSurferInit() {
       waveColor: wave_color,
       progressColor: progress_color,
       cursorColor: cursor_color,
-			height: height,
-			backend: 'MediaElement'
+      height: height,
+      backend: backend
     };
 
     // Create WaveSurfer object
@@ -85,8 +70,7 @@ function WaveSurferInit() {
       wavesurfer[i].drawBuffer();
     });
 
-
-		// Buttons
+    // Buttons
 
     // Timecode blocks
     var timeblock = $j(this).find('.wavesurfer-time');
@@ -102,7 +86,7 @@ function WaveSurferInit() {
     var progressBar = $j(this).find('progress');
 
     wavesurfer[i].on('loading', function(percent) {
-			progressBar.attr('value', percent);
+      progressBar.attr('value', percent);
     });
     wavesurfer[i].on('error', function() {
       progressBar.hide();
@@ -134,22 +118,20 @@ function WaveSurferInit() {
 
     // Controls Functions
     buttonPlay.click(function() {
+
       wavesurfer[i].playPause();
 
-      // IF IS NOT PLAYING
+      // IF PLAYING -> TO PAUSE
       if ($j(this).hasClass('wavesurfer-active-button')) {
-        $j(this).removeClass('wavesurfer-active-button');
 
-        $j(this).addClass('wavesurfer-paused-button');
+        SetPauseButton(this);
 
-				$j(this).children('span').text('Play');
-
-        $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-active-button');
-        $j(this).parent().children('button.wavesurfer-stop').removeClass('wavesurfer-active-button');
-
-      // IF PLAYING
       } else {
-				$j(this).children('span').text('Pause');
+        // IS NOT PLAYING -> TO PLAY
+
+        PauseOtherPlayers(wavesurfer, i);
+
+        $j(this).children('span').text('Pause');
 
         // Add an active class
         $j(this).addClass('wavesurfer-active-button');
@@ -166,6 +148,7 @@ function WaveSurferInit() {
       $j(this).addClass('wavesurfer-active-button');
       $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-active-button');
       $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-paused-button');
+			$j(this).parent().children('button.wavesurfer-play').children('span').text('Play');
       var current_time = wavesurfer[i].getCurrentTime();
       timeblock.html(secondsTimeSpanToMS(current_time));
     });
@@ -177,10 +160,10 @@ function WaveSurferInit() {
       // IF ACTIVE
       if ($j(this).hasClass('wavesurfer-active-button')) {
         $j(this).removeClass('wavesurfer-active-button');
-				$j(this).children('span').text('Mute');
+        $j(this).children('span').text('Mute');
       } else {
         $j(this).addClass('wavesurfer-active-button');
-				$j(this).children('span').text('Unmute');
+        $j(this).children('span').text('Unmute');
       }
 
     });
@@ -213,13 +196,13 @@ function WaveSurferInit() {
       // IF LOOP
       if ($j(this).hasClass('wavesurfer-active-button')) {
         $j(this).removeClass('wavesurfer-active-button');
-				$j(this).children('span').text('Loop');
+        $j(this).children('span').text('Loop');
         wavesurfer[i].on('finish', function() {
           wavesurfer[i].pause();
         });
       } else {
         $j(this).addClass('wavesurfer-active-button');
-				$j(this).children('span').text('Unloop');
+        $j(this).children('span').text('Unloop');
         wavesurfer[i].on('finish', function() {
           wavesurfer[i].play();
         });
@@ -228,6 +211,7 @@ function WaveSurferInit() {
 
     // Check if playlist
     if ($j(this).hasClass('wavesurfer-playlist')) {
+
       // The playlist links
       var tracks = $j(this).find('.wavesurfer-list-group li');
       var current = 0;
@@ -266,48 +250,51 @@ function WaveSurferInit() {
 
           buttonDownload.parent().parent('.wavesurfer-block').children('.wavesurfer-player').data('url', url);
         } // ENDIF active track
-      });
+      }); // END click track
 
       wavesurfer[i].on('finish', function() {
-        // Increment current track number
-        current++;
 
-        // Get track URL
-        var url = '';
-        url = tracks.eq(current).data('url');
-        // If there no other tracks after
-        if (url != undefined) {
-          wavesurfer[i].load(url);
-          progressBar.attr('value', '0');
-          // progressBar.show(); -- hidden since 2.2 for BackEnd element
+        if (buttonLoop.hasClass('wavesurfer-active-button')) {
+          wavesurfer[i].play();
+        } else {
+          // Increment current track number
+          current++;
 
-          // Remove active tracks from all tracks
-          wavesurfer[i].on('loading', function(percent) {
-            progressBar.attr('value', percent);
-          });
+          // Get track URL
+          var url = '';
+          url = tracks.eq(current).data('url');
+          // If there no other tracks after
+          if (url != undefined) {
+            wavesurfer[i].load(url);
+            progressBar.attr('value', '0');
+            // progressBar.show(); -- hidden since 2.2 for BackEnd element
 
-          tracks.eq(current - 1).removeClass('wavesurfer-active-track');
-          tracks.eq(current).addClass('wavesurfer-active-track');
+            // Remove active tracks from all tracks
+            wavesurfer[i].on('loading', function(percent) {
+              progressBar.attr('value', percent);
+            });
 
-          buttonDownload.parent().parent('.wavesurfer-block').children('.wavesurfer-player').data('url', url);
-          // Check if continuous PLay is on.
-          // TO DO
+            tracks.eq(current - 1).removeClass('wavesurfer-active-track');
+            tracks.eq(current).addClass('wavesurfer-active-track');
 
-          // When it is loaded, play.
-          wavesurfer[i].on('ready', function() {
-            wavesurfer[i].play();
-          });
+            buttonDownload.parent().parent('.wavesurfer-block').children('.wavesurfer-player').data('url', url);
+            // Check if continuous PLay is on.
+            // TO DO
 
-				} // End if url not undefined
+            // When it is loaded, play.
+            wavesurfer[i].on('ready', function() {
+              wavesurfer[i].play();
+            });
 
-			}); // End of wavesurfer.on('finish')
+          } // End if url not undefined
+        } // End if Loop is on
+      }); // End of wavesurfer.on('finish')
 
-		} // End if playlist
+    } // End if playlist
 
-	}); // End loop in each wavesurfer-block
+  }); // End loop in each wavesurfer-block
 
 } // End function WaveSurferInit
-
 
 // Convert seconds into MS
 function secondsTimeSpanToMS(s) {
@@ -316,3 +303,32 @@ function secondsTimeSpanToMS(s) {
   s = Math.floor(s);
   return (m < 10 ? '0' + m : m) + ":" + (s < 10 ? '0' + s : s); //zero padding on minutes and seconds
 } // End secondsTimeSpanToMS
+
+// Pause the other players if Play is pressed on a player
+function PauseOtherPlayers(wavesurfer, i) {
+  $j.each(wavesurfer, function(j) {
+    if (wavesurfer[j].isPlaying() && j != i) {
+      wavesurfer[j].playPause();
+    }
+  });
+
+  // Loop in each wavesurfer block
+  $j('.wavesurfer-block button.wavesurfer-play').each(function(i) {
+    // IF IS NOT PLAYING
+    if ($j(this).hasClass('wavesurfer-active-button')) {
+      SetPauseButton(this);
+    }
+  });
+}
+
+// Set Button to Pause
+function SetPauseButton(object) {
+  $j(object).removeClass('wavesurfer-active-button');
+
+  $j(object).addClass('wavesurfer-paused-button');
+
+  $j(object).children('span').text('Resume');
+
+  $j(object).parent().children('button.wavesurfer-play').removeClass('wavesurfer-active-button');
+  $j(object).parent().children('button.wavesurfer-stop').removeClass('wavesurfer-active-button');
+}

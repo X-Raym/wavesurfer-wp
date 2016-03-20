@@ -2,19 +2,19 @@
 
 /**
  * @package Wavesurfer
- * @version 2.1.3
+ * @version 2.3
  */
 
 /**
  * Plugin Name: WaveSurfer-WP
  * Plugin URI: http://www.extremraym.com/
- * Description: HTML5 Audio controler with waveform preview (mixed or split channels), using WordPress native audio shortcode.
+ * Description: Customizable HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio and playlist shortcode.
  * Author: X-Raym
- * Version: 2.2
+ * Version: 2.3
  * Author URI: http://www.extremraym.com/
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2016-03-15
+ * Date: 2016-03-20
  * Text Domain: wavesurfer
  */
 
@@ -132,12 +132,6 @@ class WaveSurfer {
 	 */
 	public function wavesurfer_load_front_ressources() {
 		if ( !is_admin() ) {
-			//wp_enqueue_script('jquery');
-	  	wp_enqueue_script( 'wavesurfer' );
-	   	wp_enqueue_script( 'wavesurfer_scripts' );
-			wp_enqueue_script( 'download-js' );
-
-			//wp_enqueue_style( 'dashicons' );
 
 			$options = get_option( 'wavesurfer_settings' );
 			if ( isset( $options['front_theme'] ) ) {
@@ -390,6 +384,10 @@ class WaveSurfer {
 				return $html;
 		}
 
+		// Enqueue Scripts
+		wp_enqueue_script( 'wavesurfer' );
+		wp_enqueue_script( 'wavesurfer_scripts' );
+
 		// Check audio type to determine the link
 		if ( isset( $attr['wav'] ) ) { $link = $attr['wav']; }
 		if ( isset( $attr['mp3'] ) ) { $link = $attr['mp3']; }
@@ -470,6 +468,7 @@ class WaveSurfer {
 		if ( isset( $attr['download_button'] ) ) {
 			if( $attr['download_button'] == true )
 			$html .= '<button type="button" class="wavesurfer-download"><span>' . __('Download', 'wavesurfer') . '</span></button>';
+			wp_enqueue_script( 'download-js' );
 		}
 
 		// Time buttons
@@ -501,6 +500,10 @@ class WaveSurfer {
 		if ( (! empty( $attr['player'] ) && $attr['player'] === 'default' ) || ( ! empty( $attr['type'] ) && $atts['type'] !== 'audio' ) || ( empty( $attr['ids'] ) ) ) {
 				return $html;
 		}
+
+		// Enqueue Scripts
+		wp_enqueue_script( 'wavesurfer' );
+		wp_enqueue_script( 'wavesurfer_scripts' );
 
 		// Parse IDs
 		if ( ! empty( $attr['ids'] ) ) {
@@ -587,6 +590,7 @@ class WaveSurfer {
 		if ( isset( $attr['download_button'] ) ) {
 			if( $attr['download_button'] == true )
 			$html .= '<button type="button" class="wavesurfer-download"><span>' . __('Download', 'wavesurfer') . '</span></button>';
+			wp_enqueue_script( 'download-js' );
 		}
 
 		// Time buttons

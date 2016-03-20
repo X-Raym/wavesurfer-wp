@@ -3,7 +3,7 @@ Contributors: X-Raym
 Tags: audio, player, waveform, visualization, media
 Donate link: http://www.extremraym.com/en/donation/
 Requires at least: 1.0.0
-Tested up to: 4.3.1
+Tested up to: 4.4.2
 Stable tag: trunk
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -32,6 +32,8 @@ Also, there is some attributes accessible at shortcode level:
 *   `mute_button="true"`
 *   `loop_button="true"`
 *   `download_button="true"`
+
+Extra feature : Pressing play on a player automatically set all the others on the same page to pause.
 
 The default style requires [Font-Awesome 1.0](https://fortawesome.github.io/). Because this icon-font is already used in a lot of themes and plugins, it is not included in this pack. However, if your themes and plugins doesn't have it, you can use the [Enqueue Font Awesome CDN](https://wordpress.org/plugins/font-awesome-4-menus/) WordPress plugin, or any other plugin that loads on every page.
 
@@ -74,7 +76,7 @@ Shortcode are interpreted but there is problem for loading the file.
 
 I/ The most common error is that the file is hosted on a CDN that isn't set to allow the kind of requests made by WaveSurfer-js.
 
-So, you choose one of these solutions :
+So, you can choose one of these solutions :
 
 *   Deactivate WaveSurfer for this particular instance using player="default" in the shortcode
 *   Go to your CDN settings panel and allow Access-Control-Allow-Origin for XMLHttpRequest
@@ -93,6 +95,12 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.3 (2016-03-15) =
+* Play one player pause the others
+* Scripts only loaded when shortcode is present
+* Loop button on playlist now works as expected
+* "Resume" instead of "Play" for paused players
+
 = 2.2 (2016-03-15) =
 * Backend: to back MediaElement instead of WebAudio, which make it possible to play while file is loading. No progress bar while loading needed anymore, and maybe less restrictions with CDN.
 * height shortcode and setting
@@ -134,6 +142,9 @@ Please report other problems on the support forum.
 * First release.
 
 == Upgrade Notice ==
+= 2.3 =
+Play one player pause the others, better resources loading, few other enhancements.
+
 = 2.2 =
 Fixes, enhancements, possibility to play while file is loading, and Height attribute
 
