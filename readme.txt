@@ -2,7 +2,7 @@
 Contributors: X-Raym
 Tags: audio, player, waveform, visualization, media
 Donate link: http://www.extremraym.com/en/donation/
-Requires at least: 1.0.0
+Requires at least: 4.0
 Tested up to: 4.4.2
 Stable tag: trunk
 License: GPL2
@@ -95,7 +95,10 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
-= 2.3 (2016-03-15) =
+= 2.3.1 (2016-03-23) =
+* Translation available for script
+
+= 2.3 (2016-03-20) =
 * Play one player pause the others
 * Scripts only loaded when shortcode is present
 * Loop button on playlist now works as expected

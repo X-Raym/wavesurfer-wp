@@ -2,7 +2,7 @@
 
 /**
  * @package Wavesurfer
- * @version 2.3
+ * @version 2.3.1
  */
 
 /**
@@ -10,11 +10,11 @@
  * Plugin URI: http://www.extremraym.com/
  * Description: Customizable HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio and playlist shortcode.
  * Author: X-Raym
- * Version: 2.3
+ * Version: 2.3.1
  * Author URI: http://www.extremraym.com/
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2016-03-20
+ * Date: 2016-03-23
  * Text Domain: wavesurfer
  */
 
@@ -46,9 +46,6 @@ class WaveSurfer {
 		$this->basename			 = plugin_basename( __FILE__ );
 		$this->directory_path = plugin_dir_path( __FILE__ );
 		$this->directory_url	= plugins_url( dirname( $this->basename ) );
-
-		// Load translations
-		load_plugin_textdomain( 'wavesurfer', false, dirname( $this->basename ) . '/languages' );
 
 		// Run our activation and deactivation hooks
 		register_activation_hook( __FILE__, array( $this, 'activate' ) );
@@ -86,6 +83,9 @@ class WaveSurfer {
 	 **/
 	public function includes() {
 
+			// Load translations
+			load_plugin_textdomain( 'wavesurfer', false, dirname( $this->basename ) . '/languages' );
+
 			// Add Menu
 			add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'add_action_links' ) );
 
@@ -119,12 +119,25 @@ class WaveSurfer {
 		if ( !is_admin() ) {
 
 			wp_register_script( 'wavesurfer', plugin_dir_url( __FILE__ ) . 'js/wavesurfer.min.js', array( 'jquery' ), '1.8.0', true );
-			wp_register_script('wavesurfer_scripts', plugin_dir_url( __FILE__ ) . 'js/wavesurfer-wp.js', array( 'jquery' ), '1.8.0', true );
-			wp_register_script('download-js', plugin_dir_url( __FILE__ ) . 'js/download.min.js', array( 'jquery' ), '1.8.0', true );
+			wp_register_script( 'wavesurfer-wp_init', plugin_dir_url( __FILE__ ) . 'js/wavesurfer-wp.js', array( 'jquery' ), '1.8.0', true );
+			wp_register_script( 'download-js', plugin_dir_url( __FILE__ ) . 'js/download.min.js', array( 'jquery' ), '1.8.0', true );
 
 			wp_register_style( 'wavesurfer_default', plugin_dir_url( __FILE__ ) . 'css/wavesurfer-wp_default.css' );
 			wp_register_style( 'wavesurfer_flat-icons', plugin_dir_url( __FILE__ ) . 'css/wavesurfer-wp_flat-icons.css' );
 		}
+
+		// Localize Scripts Strings
+		$localize_strings = array(
+			'play' => __('Play', 'wavesurfer'),
+			'pause' => __('Pause', 'wavesurfer'),
+			'resume' => __('Resume', 'wavesurfer'),
+			'stop' => __('Stop', 'wavesurfer'),
+			'loop' => __('Loop', 'wavesurfer'),
+			'unloop' => __('Unloop', 'wavesurfer'),
+			'mute' => __('Mute', 'wavesurfer'),
+			'unmute' => __('Unmute', 'wavesurfer')
+		);
+		wp_localize_script( 'wavesurfer-wp_init', 'wavesurfer_localize', $localize_strings );
 	}
 
 	/**
@@ -386,7 +399,7 @@ class WaveSurfer {
 
 		// Enqueue Scripts
 		wp_enqueue_script( 'wavesurfer' );
-		wp_enqueue_script( 'wavesurfer_scripts' );
+		wp_enqueue_script( 'wavesurfer-wp_init' );
 
 		// Check audio type to determine the link
 		if ( isset( $attr['wav'] ) ) { $link = $attr['wav']; }
@@ -503,7 +516,7 @@ class WaveSurfer {
 
 		// Enqueue Scripts
 		wp_enqueue_script( 'wavesurfer' );
-		wp_enqueue_script( 'wavesurfer_scripts' );
+		wp_enqueue_script( 'wavesurfer-wp_init' );
 
 		// Parse IDs
 		if ( ! empty( $attr['ids'] ) ) {

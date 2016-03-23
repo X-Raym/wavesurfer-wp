@@ -2,8 +2,8 @@
  * WaveSurfer-WP Front-End Script
  * Author: X-Raym
  * Author URl: http://www.extremraym.com
- * Date: 2016-03-20
- * Version: 2.3
+ * Date: 2016-03-23
+ * Version: 2.3.1
  */
 
 // No conflict for WordPress
@@ -131,7 +131,7 @@ function WaveSurferInit() {
 
         PauseOtherPlayers(wavesurfer, i);
 
-        $j(this).children('span').text('Pause');
+        $j(this).children('span').text(wavesurfer_localize.pause);
 
         // Add an active class
         $j(this).addClass('wavesurfer-active-button');
@@ -148,7 +148,7 @@ function WaveSurferInit() {
       $j(this).addClass('wavesurfer-active-button');
       $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-active-button');
       $j(this).parent().children('button.wavesurfer-play').removeClass('wavesurfer-paused-button');
-			$j(this).parent().children('button.wavesurfer-play').children('span').text('Play');
+			$j(this).parent().children('button.wavesurfer-play').children('span').text(wavesurfer_localize.play);
       var current_time = wavesurfer[i].getCurrentTime();
       timeblock.html(secondsTimeSpanToMS(current_time));
     });
@@ -160,10 +160,10 @@ function WaveSurferInit() {
       // IF ACTIVE
       if ($j(this).hasClass('wavesurfer-active-button')) {
         $j(this).removeClass('wavesurfer-active-button');
-        $j(this).children('span').text('Mute');
+        $j(this).children('span').text(wavesurfer_localize.mute);
       } else {
         $j(this).addClass('wavesurfer-active-button');
-        $j(this).children('span').text('Unmute');
+        $j(this).children('span').text(wavesurfer_localize.unmute);
       }
 
     });
@@ -196,13 +196,13 @@ function WaveSurferInit() {
       // IF LOOP
       if ($j(this).hasClass('wavesurfer-active-button')) {
         $j(this).removeClass('wavesurfer-active-button');
-        $j(this).children('span').text('Loop');
+        $j(this).children('span').text(wavesurfer_localize.loop);
         wavesurfer[i].on('finish', function() {
           wavesurfer[i].pause();
         });
       } else {
         $j(this).addClass('wavesurfer-active-button');
-        $j(this).children('span').text('Unloop');
+        $j(this).children('span').text(wavesurfer_localize.unloop);
         wavesurfer[i].on('finish', function() {
           wavesurfer[i].play();
         });
@@ -327,7 +327,7 @@ function SetPauseButton(object) {
 
   $j(object).addClass('wavesurfer-paused-button');
 
-  $j(object).children('span').text('Resume');
+  $j(object).children('span').text(wavesurfer_localize.resume);
 
   $j(object).parent().children('button.wavesurfer-play').removeClass('wavesurfer-active-button');
   $j(object).parent().children('button.wavesurfer-stop').removeClass('wavesurfer-active-button');
