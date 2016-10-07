@@ -31,3 +31,4 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 delete_option( 'wavesurfer_settings' );
+delete_site_option( 'wavesurfer_settings' );

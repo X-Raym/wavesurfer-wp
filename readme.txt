@@ -1,9 +1,9 @@
 === WaveSurfer-WP ===
 Contributors: X-Raym
 Tags: audio, player, waveform, visualization, media
-Donate link: http://www.extremraym.com/en/donation/
+Donate link: https://www.extremraym.com/en/donation/
 Requires at least: 4.0
-Tested up to: 4.4.2
+Tested up to: 4.6.1
 Stable tag: trunk
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -11,7 +11,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Customizable HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio and playlist shortcode.
 
 == Description ==
-This plugin replaces the default WordPress audio player with a player capable of displaying audio waveforms. It can display a mix of the different audio channels (for podcast, radio, e-learning, music), or all channels simultaneously (for sound tutorial, sounds-packs showcases, products demo etc...), which is its main purpose.
+This plugin replaces the default WordPress audio player with a player capable of displaying audio waveforms. It can display a mix of the different audio channels (for podcast, radio replays, e-learning, music), or all channels simultaneously (for sound tutorial, sounds-packs showcases, audio products demo etc...), which is its main purpose.
 
 By working with the default audio/playlist shortcode, you have great advantages:
 
@@ -32,6 +32,8 @@ Also, there is some attributes accessible at shortcode level:
 *   `mute_button="true"`
 *   `loop_button="true"`
 *   `download_button="true"`
+*   `split_channels="true"`
+*   `player="default"`
 
 Extra feature : Pressing play on a player automatically set all the others on the same page to pause.
 
@@ -40,7 +42,7 @@ The default style requires [Font-Awesome 1.0](https://fortawesome.github.io/). B
 You can deactivate the default WaveSurder-WP theme, and use your own theme style. I strongly encourage you to do that as custom CSS is the only way to make it fit your theme perfectly. There is a lot of dedicated CSS selectors for that. You can take one of the included theme as reference.
 This will allow you to have more control on icons, responsivity, mouse hover behavior etc...
 
-[More Infos & Demos](http://www.extremraym.com/en/wavesurfer-wp)
+[More Infos & Demos](https://www.extremraym.com/en/wavesurfer-wp)
 
 You can contribute by to WaveSurfer-WP development on [GitHub](https://github.com/x-raym/wavesurfer-wp)
 
@@ -51,8 +53,23 @@ No need for that on the back-end, only for front-end.
 
 This player doesn't have and will not have Like Button, Sharing Button, Play count and Download count.
 If you are looking for a WordPress player with such Social Features and advanced statistics like [SoundCloud](http://www.soundcloud.com) or [Hearthis.at](http://www.hearthis.at), take a look at [ZoomSounds](http://codecanyon.net/item/zoomsounds-neat-html5-audio-player/4525354).
+For another advanced WordPress integration of wavesurfer-js, with peak file generation for cache, auto-play and other nice features, consider using the premium [WavePlayer](http://codecanyon.net/item/waveplayer-a-wordpress-audio-player/14349799) plugin by luigipulcini.
 
 Notes: Some audio formats / browsers combo are not possible. This cannot be fixed by our side. (For ex, wav 24 bits in FireFox).
+
+=== WaveSurfer-WP Premium Add-on ===
+A premium add-on is avaible to add extra features to WaveSurfer-WP.
+
+Features
+
+*   Cache Peaks File
+This add-on creates and loads peaks from small files, containing peaks values. No need to wait for the full audio to be decoded to display its waveform.
+
+*   Plug and Play
+These extra features are packed as an add-on. No need to delete and replace the original plugin. You will still be able to benefit from translations made by the community. Also, the core is still open source, to allow contribution.
+
+You can buy it from the official [product page](https://wwww.extremraym.com/en/downloads/wavesurfer-wp-premium).
+Thanks for considering this way to support WaveSurfer-WP !
 
 == Installation ==
 For an automatic installation through WordPress:
@@ -95,8 +112,14 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.5 (2016-10-07) =
+* Updated for WaveSurfer-WP Premium add-on
+* Better localization domain name
+* Update wavesurfer-js with custom version
+* Various enhancements
+
 = 2.3.1 (2016-03-23) =
-* Translation available for script
+* Player can now be translated
 
 = 2.3 (2016-03-20) =
 * Play one player pause the others
@@ -112,7 +135,6 @@ Please report other problems on the support forum.
 * Prevent max-width canvas error
 * Script init optimization
 * WaveSurfer-js 1.0.58 from 2016-02-28
-
 
 = 2.1.3 (2016-02-23) =
 * Fix double slash in URL (thanks to Glen Rowell)
@@ -145,6 +167,12 @@ Please report other problems on the support forum.
 * First release.
 
 == Upgrade Notice ==
+= 2.3.1 =
+Updated for WaveSurfer-WP Premium add-on. Possible regression for website which features ajax page transition (need testing).
+
+= 2.3.1 =
+Player can now be translated
+
 = 2.3 =
 Play one player pause the others, better resources loading, few other enhancements.
 
@@ -177,4 +205,4 @@ Thanks to our generous donators for supporting this plugin development !
 1. [SignalToNoize.com](http://signaltonoize.com/)
 2. [hawthonn](http://theopod.com)
 
-Do you want to contribute or sponsor one particular feature ? See you on the [donation page](http://www.extremraym.com/en/donation/). Thanks !
+Do you want to contribute or sponsor one particular feature ? See you on the [donation page](https://www.extremraym.com/en/donation/). Thanks !
