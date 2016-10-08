@@ -2,8 +2,8 @@
  * WaveSurfer-WP Front-End Script
  * Author: X-Raym
  * Author URl: http://www.extremraym.com
- * Date: 2016-03-23
- * Version: 2.3.1
+ * Date: 2016-10-07
+ * Version: 2.5
  */
 
 
@@ -15,7 +15,7 @@ var wavesurfer = [];
 
 // On Document Ready and Ajax Complete
 $j(document).on('ready', function() { // NOTE :  ajaxComplete
-	if ($j('#wavesurfer-player-0').find('canvas').length == 0) {
+	if ($j('#wavesurfer-player-0').find('canvas').length === 0) {
 		WaveSurferInit();
 	}
 });
@@ -196,7 +196,7 @@ function init(i, container, object, hash, split) {
 
 	// On finish, remove active class on play
 	wavesurfer[i].on('finish', function() {
-		if (buttonLoop.hasClass('wavesurfer-active-button') == false) {
+		if (buttonLoop.hasClass('wavesurfer-active-button') === false) {
 			buttonPlay.removeClass('wavesurfer-active-button');
 			buttonStop.addClass('wavesurfer-active-button');
 		}
@@ -233,7 +233,7 @@ function init(i, container, object, hash, split) {
 		// When cliking on an item
 		tracks.click(function() {
 			//console.log('Clicked Track:', current, tracks);
-			if ($j(this).hasClass('wavesurfer-active-track') == false) {
+			if ($j(this).hasClass('wavesurfer-active-track') === false) {
 
 				// Remove active track class to all tracks
 				tracks.each(function() {

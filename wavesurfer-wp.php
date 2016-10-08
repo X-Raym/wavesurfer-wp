@@ -14,7 +14,7 @@
  * Author URI: http://www.extremraym.com/
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2016-20-10
+ * Date: 2016-10-08
  * Text Domain: wavesurfer-wp
  */
 
@@ -152,9 +152,8 @@ class WaveSurfer_WP {
 	/**
 	 * Get Player Translation Strings
 	 *
-	 * @since 2.5
 	 */
-	public function get_player_translation_strings() {
+	public static function get_player_translation_strings() {
 		// Localize Scripts Strings
 	 	$localize_strings = array(
 	 		'play' => __('Play', 'wavesurfer'),
