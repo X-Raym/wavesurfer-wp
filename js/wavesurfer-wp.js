@@ -1,7 +1,7 @@
 /**
  * WaveSurfer-WP Front-End Script
  * Author: X-Raym
- * Author URl: http://www.extremraym.com
+ * Author URl: https://www.extremraym.com
  * Date: 2016-10-07
  * Version: 2.5
  */
@@ -217,7 +217,7 @@ function init(i, container, object, hash, split) {
 			wavesurfer[i].on('finish', function() {
 				wavesurfer[i].play();
 			});
-		};
+		}
 	});
 
 	// Check if playlist
@@ -254,7 +254,7 @@ function init(i, container, object, hash, split) {
 				wavesurfer[i].on('ready', function() {
 					if (buttonPlay.hasClass('wavesurfer-active-button')) {
 						wavesurfer[i].play();
-					};
+					}
 				});
 			}
 
@@ -272,7 +272,7 @@ function init(i, container, object, hash, split) {
 				var url = '';
 				url = tracks.eq(current).data('url');
 				// If there no other tracks after
-				if (url != undefined) {
+				if (url !== undefined) {
 					wavesurfer[i].load(url);
 					progressBar.attr('value', '0');
 					// progressBar.show(); -- hidden since 2.2 for BackEnd element
