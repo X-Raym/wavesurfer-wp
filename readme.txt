@@ -57,7 +57,7 @@ For another advanced WordPress integration of wavesurfer-js, with peak file gene
 
 Notes: Some audio formats / browsers combo are not possible. This cannot be fixed by our side. (For ex, wav 24 bits in FireFox).
 
-=== WaveSurfer-WP Premium Add-on ===
+= WaveSurfer-WP Premium Add-on =
 A premium add-on is avaible to add extra features to WaveSurfer-WP.
 
 Features
