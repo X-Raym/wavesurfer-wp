@@ -2,7 +2,7 @@
 
 /**
  * @package WaveSurfer-WP
- * @version 2.5
+ * @version 2.5.1
  */
 
 /**
@@ -10,11 +10,11 @@
  * Plugin URI: http://www.extremraym.com/
  * Description: Customizable HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio and playlist shortcode.
  * Author: X-Raym
- * Version: 2.5
+ * Version: 2.5.1
  * Author URI: http://www.extremraym.com/
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2016-10-08
+ * Date: 2016-10-17
  * Text Domain: wavesurfer-wp
  */
 
@@ -629,6 +629,7 @@ class WaveSurfer_WP {
 		// Parse IDs
 		if ( ! empty( $attr['ids'] ) ) {
 			$ids = explode( ',', $attr['ids'] );
+			if ( ! isset( $ids) ) $ids = $attr['ids'];
 			$attachments = array();
 			foreach ( $ids as $id ) {
 				array_push( $attachments, get_post( $include = $id ) );

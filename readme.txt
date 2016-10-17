@@ -112,6 +112,9 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.5.1 (2016-10-17) =
+Fixed playlist with one file only issue.
+
 = 2.5 (2016-10-07) =
 * Updated for WaveSurfer-WP Premium add-on
 * Better localization domain name
@@ -167,7 +170,10 @@ Please report other problems on the support forum.
 * First release.
 
 == Upgrade Notice ==
-= 2.3.1 =
+= 2.5.1 =
+Fixed playlist with one file only issue.
+
+= 2.5 =
 Updated for WaveSurfer-WP Premium add-on. Possible regression for website which features ajax page transition (need testing).
 
 = 2.3.1 =
