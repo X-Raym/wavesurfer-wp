@@ -1,4 +1,4 @@
-// X-Raym Custom mod from 23/09/2016
+// X-Raym Custom mod from 19/10/2016
 // See NOTE: mod
 
 (function (root, factory) {
@@ -1195,7 +1195,7 @@ WaveSurfer.util.extend(WaveSurfer.MediaElement, {
         var media = document.createElement(this.mediaType);
         media.controls = this.params.mediaControls;
         media.autoplay = this.params.autoplay || false;
-        media.preload = 'auto';
+        media.preload = 'metadata'; // NOTE: Original is "auto". Metadta loads only file info instead of all data.
         media.src = url;
         media.style.width = '100%';
 
