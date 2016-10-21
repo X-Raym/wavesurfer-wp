@@ -112,6 +112,9 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.5.3 (2016-10-22) =
+Optimizations for WaveSurfer-WP Premium
+
 = 2.5.2 (2016-10-19) =
 Performance: Don't load audio unless play is clicked (waveforms are still drawn at page ready)
 
@@ -173,6 +176,9 @@ Fixed playlist with one file only issue.
 * First release.
 
 == Upgrade Notice ==
+= 2.5.3 =
+Optimizations for WaveSurfer-WP Premium
+
 = 2.5.2 =
 Performance: Don't load audio unless play is clicked (waveforms are still drawn at page ready)
 

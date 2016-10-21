@@ -2,7 +2,7 @@
 
 /**
  * @package WaveSurfer-WP
- * @version 2.5.2
+ * @version 2.5.3
  */
 
 /**
@@ -10,11 +10,11 @@
  * Plugin URI: https://www.extremraym.com/
  * Description: Customizable HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio and playlist shortcode.
  * Author: X-Raym
- * Version: 2.5.2
+ * Version: 2.5.3
  * Author URI: https://www.extremraym.com/
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2016-10-19
+ * Date: 2016-10-22
  * Text Domain: wavesurfer-wp
  */
 
@@ -42,10 +42,10 @@ class WaveSurfer_WP {
 	 * @since 2.5
 	 */
 	public static function get_instance() {
-	 if ( null == self::$instance ) {
-	     self::$instance = new self;
-	 }
-	 return self::$instance;
+	if ( null == self::$instance ) {
+		self::$instance = new self;
+		}
+		return self::$instance;
 	}
 
 	/**
@@ -78,11 +78,11 @@ class WaveSurfer_WP {
 		// Add Options
 		if ( false === get_option('wavesurfer_settings') ) {
 			$arg = array(
-				'wave_color'	 		=> '#EE82EE',
+				'wave_color'	 	=> '#EE82EE',
 				'progress_color'	=> '#800080',
 				'cursor_color'		=> '#333333',
-				'front_theme'			=> 'wavesurfer_default',
-				'height'					=> '128'
+				'front_theme'		=> 'wavesurfer_default',
+				'height'			=> '128'
 			);
 		    update_option( 'wavesurfer_settings', $arg, '', 'yes' );
 		}
@@ -508,9 +508,6 @@ class WaveSurfer_WP {
 		if ( isset( $attr['ogg'] ) ) { $link = $attr['ogg']; }
 		if ( isset( $attr['src'] ) ) { $link = $attr['src']; }
 
-		// Get Hash from URL
-		$hash = hash( 'md5', $link );
-
 		// Begin render
 		$html .= '<div class="wavesurfer-block wavesurfer-audio">';
 		$html .= '<div class="wavesurfer-player" ';
@@ -518,7 +515,8 @@ class WaveSurfer_WP {
 		// Split channels
 		if ( isset( $attr['split_channels'] ) ) {
 			if( $attr['split_channels'] == true )
-			$html .= 'data-split-channels="true" ';
+				$split = true;
+				$html .= 'data-split-channels="true" ';
 		}
 
 		// Get Options
@@ -559,8 +557,8 @@ class WaveSurfer_WP {
 		// File URL
 		$html .= 'data-url="' . $link . '"';
 
-		// Data hash
-		$html .= 'data-hash="' . $hash . '"';
+		// Add WaveSurfer-WP Premium Data (peaks-url...)
+		$html .= apply_filters( 'wavesurfer_wp_shortcode_data', '', $link, $split );
 
 		// End div
 		$html .= '></div>';
@@ -639,9 +637,6 @@ class WaveSurfer_WP {
 		// Check audio type to determine the link
 		$link = $attachments[0]->guid;
 
-		// Get Hash from URL
-		$hash = hash( 'md5', $link );
-
 		// Begin render
 		$html .= '<div class="wavesurfer-block wavesurfer-playlist">';
 		$html .= '<div class="wavesurfer-player" ';
@@ -649,7 +644,8 @@ class WaveSurfer_WP {
 		// Split channels
 		if ( isset( $attr['split_channels'] ) ) {
 			if( $attr['split_channels'] == true )
-			$html .= 'data-split-channels="true" ';
+				$split = true;
+				$html .= 'data-split-channels="true" ';
 		}
 
 		// Get Options
@@ -690,8 +686,8 @@ class WaveSurfer_WP {
 		// File URL
 		$html .= 'data-url="' . $link . '"';
 
-		// Data hash
-		$html .= 'data-hash="' . $hash . '"';
+		// Add WaveSurfer-WP Premium Data (peaks-url...)
+		$html .= apply_filters( 'wavesurfer_wp_shortcode_data', '', $link, $split );
 
 		$html .= '></div>';
 
@@ -730,9 +726,9 @@ class WaveSurfer_WP {
 		// Playlist
 		$html .= '<ol class="wavesurfer-list-group">';
 		foreach ( $attachments as $attachment ) {
-			// Get Hash from URL
-			$hash = hash( 'md5', $attachment->guid );
-	 		$html .= '<li data-url="' . $attachment->guid . '" data-hash="' . $hash . '" class="list-group-item">' . $attachment->post_title . '</li>';
+			// Add WaveSurfer-WP Premium Data (peaks-url...)
+			$data_extras = apply_filters( 'wavesurfer_wp_shortcode_data', '', $attachment->guid, $split );
+	 		$html .= '<li class="list-group-item" data-url="' . $attachment->guid . '" ' . $data_extras . '>' . $attachment->post_title . '</li>';
 		};
 		$html .= '</ol>';
 
