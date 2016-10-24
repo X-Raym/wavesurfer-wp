@@ -2,7 +2,7 @@
 
 /**
  * @package WaveSurfer-WP
- * @version 2.5.3
+ * @version 2.5.4
  */
 
 /**
@@ -10,11 +10,11 @@
  * Plugin URI: https://www.extremraym.com/
  * Description: Customizable HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio and playlist shortcode.
  * Author: X-Raym
- * Version: 2.5.3
+ * Version: 2.6
  * Author URI: https://www.extremraym.com/
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2016-10-22
+ * Date: 2016-10-24
  * Text Domain: wavesurfer-wp
  */
 
@@ -489,6 +489,9 @@ class WaveSurfer_WP {
 	 */
 	public function wp_audio_shortcode_override( $html, $attr ) {
 
+		// Filter/Add ShortCode Attributes
+		$attr = apply_filters( 'wavesurfer_wp_shortcode_attributes', $attr, 'audio' );
+
 		//self::$load_front_ressources = true;
 		$html = ''; // Value for not overring render
 
@@ -611,6 +614,9 @@ class WaveSurfer_WP {
 	 * https://developer.wordpress.org/reference/hooks/post_playlist/
 	 */
 	public function wp_playlist_shortcode_override( $html, $attr, $instance ) {
+
+		// Filter/Add ShortCode Attributes
+		$attr = apply_filters( 'wavesurfer_wp_shortcode_attributes', $attr, 'playlist' );
 
 		//self::$load_front_ressources = true;
 		$html = ''; // Value for not overring render

@@ -35,6 +35,11 @@ Also, there is some attributes accessible at shortcode level:
 *   `split_channels="true"`
 *   `player="default"`
 
+You can add add them conditionally with the filter `wavesurfer_wp_shortcode_attributes``.
+You can also use the `wavesurfer_wp_shortcode_data` filter if you want to add custom waveform data attributes.
+
+Check this [Gist](https://gist.github.com/X-Raym/5c388e6554b30ca6a56646fb8d96d17f) for demos of how to use the filters.
+
 Extra feature : Pressing play on a player automatically set all the others on the same page to pause.
 
 The default style requires [Font-Awesome 1.0](https://fortawesome.github.io/). Because this icon-font is already used in a lot of themes and plugins, it is not included in this pack. However, if your themes and plugins doesn't have it, you can use the [Enqueue Font Awesome CDN](https://wordpress.org/plugins/font-awesome-4-menus/) WordPress plugin, or any other plugin that loads on every page.
@@ -112,6 +117,9 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.6 (2016-10-24) =
+Added new filters for bulk adding shortcode attributes or waveform data.
+
 = 2.5.3 (2016-10-22) =
 Optimizations for WaveSurfer-WP Premium
 
@@ -176,6 +184,9 @@ Fixed playlist with one file only issue.
 * First release.
 
 == Upgrade Notice ==
+= 2.6 (2016-10-24) =
+Added new filters for bulk adding shortcode attributes or waveform data. Code examples on the plugin WordPress page.
+
 = 2.5.3 =
 Optimizations for WaveSurfer-WP Premium
 
