@@ -117,6 +117,8 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.6.1 (2016-10-31) =
+
 = 2.6 (2016-10-24) =
 Added new filters for bulk adding shortcode attributes or waveform data.
 
@@ -184,6 +186,8 @@ Fixed playlist with one file only issue.
 * First release.
 
 == Upgrade Notice ==
+= 2.6.1 (2016-10-31) =
+
 = 2.6 (2016-10-24) =
 Added new filters for bulk adding shortcode attributes or waveform data. Code examples on the plugin WordPress page.
 
