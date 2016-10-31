@@ -118,6 +118,7 @@ Please report other problems on the support forum.
 
 == Changelog ==
 = 2.6.1 (2016-10-31) =
+Fixed one attachment playlist shortcode PHP warning error.
 
 = 2.6 (2016-10-24) =
 Added new filters for bulk adding shortcode attributes or waveform data.
@@ -187,6 +188,7 @@ Fixed playlist with one file only issue.
 
 == Upgrade Notice ==
 = 2.6.1 (2016-10-31) =
+Fixed one attachment playlist shortocde PHP warning error.
 
 = 2.6 (2016-10-24) =
 Added new filters for bulk adding shortcode attributes or waveform data. Code examples on the plugin WordPress page.

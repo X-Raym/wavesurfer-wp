@@ -632,7 +632,7 @@ class WaveSurfer_WP {
 
 		// Parse IDs
 		if ( ! empty( $attr['ids'] ) ) {
-			if ( strpos( $attr['ids'], ',' ) === true )
+			if ( strpos( $attr['ids'], ',' ) !== false )
 				$ids = explode( ',', $attr['ids'] );
 			if ( ! isset( $ids) ) $ids = $attr['ids'];
 			$attachments = array();
