@@ -35,7 +35,7 @@ Also, there is some attributes accessible at shortcode level:
 *   `split_channels="true"`
 *   `player="default"`
 
-You can add add them conditionally with the filter `wavesurfer_wp_shortcode_attributes``.
+You can add add them conditionally with the filter `wavesurfer_wp_shortcode_attributes`.
 You can also use the `wavesurfer_wp_shortcode_data` filter if you want to add custom waveform data attributes.
 
 Check this [Gist](https://gist.github.com/X-Raym/5c388e6554b30ca6a56646fb8d96d17f) for demos of how to use the filters.
