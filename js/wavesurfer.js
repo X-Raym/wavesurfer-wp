@@ -1,6 +1,3 @@
-// X-Raym Custom mod from 19/10/2016
-// See NOTE: mod
-
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module unless amdModuleId is set
@@ -243,17 +240,26 @@ var WaveSurfer = {
      * value, and then rest the saved value.
      */
     toggleMute: function () {
-        if (this.isMuted) {
-            // If currently muted then restore to the saved volume
-            // and update the mute properties
-            this.backend.setVolume(this.savedVolume);
-            this.isMuted = false;
-        } else {
+        this.setMute(!this.isMuted);
+    },
+
+    setMute: function (mute) {
+        // ignore all muting requests if the audio is already in that state
+        if (mute === this.isMuted) {
+            return;
+        }
+
+        if (mute) {
             // If currently not muted then save current volume,
             // turn off the volume and update the mute properties
             this.savedVolume = this.backend.getVolume();
             this.backend.setVolume(0);
             this.isMuted = true;
+        } else {
+            // If currently muted then restore to the saved volume
+            // and update the mute properties
+            this.backend.setVolume(this.savedVolume);
+            this.isMuted = false;
         }
     },
 
@@ -342,12 +348,12 @@ var WaveSurfer = {
     /**
      * Loads audio and re-renders the waveform.
      */
-    load: function (url, peaks) {
+    load: function (url, peaks, preload) {
         this.empty();
 
         switch (this.params.backend) {
             case 'WebAudio': return this.loadBuffer(url, peaks);
-            case 'MediaElement': return this.loadMediaElement(url, peaks);
+            case 'MediaElement': return this.loadMediaElement(url, peaks, preload);
         }
     },
 
@@ -368,7 +374,6 @@ var WaveSurfer = {
             this.tmpEvents.push(this.once('interaction', load));
         } else {
             return load();
-
         }
     },
 
@@ -381,11 +386,11 @@ var WaveSurfer = {
      *  @param  {Array}            [peaks]     Array of peaks. Required to bypass
      *                                          web audio dependency
      */
-    loadMediaElement: function (urlOrElt, peaks) {
+    loadMediaElement: function (urlOrElt, peaks, preload) {
         var url = urlOrElt;
 
         if (typeof urlOrElt === 'string') {
-            this.backend.load(url, this.mediaContainer, peaks);
+            this.backend.load(url, this.mediaContainer, peaks, preload);
         } else {
             var elt = urlOrElt;
             this.backend.loadElt(elt, peaks);
@@ -415,7 +420,7 @@ var WaveSurfer = {
                 this.decodeArrayBuffer(arraybuffer, (function (buffer) {
                     this.backend.buffer = buffer;
                     this.drawBuffer();
-					this.fireEvent('waveformNoPeaksReady'); // NOTE: mod
+                    this.fireEvent('waveform-ready');
                 }).bind(this));
             }).bind(this));
         }
@@ -722,12 +727,12 @@ WaveSurfer.WebAudio = {
     },
 
     getAudioContext: function () {
-        if (!WaveSurfer.WebAudio.audioContext) {
-            WaveSurfer.WebAudio.audioContext = new (
+        if (!this.ac) {
+            this.ac = new (
                 window.AudioContext || window.webkitAudioContext
             );
         }
-        return WaveSurfer.WebAudio.audioContext;
+        return this.ac;
     },
 
     getOfflineAudioContext: function (sampleRate) {
@@ -968,6 +973,11 @@ WaveSurfer.WebAudio = {
         this.gainNode.disconnect();
         this.scriptNode.disconnect();
         this.analyser.disconnect();
+        // close the audioContext if it was created by wavesurfer
+        // not passed in as a parameter
+        if (!this.params.audioContext) {
+            this.ac.close();
+        }
     },
 
     load: function (buffer) {
@@ -1052,6 +1062,10 @@ WaveSurfer.WebAudio = {
         this.scheduledPause = end;
 
         this.source.start(0, start, end - start);
+
+        if (this.ac.state == 'suspended') {
+          this.ac.resume && this.ac.resume();
+        }
 
         this.setState(this.PLAYING_STATE);
 
@@ -1188,14 +1202,15 @@ WaveSurfer.util.extend(WaveSurfer.MediaElement, {
      *  @param  {String}        url         path to media file
      *  @param  {HTMLElement}   container   HTML element
      *  @param  {Array}         peaks       array of peak data
+     *  @param  {String}        preload     HTML 5 preload attribute value
      */
-    load: function (url, container, peaks) {
+    load: function (url, container, peaks, preload) {
         var my = this;
 
         var media = document.createElement(this.mediaType);
         media.controls = this.params.mediaControls;
         media.autoplay = this.params.autoplay || false;
-        media.preload = 'metadata'; // NOTE: Original is "auto". Metadta loads only file info instead of all data.
+        media.preload = preload == null ? 'auto' : preload;
         media.src = url;
         media.style.width = '100%';
 

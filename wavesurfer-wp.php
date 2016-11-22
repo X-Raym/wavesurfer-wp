@@ -10,11 +10,11 @@
  * Plugin URI: https://www.extremraym.com/
  * Description: Customizable HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio and playlist shortcode.
  * Author: X-Raym
- * Version: 2.6.1
+ * Version: 2.6.2
  * Author URI: https://www.extremraym.com/
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2016-10-31
+ * Date: 2016-11-22
  * Text Domain: wavesurfer-wp
  */
 
@@ -631,14 +631,15 @@ class WaveSurfer_WP {
 		$this->my_enqueue_script( 'wavesurfer-wp_init' );
 
 		// Parse IDs
-		if ( ! empty( $attr['ids'] ) ) {
-			if ( strpos( $attr['ids'], ',' ) !== false )
-				$ids = explode( ',', $attr['ids'] );
-			if ( ! isset( $ids) ) $ids = $attr['ids'];
-			$attachments = array();
-			foreach ( $ids as $id ) {
-				array_push( $attachments, get_post( $include = $id ) );
-			};
+		if ( strpos( $attr['ids'], ',' ) !== false )
+			$ids = explode( ',', $attr['ids'] );
+		if ( ! isset( $ids) ) {
+			$ids = array();
+			$ids[0] = $attr['ids'];
+		};
+		$attachments = array();
+		foreach ( $ids as $id ) {
+			array_push( $attachments, get_post( $include = $id ) );
 		};
 
 		// Check audio type to determine the link

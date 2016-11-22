@@ -2,8 +2,8 @@
  * WaveSurfer-WP Front-End Script
  * Author: X-Raym
  * Author URl: https://www.extremraym.com
- * Date: 2016-10-07
- * Version: 2.5
+ * Date: 2016-11-21
+ * Version: 2.6.2
  */
 
 
@@ -35,15 +35,13 @@ function WaveSurferInit() {
 		// Wavesurfer block object
 		var object = this;
 
-		var hash = container.data('hash');
-
-		init(i, container, object, hash, split);
+		init(i, container, object, split);
 
 	}); // End loop in each wavesurfer-block
 
 } // End function WaveSurferInit
 
-function init(i, container, object, hash, split) {
+function init(i, container, object, split) {
 
 	// Text selector for the player
 	var selector = '#wavesurfer-player-' + i;
@@ -69,11 +67,15 @@ function init(i, container, object, hash, split) {
 		height: height
 	};
 
+	// Others parameters
+	var peaks = null;
+	var preload = 'metadata';
+
 	// Create WaveSurfer object
 	wavesurfer[i] = WaveSurfer.create(options);
 
 	// File
-	wavesurfer[i].load(file_url);
+	wavesurfer[i].load(file_url, peaks, preload);
 
 	// Responsive Waveform
 	$j(window).resize(function() {
@@ -95,6 +97,9 @@ function init(i, container, object, hash, split) {
 	var buttonLoop = $j(object).find('button.wavesurfer-loop');
 	var debugBlock = $j(object).find('.debug');
 	var progressBar = $j(object).find('progress');
+
+	var playlist = false;
+	if ( $j(object).hasClass('wavesurfer-playlist') ) playlist = true;
 
 	wavesurfer[i].on('error', function() {
 		progressBar.hide();
@@ -196,14 +201,16 @@ function init(i, container, object, hash, split) {
 
 	// On finish, remove active class on play
 	wavesurfer[i].on('finish', function() {
-		if (buttonLoop.hasClass('wavesurfer-active-button') === false) {
-			buttonPlay.removeClass('wavesurfer-active-button');
-			buttonStop.addClass('wavesurfer-active-button');
+		if ( playlist === false ) {
+			if (buttonLoop.hasClass('wavesurfer-active-button') === false) {
+				buttonPlay.removeClass('wavesurfer-active-button');
+				buttonStop.addClass('wavesurfer-active-button');
+			}
 		}
 	});
 
 	// Button Loop
-	buttonLoop.click(function() {
+	buttonLoop.click(function() { // NOTE: seamless loop need WebAudio backend
 		// IF LOOP
 		if ($j(this).hasClass('wavesurfer-active-button')) {
 			$j(this).removeClass('wavesurfer-active-button');
@@ -221,7 +228,7 @@ function init(i, container, object, hash, split) {
 	});
 
 	// Check if playlist
-	if ($j(object).hasClass('wavesurfer-playlist')) {
+	if ( playlist === true) {
 
 		// The playlist list
 		var tracks = $j(object).find('.wavesurfer-list-group li');
@@ -232,7 +239,7 @@ function init(i, container, object, hash, split) {
 
 		// When cliking on an item
 		tracks.click(function() {
-			//console.log('Clicked Track:', current, tracks);
+
 			if ($j(this).hasClass('wavesurfer-active-track') === false) {
 
 				// Remove active track class to all tracks
@@ -246,16 +253,15 @@ function init(i, container, object, hash, split) {
 				file_url = $j(this).data('url');
 				current = $j(this).index();
 
-				hash = $j(this).data('hash');
-
 				// Load sound and waveform
-				wavesurfer[i].load(file_url);
+				wavesurfer[i].load(file_url, peaks, preload);
 
 				wavesurfer[i].on('ready', function() {
 					if (buttonPlay.hasClass('wavesurfer-active-button')) {
 						wavesurfer[i].play();
 					}
 				});
+
 			}
 
 		}); // END click track
@@ -273,7 +279,7 @@ function init(i, container, object, hash, split) {
 				url = tracks.eq(current).data('url');
 				// If there no other tracks after
 				if (url !== undefined) {
-					wavesurfer[i].load(url);
+					wavesurfer[i].load(url, peaks, preload);
 					progressBar.attr('value', '0');
 					// progressBar.show(); -- hidden since 2.2 for BackEnd element
 
@@ -290,11 +296,20 @@ function init(i, container, object, hash, split) {
 					// TO DO
 
 					// When it is loaded, play.
-					wavesurfer[i].on('ready', function() {
-						wavesurfer[i].play();
-					});
+					if (buttonPlay.hasClass('wavesurfer-active-button')) {
+						wavesurfer[i].on('ready', function() {
+							if (buttonPlay.hasClass('wavesurfer-active-button')) {
+								wavesurfer[i].play();
+							}
+						});
+					}
 
-				} // End if url not undefined
+				} else {
+					if (buttonLoop.hasClass('wavesurfer-active-button') === false) {
+						buttonPlay.removeClass('wavesurfer-active-button');
+						buttonStop.addClass('wavesurfer-active-button');
+					}
+				}// End if url not undefined
 			} // End if Loop is on
 		}); // End of wavesurfer.on('finish')
 

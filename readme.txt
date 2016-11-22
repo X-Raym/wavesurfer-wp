@@ -117,20 +117,25 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.6.2 (2016-11-22) =
+* Fixed Playlist behavior.
+* Back to wavesurfer-js original fork.
+* Fixed playlist with one file only warning error.
+
 = 2.6.1 (2016-10-31) =
-Fixed one attachment playlist shortcode PHP warning error.
+* Fixed one attachment playlist shortcode PHP warning error.
 
 = 2.6 (2016-10-24) =
-Added new filters for bulk adding shortcode attributes or waveform data.
+* Added new filters for bulk adding shortcode attributes or waveform data.
 
 = 2.5.3 (2016-10-22) =
-Optimizations for WaveSurfer-WP Premium
+* Optimizations for WaveSurfer-WP Premium
 
 = 2.5.2 (2016-10-19) =
-Performance: Don't load audio unless play is clicked (waveforms are still drawn at page ready)
+* Performance: Don't load audio unless play is clicked (waveforms are still drawn at page ready)
 
 = 2.5.1 (2016-10-17) =
-Fixed playlist with one file only issue.
+* Fixed playlist with one file only issue.
 
 = 2.5 (2016-10-07) =
 * Updated for WaveSurfer-WP Premium add-on
@@ -187,6 +192,9 @@ Fixed playlist with one file only issue.
 * First release.
 
 == Upgrade Notice ==
+= 2.6.2 (2016-11-22) =
+Fixed Playlist behavior and PHP warning error if only one id was set.
+
 = 2.6.1 (2016-10-31) =
 Fixed one attachment playlist shortocde PHP warning error.
 
