@@ -35,12 +35,18 @@ Also, there is some attributes accessible at shortcode level:
 *   `split_channels="true"`
 *   `player="default"`
 
-You can add add them conditionally with the filter `wavesurfer_wp_shortcode_attributes`.
-You can also use the `wavesurfer_wp_shortcode_data` filter if you want to add custom waveform data attributes.
+For more advanced customization, with a custom [site-plugin](http://www.wpbeginner.com/beginners-guide/what-why-and-how-tos-of-creating-a-site-specific-wordpress-plugin/), you can:
+
+* add shortcode attributes conditionally with the filter `wavesurfer_wp_shortcode_attributes`.
+* use the `wavesurfer_wp_shortcode_data` filter if you want to add custom waveform data attributes.
+* use the `wavesurfer-wp-init` JavaScript event handler to render the player on custom events, like after click on a button. See examples on the [WaveSurfer-WP-Init](https://github.com/X-Raym/wavesurfer-wp-init) GitHub repository.
 
 Check this [Gist](https://gist.github.com/X-Raym/5c388e6554b30ca6a56646fb8d96d17f) for demos of how to use the filters.
 
-Extra feature : Pressing play on a player automatically set all the others on the same page to pause.
+Extra features :
+
+* Pressing play on a player automatically set all the others on the same page to pause.
+* AJAX Page loading compatibility
 
 The default style requires [Font-Awesome 1.0](https://fortawesome.github.io/). Because this icon-font is already used in a lot of themes and plugins, it is not included in this pack. However, if your themes and plugins doesn't have it, you can use the [Enqueue Font Awesome CDN](https://wordpress.org/plugins/font-awesome-4-menus/) WordPress plugin, or any other plugin that loads on every page.
 
@@ -63,7 +69,7 @@ For another advanced WordPress integration of wavesurfer-js, with peak file gene
 Notes: Some audio formats / browsers combo are not possible. This cannot be fixed by our side. (For ex, wav 24 bits in FireFox).
 
 = WaveSurfer-WP Premium Add-on =
-A premium add-on is avaible to add extra features to WaveSurfer-WP.
+A premium add-on is available to add extra features to WaveSurfer-WP.
 
 Features
 
@@ -117,6 +123,10 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.6.3 (2016-11-29) =
+* AJAX Page loading compatibility is back
+* JavaScript hook for custom WaveSurfer-WP player initialization
+
 = 2.6.2 (2016-11-22) =
 * Fixed Playlist behavior.
 * Back to wavesurfer-js original fork.
@@ -192,6 +202,10 @@ Please report other problems on the support forum.
 * First release.
 
 == Upgrade Notice ==
+= 2.6.3 (2016-11-29) =
+AJAX Page loading compatibility is back.
+JavaScript hook for custom WaveSurfer-WP player initialization
+
 = 2.6.2 (2016-11-22) =
 Fixed Playlist behavior and PHP warning error if only one id was set.
 

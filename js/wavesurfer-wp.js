@@ -2,8 +2,8 @@
  * WaveSurfer-WP Front-End Script
  * Author: X-Raym
  * Author URl: https://www.extremraym.com
- * Date: 2016-11-21
- * Version: 2.6.2
+ * Date: 2016-11-29
+ * Version: 2.6.3
  */
 
 
@@ -14,7 +14,7 @@ var $j = jQuery.noConflict();
 var wavesurfer = [];
 
 // On Document Ready and Ajax Complete
-$j(document).on('ready', function() { // NOTE :  ajaxComplete
+$j(document).on('ready ajaxComplete wavesurfer-wp-init', function() {
 	if ($j('#wavesurfer-player-0').find('canvas').length === 0) {
 		WaveSurferInit();
 	}
