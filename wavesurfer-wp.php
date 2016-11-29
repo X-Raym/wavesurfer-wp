@@ -32,8 +32,8 @@ class WaveSurfer_WP {
 	/* Singleton style */
 	/* https://code.tutsplus.com/articles/design-patterns-in-wordpress-the-singleton-pattern--wp-31621 */
 
-    /** Refers to a single instance of this class. */
-    private static $instance = null;
+	/** Refers to a single instance of this class. */
+	private static $instance = null;
 
 	/**
 	 * Creates or returns an instance of this class.
@@ -84,7 +84,7 @@ class WaveSurfer_WP {
 				'front_theme'		=> 'wavesurfer_default',
 				'height'			=> '128'
 			);
-		    update_option( 'wavesurfer_settings', $arg, '', 'yes' );
+			update_option( 'wavesurfer_settings', $arg, '', 'yes' );
 		}
 
 	} /* activate() */
@@ -125,7 +125,7 @@ class WaveSurfer_WP {
 		}
 
 		// Load Front End Ressources
-		add_action( 'wp_enqueue_scripts',  array( $this, 'wavesurfer_register_ressources' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'wavesurfer_register_ressources' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'wavesurfer_load_front_ressources' ) );
 
 	} /* includes() */
@@ -178,8 +178,8 @@ class WaveSurfer_WP {
 		$wavesurfer_nonce = wp_create_nonce( 'wavesurfer_nonce' );
 
 		wp_localize_script( $script, 'my_ajax_obj', array(
-		   'ajax_url' => admin_url( 'admin-ajax.php' ),
-		   'nonce'    => $wavesurfer_nonce,
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => $wavesurfer_nonce,
 		) );
 	}
 
@@ -203,12 +203,12 @@ class WaveSurfer_WP {
 	 * Load color picker scripts for Admin settings page
 	 */
 	public function load_color_picker( $hook ) {
-  	// first check that $hook_suffix is appropriate for your admin page
+		// first check that $hook_suffix is appropriate for your admin page
 		if ( 'settings_page_wavesurfer-wp' != $hook )
 			return;
 
-  		wp_enqueue_style( 'wp-color-picker' );
-  		wp_enqueue_script( 'my-script-handle', plugin_dir_url( __FILE__ ) . 'js/admin-color-picker.js', array( 'wp-color-picker' ), false, true );
+		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_script( 'my-script-handle', plugin_dir_url( __FILE__ ) . 'js/admin-color-picker.js', array( 'wp-color-picker' ), false, true );
 	}
 
 
