@@ -1,14 +1,14 @@
 /**
  * WaveSurfer-WP Flat Icons Theme
  * Author: X-Raym
- * Author URl: http://www.extremraym.com
- * Date: 2016-03-15
- * Version: 2.2
+ * Author URI: https://www.extremraym.com
+ * Date: 2016-12-21
+ * Version: 2.6.4
  */
 
 .wavesurfer-block {
   box-sizing: border-box;
-	margin-bottom: 2em;
+  margin-bottom: 2em;
 }
 
 .wavesurfer-player wave {
@@ -35,9 +35,7 @@
   opacity: 0.7;
 }
 
-.wavesurfer-block button,
-.wavesurfer-time,
-.wavesurfer-duration {
+.wavesurfer-block button, .wavesurfer-time, .wavesurfer-duration {
   font-family: Arial;
   font-size: 1em;
   margin: 1em 1em 1em;
@@ -59,8 +57,7 @@
   text-decoration: none;
 }
 
-.wavesurfer-time,
-.wavesurfer-duration {
+.wavesurfer-time, .wavesurfer-duration {
   font-family: Arial;
   background-color: #4444F0;
 }
@@ -73,16 +70,14 @@ button.wavesurfer-paused-button {
   background-color: #FFB642;
 }
 
-.wavesurfer-buttons_set button:before,
-.wavesurfer-buttons_set div:before {
+.wavesurfer-buttons_set button:before, .wavesurfer-buttons_set div:before {
   font-family: "FontAwesome";
   font-weight: normal;
   font-style: normal;
   width: 1em;
 }
 
-.wavesurfer-time:before,
-.wavesurfer-duration:before {
+.wavesurfer-time:before, .wavesurfer-duration:before {
   padding-right: 0.3em;
 }
 
@@ -146,28 +141,28 @@ button.wavesurfer-mute.wavesurfer-active-button:before {
   }
 }
 
-.wavesurfer-block button span,
-.wavesurfer-time span,
-.wavesurfer-duration span {
+.wavesurfer-block button span, .wavesurfer-time span, .wavesurfer-duration span {
   padding-left: 0.3em;
   display: none;
 }
 
-.wavesurfer-block wave:hover{
-  cursor:pointer;
+.wavesurfer-block wave:hover {
+  cursor: pointer;
 }
 
+
 /* Playlist */
+
 .wavesurfer-list-group {
   counter-reset: section;
   list-style-type: none;
-	padding: 0;
-	margin-left: 1em;
-	margin-right: 1em;
+  padding: 0;
+  margin-left: 1em;
+  margin-right: 1em;
 }
 
-.wavesurfer-list-group li:hover{
-  cursor:pointer;
+.wavesurfer-list-group li:hover {
+  cursor: pointer;
 }
 
 .wavesurfer-list-group li:before {
@@ -189,8 +184,9 @@ button.wavesurfer-mute.wavesurfer-active-button:before {
 }
 
 .wavesurfer-progress {
-  position:relative;
-	display: none; /* since 2.2 */
+  position: relative;
+  display: none;
+  /* since 2.2 */
 }
 
 .wavesurfer-loading[value] {
@@ -203,4 +199,13 @@ button.wavesurfer-mute.wavesurfer-active-button:before {
   position: absolute;
   z-index: 10;
   margin-top: -80px;
+}
+
+.wavesurfer-marker:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.wavesurfer-marker-current {
+  background: #FFFF66;
 }

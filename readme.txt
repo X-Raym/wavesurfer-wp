@@ -76,6 +76,9 @@ Features
 *   Cache Peaks File
 This add-on creates and loads peaks from small files, containing peaks values. No need to wait for the full audio to be decoded to display its waveform.
 
+*   Markers System
+You can add custom clickable element on your pages to seek WaveSurfer-WP player to a desired position. Can be useful for adding marks, chapters, and it can even be used for [interactive audio transcripts](https://wwww.extremraym.com/en/wavesurfer-wp-markers)!
+
 *   Plug and Play
 These extra features are packed as an add-on. No need to delete and replace the original plugin. You will still be able to benefit from translations made by the community. Also, the core is still open source, to allow contribution.
 
@@ -123,6 +126,9 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.6.4 (2016-12-21) =
+* Updated styles for WaveSurfer-WP-Premium interactive markers system
+
 = 2.6.3 (2016-11-29) =
 * AJAX Page loading compatibility is back
 * JavaScript hook for custom WaveSurfer-WP player initialization
@@ -202,6 +208,10 @@ Please report other problems on the support forum.
 * First release.
 
 == Upgrade Notice ==
+
+= 2.6.4 (2016-12-21) =
+* Updated styles for WaveSurfer-WP-Premium interactive markers system
+
 = 2.6.3 (2016-11-29) =
 AJAX Page loading compatibility is back.
 JavaScript hook for custom WaveSurfer-WP player initialization
@@ -261,5 +271,6 @@ Thanks to our generous donators for supporting this plugin development !
 
 1. [SignalToNoize.com](http://signaltonoize.com/)
 2. [hawthonn](http://theopod.com)
+3. [Rob](http://soundpacks.com)
 
 Do you want to contribute or sponsor one particular feature ? See you on the [donation page](https://www.extremraym.com/en/donation/). Thanks !
