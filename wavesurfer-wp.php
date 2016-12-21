@@ -476,6 +476,8 @@ class WaveSurfer_WP {
 		<h3><?php _e( 'Features', 'wavesurfer-wp'); ?></h3>
 		<h4><?php _e( 'Cache Peaks File', 'wavesurfer-wp'); ?></h4>
 		<p><?php _e( 'This add-on creates and loads peaks from small files, containing peaks values. No need to wait for the full audio to be decoded to display its waveform.', 'wavesurfer-wp'); ?></p>
+		<h4><?php _e( 'Interactive Markers System', 'wavesurfer-wp'); ?></h4>
+		<p><?php _e( 'Add time markers, to create chapters or events list, or even interactive transcripts!', 'wavesurfer-wp'); ?></p>
 		<h4><?php _e( 'Plug and Play', 'wavesurfer-wp'); ?></h4>
 		<p><?php _e( 'These extra features are packed as an add-on. No need to delete and replace the original plugin.', 'wavesurfer-wp'); ?><br/><?php _e( 'You will still be able to benefit from translations made by the community. Also, the core is still open source, to allow contribution.', 'wavesurfer-wp'); ?></p>
 		<h3><?php _e( 'Documentation', 'wavesurfer-wp'); ?></h3>
