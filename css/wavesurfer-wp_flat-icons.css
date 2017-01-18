@@ -165,18 +165,8 @@ button.wavesurfer-mute.wavesurfer-active-button:before {
   cursor: pointer;
 }
 
-.wavesurfer-list-group li:before {
-  counter-increment: section;
-  content: counters(section, ".") ". ";
-}
-
 .wavesurfer-active-track {
   background: rgba(0, 0, 0, 0.2);
-}
-
-.wavesurfer-list-group li.wavesurfer-active-track:before {
-  counter-increment: section;
-  content: counters(section, ".") ". ";
 }
 
 #waveform {
@@ -208,4 +198,32 @@ button.wavesurfer-mute.wavesurfer-active-button:before {
 
 .wavesurfer-marker-current {
   background: #FFFF66;
+}
+
+/* PLAYLIST - Tracks */
+.wavesurfer-list-group .list-group-item {
+  display: flex;
+  align-items: center;
+}
+
+.wavesurfer-playlist-track-artist {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+.wavesurfer-playlist-track-title {
+  margin-left: 0.5em;
+}
+
+.wavesurfer-playlist-track-duration {
+  margin-left: auto;
+}
+
+.wavesurfer-playlist-track-thumbnail {
+  margin-right: 0.5em;
+}
+
+.wavesurfer-playlist-track-thumbnail img {
+  max-height: 4em;
+  width: auto;
 }

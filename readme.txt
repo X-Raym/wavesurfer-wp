@@ -3,7 +3,7 @@ Contributors: X-Raym
 Tags: audio, player, waveform, visualization, media
 Donate link: https://www.extremraym.com/en/donation/
 Requires at least: 4.0
-Tested up to: 4.6.1
+Tested up to: 4.7.1
 Stable tag: trunk
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -126,6 +126,12 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.7 (2017-18-01) =
+* Add sound duration, title (fallback to post title), thumbnail and artist in playlist tracks
+* Fix 'default' shortcode attribute behavior for playlists
+* MultiSite
+* Notices fixes
+
 = 2.6.4 (2016-12-21) =
 * Updated styles for WaveSurfer-WP-Premium interactive markers system
 
