@@ -55,6 +55,7 @@ function init(i, container, object, split) {
 	var cursor_color = container.data('cursor-color');
 	var file_url = container.data('url');
 	var height = container.data('height');
+	var bar_width = container.data('bar-width');
 
 	// Init and Control
 	var options = {
@@ -64,7 +65,8 @@ function init(i, container, object, split) {
 		progressColor: progress_color,
 		cursorColor: cursor_color,
 		backend: 'MediaElement',
-		height: height
+		height: height,
+		barWidth: bar_width,
 	};
 
 	// Others parameters

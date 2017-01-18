@@ -76,15 +76,16 @@ class WaveSurfer_WP {
 	public function activate() {
 
 		// Add Options
-		if ( false === get_option('wavesurfer_settings') ) {
+		if ( false === get_site_option('wavesurfer_settings') ) {
 			$arg = array(
 				'wave_color'		=> '#EE82EE',
 				'progress_color'	=> '#800080',
 				'cursor_color'		=> '#333333',
 				'front_theme'		=> 'wavesurfer_default',
-				'height'			=> '128'
+				'height'			=> '128',
+				'bar_width'			=> '1'
 			);
-			update_option( 'wavesurfer_settings', $arg, '', 'yes' );
+			update_site_option( 'wavesurfer_settings', $arg, '', 'yes' );
 		}
 
 	} /* activate() */
@@ -105,6 +106,11 @@ class WaveSurfer_WP {
 
 		// Construct Page
 		add_action( 'admin_menu', array( $this, 'add_admin_pages' ), 999 );
+
+		// Allow Admin Form Submission in MultiSite
+		if ( is_multisite() )
+			add_action('network_admin_menu', array( $this, 'admin_admin_pages_network') );
+			add_action('network_admin_edit_update_network_options', array( $this, 'update_network_options' ), 10, 0 );
 
 		// Register Settings
 		add_action( 'admin_init', array( $this, 'wavesurfer_settings_init' ) );
@@ -189,7 +195,8 @@ class WaveSurfer_WP {
 	public function wavesurfer_load_front_ressources() {
 		if ( !is_admin() ) {
 
-			$options = get_option( 'wavesurfer_settings' );
+			$options = $this->get_all_options( 'wavesurfer_settings' );
+
 			if ( isset( $options['front_theme'] ) ) {
 				if ( $options['front_theme'] !== 'wavesurfer_none' )
 					wp_enqueue_style( $options['front_theme'] );
@@ -219,10 +226,25 @@ class WaveSurfer_WP {
 	 */
 	public function add_action_links ( $links ) {
 		$mylinks = array(
-			'<a href="' . admin_url('options-general.php?page=wavesurfer-wp.php' ) . '">' . __( 'Settings', 'wavesurfer-wp' ) . '</a>',
+			'<a href="' . admin_url('options-general.php?page=wavesurfer-wp' ) . '">' . __( 'Settings', 'wavesurfer-wp' ) . '</a>',
 		);
 		return array_merge( $links, $mylinks );
 	} /* add_action_links() */
+
+	/**
+	 * Get All options
+	 *
+	 * Get Site options, and fallback to network actions if no site option or if main site and multisite
+	 *
+	 * @since 1.0
+	 */
+	public function get_all_options( $name ) {
+		$options = get_option( $name );
+		if ( ( is_multisite() && ! $options ) || ( is_multisite() && is_network_admin() ) )
+			$options = get_site_option( $name );
+
+		return $options;
+	}
 
 
 	/**
@@ -236,10 +258,27 @@ class WaveSurfer_WP {
 			'WaveSurfer-WP',
 			'WaveSurfer-WP',
 			'manage_options',
-			'wavesurfer-wp.php',
+			'wavesurfer-wp',
 			array( $this, 'users_page' )
 		);
 
+	}
+
+	/**
+	 * Add administration menus for network
+	 *
+	 * @since 2.7
+	 **/
+	public function admin_admin_pages_network() {
+
+		add_submenu_page(
+			'settings.php',
+			'WaveSurfer-WP',
+			'WaveSurfer-WP',
+			'manage_network_options',
+			'wavesurfer-wp',
+			array( $this, 'users_page' )
+		);
 	}
 
 	/**
@@ -311,6 +350,15 @@ class WaveSurfer_WP {
 				'colors_section'
 		);
 
+		// Bar Width
+		add_settings_field( // 1
+				'bar_width',
+				__( 'Bar Width', 'wavesurfer-wp' ),
+				array( $this, 'render_bar_width_field' ),
+				'wavesurfer',
+				'colors_section'
+		);
+
 	}
 
 	/**
@@ -329,7 +377,7 @@ class WaveSurfer_WP {
 	 */
 	public function render_wave_color_field() { // 0
 
-		$options = get_option( 'wavesurfer_settings' );
+		$options = $this->get_all_options( 'wavesurfer_settings' );
 		$val = ( isset( $options['wave_color'] ) ) ? $options['wave_color'] : '';
 
 		echo '<input type="text" name="wavesurfer_settings[wave_color]" value="' . $val .'" class="my-color-field" >';
@@ -340,7 +388,7 @@ class WaveSurfer_WP {
 
 	public function render_progress_color_field() { // 1
 
-		$options = get_option( 'wavesurfer_settings' );
+		$options = $this->get_all_options( 'wavesurfer_settings' );
 		$val = ( isset( $options['progress_color'] ) ) ? $options['progress_color'] : '';
 
 		echo '<input type="text" name="wavesurfer_settings[progress_color]" value="' . $val .'" class="my-color-field" >';
@@ -350,7 +398,7 @@ class WaveSurfer_WP {
 
 	public function render_cursor_color_field() { // 1
 
-		$options = get_option( 'wavesurfer_settings' );
+		$options = $this->get_all_options( 'wavesurfer_settings' );
 		$val = ( isset( $options['cursor_color'] ) ) ? $options['cursor_color'] : '';
 
 		echo '<input type="text" name="wavesurfer_settings[cursor_color]" value="' . $val .'" class="my-color-field" >';
@@ -360,7 +408,7 @@ class WaveSurfer_WP {
 
 	public function render_theme_field() { // 3
 
-		$options = get_option( 'wavesurfer_settings' );
+		$options = $this->get_all_options( 'wavesurfer_settings' );
 		//$val = ( isset( $options['front_theme'] ) ) ? $options['front_theme'] : '';
 
 		?>
@@ -376,7 +424,7 @@ class WaveSurfer_WP {
 
 	public function render_height_field() { // 4
 
-		$options = get_option( 'wavesurfer_settings' );
+		$options = $this->get_all_options( 'wavesurfer_settings' );
 		$val = ( isset( $options['height'] ) ) ? $options['height'] : '128';
 
 		echo '<input type="number" name="wavesurfer_settings[height]" min="0" max="2048" value="' . $val .'" class="height" >';
@@ -384,6 +432,15 @@ class WaveSurfer_WP {
 
 	}
 
+	public function render_bar_width_field() { // 5
+
+		$options = $this->get_all_options( 'wavesurfer_settings' );
+		$val = ( isset( $options['bar_width'] ) ) ? $options['bar_width'] : '0';
+
+		echo '<input type="number" name="wavesurfer_settings[bar_width]" min="0" max="10" value="' . $val .'" class="bar_width" >';
+		echo '<p>' . __( 'This setting can be locally overridden with the <code>bar_width="1"</code> [audio] shortcode attribute', 'wavesurfer-wp' ) .'.</p>';
+
+	}
 
 	/**
 	 * Content of the settings page
@@ -396,6 +453,12 @@ class WaveSurfer_WP {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'wavesurfer-wp' ) );
 
 ?>
+
+<?php if( isset( $_GET['updated'] ) && is_multisite() ): ?>
+	<div id="message" class="updated notice is-dismissible">
+		<p><?php _e('Options saved.'); ?></p>
+	</div>
+<?php endif; ?>
 
 <div class="wrap wavesurfer">
 
@@ -410,14 +473,14 @@ class WaveSurfer_WP {
 	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'general'; ?>
 
 	<h2 class="nav-tab-wrapper">
-		<a href="?page=wavesurfer-wp.php&tab=general" class="nav-tab actions-tab <?php echo $active_tab == 'general' ? 'nav-tab-active' : ''; ?>"><?php _e( 'General', 'wavesurfer-wp' ); ?></a>
-		<a href="?page=wavesurfer-wp.php&tab=premium" class="nav-tab license-tab <?php echo $active_tab == 'premium' ? 'nav-tab-active' : ''; ?>"><?php _e('Premium', 'wavesurfer'); ?></a>
+		<a href="?page=wavesurfer-wp&tab=general" class="nav-tab actions-tab <?php echo $active_tab == 'general' ? 'nav-tab-active' : ''; ?>"><?php _e( 'General', 'wavesurfer-wp' ); ?></a>
+		<a href="?page=wavesurfer-wp&tab=premium" class="nav-tab license-tab <?php echo $active_tab == 'premium' ? 'nav-tab-active' : ''; ?>"><?php _e('Premium', 'wavesurfer'); ?></a>
 	</h2>
 
 	<div id="tab_container">
 
 	<?php if( $active_tab == 'general' ) { ?>
-		<form method="post" action="options.php"> <!-- options.php is important -->
+		<form method="post" action="<?php if( is_multisite() && is_network_admin() ) { echo 'edit.php?action=update_network_options'; } else { echo 'options.php'; } ?> "> <!-- options.php is important -->
 			<?php
 
 				settings_fields( 'wavesurfer' );
@@ -451,6 +514,35 @@ class WaveSurfer_WP {
 
 </div>
 <?php
+	}
+
+	/**
+	 * Update Network Options
+	 *
+	 * This function here is hooked up to a special action and necessary to process
+	 * the saving of the options. This is the big difference with a normal options
+	 * page.
+	 **/
+	public function update_network_options() {
+		// Make sure we are posting from our options page. There's a little surprise
+		// here, on the options page we used the 'post3872_network_options_page'
+		// slug when calling 'settings_fields' but we must add the '-options' postfix
+		// when we check the referer.
+		check_admin_referer('wavesurfer-options'); // NOTE: why not wavesurfer-wp ? Doesn't work with wavesurfer_wp
+
+		// Our Actions
+		update_site_option('wavesurfer_settings', $_POST['wavesurfer_settings'] );
+
+		// At last we redirect back to our options page.
+		wp_redirect(
+			add_query_arg(
+				array('page' => 'wavesurfer-wp',
+				'updated' => 'true'),
+				network_admin_url('settings.php')
+			)
+		);
+
+		exit;
 	}
 
 	/**
@@ -526,7 +618,7 @@ class WaveSurfer_WP {
 		}
 
 		// Get Options
-		$options = get_option( 'wavesurfer_settings' );
+		$options = $this->get_all_options( 'wavesurfer_settings' );
 
 		// Wave color
 		if ( isset( $attr['wave_color'] ) ) {
@@ -559,6 +651,15 @@ class WaveSurfer_WP {
 			$height = ( isset( $options['height'] ) ) ? $options['height'] : '128'; // Get color value from Settings
 		}
 		$html .= 'data-height="' . $height . '" ';
+
+		// Bar Width
+		if ( isset( $attr['bar_width'] ) ) {
+			$bar_width = esc_attr( $attr['bar_width'] );
+		} else {
+			$bar_width = ( isset( $options['bar_width'] ) ) ? $options['bar_width'] : '0'; // Get color value from Settings
+		}
+		if ( $bar_width > 0 )
+			$html .= 'data-bar-width="' . $bar_width . '" ';
 
 		// File URL
 		$html .= 'data-url="' . $link . '"';
@@ -662,7 +763,7 @@ class WaveSurfer_WP {
 		}
 
 		// Get Options
-		$options = get_option( 'wavesurfer_settings' );
+		$options = $this->get_all_options( 'wavesurfer_settings' );
 
 		// Wave color
 		if ( isset( $attr['wave_color'] ) ) {
@@ -695,6 +796,15 @@ class WaveSurfer_WP {
 			$height = ( isset( $options['height'] ) ) ? $options['height'] : '128'; // Get color value from Settings
 		}
 		$html .= 'data-height="' . $height . '" ';
+
+		// Bar Width
+		if ( isset( $attr['bar_width'] ) ) {
+			$bar_width = esc_attr( $attr['bar_width'] );
+		} else {
+			$bar_width = ( isset( $options['bar_width'] ) ) ? $options['bar_width'] : '0'; // Get color value from Settings
+		}
+		if ( $bar_width > 0 )
+			$html .= 'data-bar-width="' . $bar_width . '" ';
 
 		// File URL
 		$html .= 'data-url="' . $link . '"';
@@ -740,7 +850,7 @@ class WaveSurfer_WP {
 		$html .= '<ol class="wavesurfer-list-group">';
 		$track_id = 0;
 		foreach ( $attachments as $attachment ) {
-		    $track_id++;
+			$track_id++;
 			// Add WaveSurfer-WP Premium Data (peaks-url...)
 			$data_extras = apply_filters( 'wavesurfer_wp_shortcode_data', '', $attachment->guid, $split );
 			$image = get_the_post_thumbnail( $attachment, 'thumbnail' );
@@ -752,12 +862,12 @@ class WaveSurfer_WP {
 			$html .= '<li class="list-group-item" data-url="' . $attachment->guid . '" ' . $data_extras . '>';
 
 			if ( $image !== "" ) {
-			    $html .= '<div class="wavesurfer-playlist-track-thumbnail">' . $image . '</div>';
+				$html .= '<div class="wavesurfer-playlist-track-thumbnail">' . $image . '</div>';
 			}
 			$html .= '<div class="wavesurfer-playlist-track-id">' . $track_id . '. </div>';
 			if( isset( $attachment_metadata['artist'] ) && $attachment_metadata['artist'] !== "" ) {
-    			$html .= '<div class="wavesurfer-playlist-track-artist">' . $attachment_metadata['artist'] . '</div>';
-    			$html .= '<div class="wavesurfer-playlist-track-separator">' . $separator . '</div>';
+				$html .= '<div class="wavesurfer-playlist-track-artist">' . $attachment_metadata['artist'] . '</div>';
+				$html .= '<div class="wavesurfer-playlist-track-separator">' . $separator . '</div>';
 			}
 			$html .= '<div class="wavesurfer-playlist-track-title">' . $title . '</div>';
 			$html .= '<div class="wavesurfer-playlist-track-duration">' . $attachment_metadata["length_formatted"] . '</div>';
