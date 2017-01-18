@@ -2,21 +2,21 @@
 
 /**
  * @package WaveSurfer-WP
- * @version 2.6.3
- */
+ * @version 2.7
+ **/
 
 /**
  * Plugin Name: WaveSurfer-WP
  * Plugin URI: https://wordpress.org/plugins/wavesurfer-wp/
  * Description: Customizable HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio and playlist shortcode.
  * Author: X-Raym
- * Version: 2.6.4
+ * Version: 2.7
  * Author URI: https://www.extremraym.com/en/wavesurfer-wp
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2016-12-21
+ * Date: 2017-18-01
  * Text Domain: wavesurfer-wp
- */
+ **/
 
 // If this file is called directly, abort.
 if ( !defined( 'ABSPATH' ) ) exit ( 'restricted access' );
@@ -25,7 +25,7 @@ if ( !defined( 'ABSPATH' ) ) exit ( 'restricted access' );
  * Our main plugin instantiation class
  *
  * @since 1.0.0
- */
+ **/
 
 class WaveSurfer_WP {
 
@@ -40,10 +40,10 @@ class WaveSurfer_WP {
 	 *
 	 * @return A single instance of this class.
 	 * @since 2.5
-	 */
+	 **/
 	public static function get_instance() {
-	if ( null == self::$instance ) {
-		self::$instance = new self;
+		if ( null == self::$instance ) {
+			self::$instance = new self;
 		}
 		return self::$instance;
 	}
@@ -78,7 +78,7 @@ class WaveSurfer_WP {
 		// Add Options
 		if ( false === get_option('wavesurfer_settings') ) {
 			$arg = array(
-				'wave_color'	 	=> '#EE82EE',
+				'wave_color'		=> '#EE82EE',
 				'progress_color'	=> '#800080',
 				'cursor_color'		=> '#333333',
 				'front_theme'		=> 'wavesurfer_default',
@@ -133,7 +133,7 @@ class WaveSurfer_WP {
 
 	/**
 	 * Register Scripts and Styles in FrondEnd
-	 */
+	 **/
 	public function wavesurfer_register_ressources() {
 
 		if ( !is_admin() ) {
@@ -152,26 +152,26 @@ class WaveSurfer_WP {
 	/**
 	 * Get Player Translation Strings
 	 *
-	 */
+	 **/
 	public static function get_player_translation_strings() {
 		// Localize Scripts Strings
-	 	$localize_strings = array(
-	 		'play' => __('Play', 'wavesurfer'),
-	 		'pause' => __('Pause', 'wavesurfer'),
-	 		'resume' => __('Resume', 'wavesurfer'),
-	 		'stop' => __('Stop', 'wavesurfer'),
-	 		'loop' => __('Loop', 'wavesurfer'),
-	 		'unloop' => __('Unloop', 'wavesurfer'),
-	 		'mute' => __('Mute', 'wavesurfer'),
-	 		'unmute' => __('Unmute', 'wavesurfer')
-	 	);
+		$localize_strings = array(
+			'play' => __('Play', 'wavesurfer'),
+			'pause' => __('Pause', 'wavesurfer'),
+			'resume' => __('Resume', 'wavesurfer'),
+			'stop' => __('Stop', 'wavesurfer'),
+			'loop' => __('Loop', 'wavesurfer'),
+			'unloop' => __('Unloop', 'wavesurfer'),
+			'mute' => __('Mute', 'wavesurfer'),
+			'unmute' => __('Unmute', 'wavesurfer')
+		);
 
 		return $localize_strings;
 	}
 
 	/**
 	 * Enqueue script for ajax
-	 */
+	 **/
 	public function my_enqueue_script( $script ) {
 		wp_enqueue_script( $script );
 
@@ -185,7 +185,7 @@ class WaveSurfer_WP {
 
 	/**
 	 * load scripts in Front End
-	 */
+	 **/
 	public function wavesurfer_load_front_ressources() {
 		if ( !is_admin() ) {
 
@@ -201,7 +201,7 @@ class WaveSurfer_WP {
 
 	/**
 	 * Load color picker scripts for Admin settings page
-	 */
+	 **/
 	public function load_color_picker( $hook ) {
 		// first check that $hook_suffix is appropriate for your admin page
 		if ( 'settings_page_wavesurfer-wp' != $hook )
@@ -457,7 +457,7 @@ class WaveSurfer_WP {
 	 * Render Donation Tagline for free users
 	 *
 	 * @since 2.5
-	 */
+	 **/
 	public function render_donation_tagline() {
 		ob_start(); ?>
 		<p><?php _e( 'If you enjoy this free plugin, please consider making a <a href="https://www.extremraym.com/en/donation">donation</a>, contributing to its <a href="https://translate.wordpress.org/projects/wp-plugins/wavesurfer-wp">translations</a> or <a href="https://github.com/X-Raym/wavesurfer-wp">source code</a>, promoting it, or a buying it\'s <a href="https://www.extremraym.com/en/downloads/wavesurfer-wp-premium">premium add-on</a>. Thanks for your consideration!' , 'wavesufer-wp' ); ?></p>
@@ -468,7 +468,7 @@ class WaveSurfer_WP {
 	 * Render Premium page for free users
 	 *
 	 * @since 2.5
-	 */
+	 **/
 	public function render_premium_page_free() {
 		ob_start(); ?>
 
@@ -477,7 +477,7 @@ class WaveSurfer_WP {
 		<h4><?php _e( 'Cache Peaks File', 'wavesurfer-wp'); ?></h4>
 		<p><?php _e( 'This add-on creates and loads peaks from small files, containing peaks values. No need to wait for the full audio to be decoded to display its waveform.', 'wavesurfer-wp'); ?></p>
 		<h4><?php _e( 'Interactive Markers System', 'wavesurfer-wp'); ?></h4>
-		<p><?php _e( 'Add time markers, to create chapters or events list, or even interactive transcripts!', 'wavesurfer-wp'); ?></p>
+		<p><?php _e( 'Add time markers, to create chapters or events list, or even interactive transcripts!', 'wavesurfer-wp'); ?> <a href="https://www.extremraym.com/en/wavesurfer-wp-markers/"><?php _e( 'Demo.', 'wavesurfer-wp'); ?></a></p>
 		<h4><?php _e( 'Plug and Play', 'wavesurfer-wp'); ?></h4>
 		<p><?php _e( 'These extra features are packed as an add-on. No need to delete and replace the original plugin.', 'wavesurfer-wp'); ?><br/><?php _e( 'You will still be able to benefit from translations made by the community. Also, the core is still open source, to allow contribution.', 'wavesurfer-wp'); ?></p>
 		<h3><?php _e( 'Documentation', 'wavesurfer-wp'); ?></h3>
@@ -488,7 +488,7 @@ class WaveSurfer_WP {
 
 	/**
 	 * Audio Shortcode output
-	 */
+	 **/
 	public function wp_audio_shortcode_override( $html, $attr ) {
 
 		// Filter/Add ShortCode Attributes
@@ -611,11 +611,11 @@ class WaveSurfer_WP {
 
 
 	/**
-	 * Audio Shortcode output
+	 * Playlist Shortcode output
 	 *
 	 * https://github.com/WordPress/WordPress/blob/master/wp-includes/media.php#L1892
 	 * https://developer.wordpress.org/reference/hooks/post_playlist/
-	 */
+	 **/
 	public function wp_playlist_shortcode_override( $html, $attr, $instance ) {
 
 		// Filter/Add ShortCode Attributes
@@ -626,7 +626,8 @@ class WaveSurfer_WP {
 
 		// Check if shortcode render must be override or not - Check for Video Playlist
 		if ( (! empty( $attr['player'] ) && $attr['player'] === 'default' ) || ( ! empty( $attr['type'] ) && $atts['type'] !== 'audio' ) || ( empty( $attr['ids'] ) ) ) {
-				return $html;
+			wp_playlist_scripts( 'wp-playlist' ); // Requeue default playlist scripts and styles
+			return $html;
 		}
 
 		// Enqueue Scripts
@@ -737,10 +738,32 @@ class WaveSurfer_WP {
 
 		// Playlist
 		$html .= '<ol class="wavesurfer-list-group">';
+		$track_id = 0;
 		foreach ( $attachments as $attachment ) {
+		    $track_id++;
 			// Add WaveSurfer-WP Premium Data (peaks-url...)
 			$data_extras = apply_filters( 'wavesurfer_wp_shortcode_data', '', $attachment->guid, $split );
-	 		$html .= '<li class="list-group-item" data-url="' . $attachment->guid . '" ' . $data_extras . '>' . $attachment->post_title . '</li>';
+			$image = get_the_post_thumbnail( $attachment, 'thumbnail' );
+			$attachment_metadata = wp_get_attachment_metadata( $attachment->ID );
+			$title = ( isset( $attachment_metadata['title'] ) ) ? $attachment_metadata['title'] : $attachment->post_title;
+
+			$separator = " - ";
+
+			$html .= '<li class="list-group-item" data-url="' . $attachment->guid . '" ' . $data_extras . '>';
+
+			if ( $image !== "" ) {
+			    $html .= '<div class="wavesurfer-playlist-track-thumbnail">' . $image . '</div>';
+			}
+			$html .= '<div class="wavesurfer-playlist-track-id">' . $track_id . '. </div>';
+			if( isset( $attachment_metadata['artist'] ) && $attachment_metadata['artist'] !== "" ) {
+    			$html .= '<div class="wavesurfer-playlist-track-artist">' . $attachment_metadata['artist'] . '</div>';
+    			$html .= '<div class="wavesurfer-playlist-track-separator">' . $separator . '</div>';
+			}
+			$html .= '<div class="wavesurfer-playlist-track-title">' . $title . '</div>';
+			$html .= '<div class="wavesurfer-playlist-track-duration">' . $attachment_metadata["length_formatted"] . '</div>';
+
+			$html .= '</li>';
+
 		};
 		$html .= '</ol>';
 
