@@ -83,7 +83,8 @@ class WaveSurfer_WP {
 				'cursor_color'		=> '#333333',
 				'front_theme'		=> 'wavesurfer_default',
 				'height'			=> '128',
-				'bar_width'			=> '1'
+				'bar_width'			=> '1',
+				'font'				=> 'wavesurfer_enqueue_font'
 			);
 			update_site_option( 'wavesurfer_settings', $arg, '', 'yes' );
 		}
@@ -150,6 +151,8 @@ class WaveSurfer_WP {
 
 			wp_register_style( 'wavesurfer_default', plugin_dir_url( __FILE__ ) . 'css/wavesurfer-wp_default.css' );
 			wp_register_style( 'wavesurfer_flat-icons', plugin_dir_url( __FILE__ ) . 'css/wavesurfer-wp_flat-icons.css' );
+
+			wp_register_style( 'wavesurfer_font', plugin_dir_url( __FILE__ ) . 'css/wavesurfer-wp_font.css' );
 		}
 
 		wp_localize_script( 'wavesurfer-wp_init', 'wavesurfer_localize', $this->get_player_translation_strings() );
@@ -197,12 +200,20 @@ class WaveSurfer_WP {
 
 			$options = $this->get_all_options( 'wavesurfer_settings' );
 
+			if ( isset( $options['font'] ) ) {
+				if ( $options['font'] === 'wavesurfer_enqueue_font' )
+					wp_enqueue_style( 'wavesurfer_font' );
+			} else {
+				wp_enqueue_style( 'wavesurfer_font' );
+			}
+
 			if ( isset( $options['front_theme'] ) ) {
 				if ( $options['front_theme'] !== 'wavesurfer_none' )
 					wp_enqueue_style( $options['front_theme'] );
 			} else {
 				wp_enqueue_style( 'wavesurfer_default' );
 			}
+
 		}
 	}
 
@@ -341,6 +352,15 @@ class WaveSurfer_WP {
 				'colors_section'
 		);
 
+		// Theme
+		add_settings_field( // 1
+				'font',
+				__( 'Font', 'wavesurfer-wp' ),
+				array( $this, 'render_font_field' ),
+				'wavesurfer',
+				'colors_section'
+		);
+
 		// Height
 		add_settings_field( // 1
 				'height',
@@ -418,6 +438,20 @@ class WaveSurfer_WP {
 			<option value='wavesurfer_none' <?php selected( $options['front_theme'], 'wavesurfer_none' ); ?>><?php _e('None', 'wavesurfer'); ?></option>
 		</select>
 		<p><?php _e( 'Style of the buttons. Default theme requires Font-Awesome 1.0.', 'wavesurfer-wp' ) ?></p>
+		<?php
+
+	}
+
+	public function render_font_field() { // 3
+
+		$options = $this->get_all_options( 'wavesurfer_settings' );
+
+		?>
+		<select name='wavesurfer_settings[font]'>
+			<option value='wavesurfer_enqueue_font' <?php selected( $options['font'], 'wavesurfer_enqueue_font' ); ?>><?php _e('Enqueue', 'wavesurfer'); ?></option>
+			<option value='wavesurfer_dequeue_font' <?php selected( $options['font'], 'wavesurfer_dequeue_font' ); ?>><?php _e('Dequeue', 'wavesurfer'); ?></option>
+		</select>
+		<p><?php _e( 'Enqueue icons font. Not needed if you already have Font-Awesome 1.0 enqueued by a theme or a plugin.', 'wavesurfer-wp' ) ?></p>
 		<?php
 
 	}

@@ -71,7 +71,7 @@ button.wavesurfer-paused-button {
 }
 
 .wavesurfer-buttons_set button:before, .wavesurfer-buttons_set div:before {
-  font-family: "FontAwesome";
+  font-family: "wavesurfer", "FontAwesome";
   font-weight: normal;
   font-style: normal;
   width: 1em;

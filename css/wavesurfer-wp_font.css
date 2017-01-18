@@ -1,0 +1,5 @@
+﻿@font-face {
+  font-family: 'wavesurfer';
+  src: url('../font/wavesurfer.woff2') format('woff2'),
+       url('../font/wavesurfer.woff') format('woff');
+}
