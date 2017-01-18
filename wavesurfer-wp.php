@@ -518,6 +518,7 @@ class WaveSurfer_WP {
 		$html .= '<div class="wavesurfer-player" ';
 
 		// Split channels
+		$split = false;
 		if ( isset( $attr['split_channels'] ) ) {
 			if( $attr['split_channels'] == true )
 				$split = true;
@@ -652,6 +653,7 @@ class WaveSurfer_WP {
 		$html .= '<div class="wavesurfer-player" ';
 
 		// Split channels
+		$split = false;
 		if ( isset( $attr['split_channels'] ) ) {
 			if( $attr['split_channels'] == true )
 				$split = true;
