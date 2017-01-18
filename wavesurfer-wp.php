@@ -3,7 +3,7 @@
 /**
  * @package WaveSurfer-WP
  * @version 2.7
- **/
+ */
 
 /**
  * Plugin Name: WaveSurfer-WP
@@ -16,7 +16,7 @@
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
  * Date: 2017-18-01
  * Text Domain: wavesurfer-wp
- **/
+ */
 
 // If this file is called directly, abort.
 if ( !defined( 'ABSPATH' ) ) exit ( 'restricted access' );
@@ -25,7 +25,7 @@ if ( !defined( 'ABSPATH' ) ) exit ( 'restricted access' );
  * Our main plugin instantiation class
  *
  * @since 1.0.0
- **/
+ */
 
 class WaveSurfer_WP {
 
@@ -40,7 +40,7 @@ class WaveSurfer_WP {
 	 *
 	 * @return A single instance of this class.
 	 * @since 2.5
-	 **/
+	 */
 	public static function get_instance() {
 		if ( null == self::$instance ) {
 			self::$instance = new self;
@@ -52,7 +52,7 @@ class WaveSurfer_WP {
 	 * Get everything running.
 	 *
 	 * @since 1.0.0
-	 **/
+	 */
 	private function __construct() {
 
 		// Define plugin constants
@@ -72,7 +72,7 @@ class WaveSurfer_WP {
 	 * Activation hook for the plugin.
 	 *
 	 * @since 1.0.0
-	 **/
+	 */
 	public function activate() {
 
 		// Add Options
@@ -94,7 +94,7 @@ class WaveSurfer_WP {
 	 * Include our plugin dependencies
 	 *
 	 * @since 1.0.0
-	 **/
+	 */
 	public function includes() {
 
 		// Load translations
@@ -133,7 +133,7 @@ class WaveSurfer_WP {
 
 	/**
 	 * Register Scripts and Styles in FrondEnd
-	 **/
+	 */
 	public function wavesurfer_register_ressources() {
 
 		if ( !is_admin() ) {
@@ -152,7 +152,7 @@ class WaveSurfer_WP {
 	/**
 	 * Get Player Translation Strings
 	 *
-	 **/
+	 */
 	public static function get_player_translation_strings() {
 		// Localize Scripts Strings
 		$localize_strings = array(
@@ -171,7 +171,7 @@ class WaveSurfer_WP {
 
 	/**
 	 * Enqueue script for ajax
-	 **/
+	 */
 	public function my_enqueue_script( $script ) {
 		wp_enqueue_script( $script );
 
@@ -185,7 +185,7 @@ class WaveSurfer_WP {
 
 	/**
 	 * load scripts in Front End
-	 **/
+	 */
 	public function wavesurfer_load_front_ressources() {
 		if ( !is_admin() ) {
 
@@ -201,7 +201,7 @@ class WaveSurfer_WP {
 
 	/**
 	 * Load color picker scripts for Admin settings page
-	 **/
+	 */
 	public function load_color_picker( $hook ) {
 		// first check that $hook_suffix is appropriate for your admin page
 		if ( 'settings_page_wavesurfer-wp' != $hook )
@@ -216,7 +216,7 @@ class WaveSurfer_WP {
 	 * Link on plugin page
 	 *
 	 * @since 1.0
-	 **/
+	 */
 	public function add_action_links ( $links ) {
 		$mylinks = array(
 			'<a href="' . admin_url('options-general.php?page=wavesurfer-wp.php' ) . '">' . __( 'Settings', 'wavesurfer-wp' ) . '</a>',
@@ -229,7 +229,7 @@ class WaveSurfer_WP {
 	 * Add administration menus
 	 *
 	 * @since 1.0
-	 **/
+	 */
 	public function add_admin_pages() {
 
 		add_options_page(
@@ -246,7 +246,7 @@ class WaveSurfer_WP {
 	 * Content of the settings page
 	 *
 	 * @since 1.0
-	 **/
+	 */
 	public function wavesurfer_settings_init() {
 
 		// Register Settings
@@ -317,7 +317,7 @@ class WaveSurfer_WP {
 	 * Echo form sections descriptions.
 	 *
 	 * @since 1.0
-	 **/
+	 */
 	public function render_colors_section() { // 0
 		echo __( 'Global style of the wavesurfer visualization and buttons control.', 'wavesurfer-wp' );
 	}
@@ -326,7 +326,7 @@ class WaveSurfer_WP {
 	 * Render form fields
 	 *
 	 * @since 1.0
-	 **/
+	 */
 	public function render_wave_color_field() { // 0
 
 		$options = get_option( 'wavesurfer_settings' );
@@ -389,7 +389,7 @@ class WaveSurfer_WP {
 	 * Content of the settings page
 	 *
 	 * @since 1.0.0
-	 **/
+	 */
 	public function users_page() {
 
 		if ( ! current_user_can( 'manage_options' ) )
@@ -457,7 +457,7 @@ class WaveSurfer_WP {
 	 * Render Donation Tagline for free users
 	 *
 	 * @since 2.5
-	 **/
+	 */
 	public function render_donation_tagline() {
 		ob_start(); ?>
 		<p><?php _e( 'If you enjoy this free plugin, please consider making a <a href="https://www.extremraym.com/en/donation">donation</a>, contributing to its <a href="https://translate.wordpress.org/projects/wp-plugins/wavesurfer-wp">translations</a> or <a href="https://github.com/X-Raym/wavesurfer-wp">source code</a>, promoting it, or a buying it\'s <a href="https://www.extremraym.com/en/downloads/wavesurfer-wp-premium">premium add-on</a>. Thanks for your consideration!' , 'wavesufer-wp' ); ?></p>
@@ -468,7 +468,7 @@ class WaveSurfer_WP {
 	 * Render Premium page for free users
 	 *
 	 * @since 2.5
-	 **/
+	 */
 	public function render_premium_page_free() {
 		ob_start(); ?>
 
@@ -488,7 +488,7 @@ class WaveSurfer_WP {
 
 	/**
 	 * Audio Shortcode output
-	 **/
+	 */
 	public function wp_audio_shortcode_override( $html, $attr ) {
 
 		// Filter/Add ShortCode Attributes
@@ -615,7 +615,7 @@ class WaveSurfer_WP {
 	 *
 	 * https://github.com/WordPress/WordPress/blob/master/wp-includes/media.php#L1892
 	 * https://developer.wordpress.org/reference/hooks/post_playlist/
-	 **/
+	 */
 	public function wp_playlist_shortcode_override( $html, $attr, $instance ) {
 
 		// Filter/Add ShortCode Attributes
