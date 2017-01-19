@@ -83,7 +83,7 @@ class WaveSurfer_WP {
 				'cursor_color'		=> '#333333',
 				'front_theme'		=> 'wavesurfer_default',
 				'height'			=> '128',
-				'bar_width'			=> '1',
+				'bar_width'			=> '0',
 				'font'				=> 'wavesurfer_enqueue_font'
 			);
 			update_site_option( 'wavesurfer_settings', $arg, '', 'yes' );
