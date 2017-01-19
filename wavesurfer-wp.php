@@ -14,7 +14,7 @@
  * Author URI: https://www.extremraym.com/en/wavesurfer-wp
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2017-18-01
+ * Date: 2017-01-19
  * Text Domain: wavesurfer-wp
  */
 
@@ -472,7 +472,7 @@ class WaveSurfer_WP {
 		$val = ( isset( $options['bar_width'] ) ) ? $options['bar_width'] : '0';
 
 		echo '<input type="number" name="wavesurfer_settings[bar_width]" min="0" max="10" value="' . $val .'" class="bar_width" >';
-		echo '<p>' . __( 'This setting can be locally overridden with the <code>bar_width="1"</code> [audio] shortcode attribute', 'wavesurfer-wp' ) .'.</p>';
+		echo '<p>' . __( 'This setting can be locally overridden with the <code>bar_width="0"</code> [audio] shortcode attribute', 'wavesurfer-wp' ) .'.</p>';
 
 	}
 

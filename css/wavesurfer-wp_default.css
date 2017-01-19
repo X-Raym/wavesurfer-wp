@@ -46,6 +46,10 @@
   box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
 }
 
+.wavesurfer-time, .wavesurfer-duration {
+  min-width: 5.5em;
+}
+
 .wavesurfer-download a {
   color: white;
   text-decoration: none;

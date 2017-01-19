@@ -52,6 +52,10 @@
 	*/
 }
 
+.wavesurfer-time, .wavesurfer-duration {
+  min-width: 5.5em;
+}
+
 .wavesurfer-download a {
   color: white;
   text-decoration: none;

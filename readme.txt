@@ -26,6 +26,7 @@ Global colors and style settings can be overridden locally by dedicated shortcod
 *   `wave_color="#FF0000"`
 *   `cursor_color="#FF0000"`
 *   `height="128"`
+*   `bar_width="0"`
 
 Also, there is some attributes accessible at shortcode level:
 
@@ -47,6 +48,7 @@ Extra features :
 
 * Pressing play on a player automatically set all the others on the same page to pause.
 * AJAX Page loading compatibility
+* MultiSite Friendly
 
 The default style requires [Font-Awesome 1.0](https://fortawesome.github.io/). Because this icon-font is already used in a lot of themes and plugins, it is not included in this pack. However, if your themes and plugins doesn't have it, you can use the [Enqueue Font Awesome CDN](https://wordpress.org/plugins/font-awesome-4-menus/) WordPress plugin, or any other plugin that loads on every page.
 
@@ -126,11 +128,11 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
-= 2.7 (2017-18-01) =
 * Add sound duration, title (fallback to post title), thumbnail and artist in playlist tracks
 * Fix 'default' shortcode attribute behavior for playlists
-* MultiSite
+* MultiSite friendly
 * Notices fixes
+* Small styles enhancements
 
 = 2.6.4 (2016-12-21) =
 * Updated styles for WaveSurfer-WP-Premium interactive markers system
@@ -214,6 +216,11 @@ Please report other problems on the support forum.
 * First release.
 
 == Upgrade Notice ==
+* Add sound duration, title (fallback to post title), thumbnail and artist in playlist tracks
+* Fix 'default' shortcode attribute behavior for playlists
+* MultiSite friendly
+* Notices fixes
+* Small styles enhancements
 
 = 2.6.4 (2016-12-21) =
 * Updated styles for WaveSurfer-WP-Premium interactive markers system
