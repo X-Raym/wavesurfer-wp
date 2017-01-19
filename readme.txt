@@ -50,7 +50,7 @@ Extra features :
 * AJAX Page loading compatibility
 * MultiSite Friendly
 
-The default style requires [Font-Awesome 1.0](https://fortawesome.github.io/). Because this icon-font is already used in a lot of themes and plugins, it is not included in this pack. However, if your themes and plugins doesn't have it, you can use the [Enqueue Font Awesome CDN](https://wordpress.org/plugins/font-awesome-4-menus/) WordPress plugin, or any other plugin that loads on every page.
+The default style requires some icons of [Font-Awesome 1.0](https://fortawesome.github.io/), but this are included in the plugin. Because this icon-font is already used in a lot of themes and plugins, you can deactivate this custom font if needed.
 
 You can deactivate the default WaveSurder-WP theme, and use your own theme style. I strongly encourage you to do that as custom CSS is the only way to make it fit your theme perfectly. There is a lot of dedicated CSS selectors for that. You can take one of the included theme as reference.
 This will allow you to have more control on icons, responsivity, mouse hover behavior etc...
@@ -128,11 +128,13 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.7 (2017-01-19) =
 * Add sound duration, title (fallback to post title), thumbnail and artist in playlist tracks
 * Fix 'default' shortcode attribute behavior for playlists
 * MultiSite friendly
 * Notices fixes
 * Small styles enhancements
+* Possibility to enqueue/dequeue a custom icons font (default is enqueue)
 
 = 2.6.4 (2016-12-21) =
 * Updated styles for WaveSurfer-WP-Premium interactive markers system
@@ -216,11 +218,13 @@ Please report other problems on the support forum.
 * First release.
 
 == Upgrade Notice ==
+= 2.7 (2017-01-19) =
 * Add sound duration, title (fallback to post title), thumbnail and artist in playlist tracks
 * Fix 'default' shortcode attribute behavior for playlists
 * MultiSite friendly
 * Notices fixes
 * Small styles enhancements
+* Possibility to enqueue/dequeue a custom icons font (default is enqueue)
 
 = 2.6.4 (2016-12-21) =
 * Updated styles for WaveSurfer-WP-Premium interactive markers system
