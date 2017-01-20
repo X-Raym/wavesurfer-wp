@@ -79,12 +79,12 @@ Features
 This add-on creates and loads peaks from small files, containing peaks values. No need to wait for the full audio to be decoded to display its waveform.
 
 *   Markers System
-You can add custom clickable element on your pages to seek WaveSurfer-WP player to a desired position. Can be useful for adding marks, chapters, and it can even be used for [interactive audio transcripts](https://wwww.extremraym.com/en/wavesurfer-wp-markers)!
+You can add custom clickable element on your pages to seek WaveSurfer-WP player to a desired position. Can be useful for adding marks, chapters, and it can even be used for [interactive audio transcripts](https://www.extremraym.com/en/wavesurfer-wp-markers)!
 
 *   Plug and Play
 These extra features are packed as an add-on. No need to delete and replace the original plugin. You will still be able to benefit from translations made by the community. Also, the core is still open source, to allow contribution.
 
-You can buy it from the official [product page](https://wwww.extremraym.com/en/downloads/wavesurfer-wp-premium).
+You can buy it from the official [product page](https://www.extremraym.com/en/downloads/wavesurfer-wp-premium).
 Thanks for considering this way to support WaveSurfer-WP !
 
 == Installation ==
