@@ -2,7 +2,7 @@
 
 /**
  * @package WaveSurfer-WP
- * @version 2.7
+ * @version 2.7.1
  */
 
 /**
@@ -10,11 +10,11 @@
  * Plugin URI: https://wordpress.org/plugins/wavesurfer-wp/
  * Description: Customizable HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio and playlist shortcode.
  * Author: X-Raym
- * Version: 2.7
+ * Version: 2.7.1
  * Author URI: https://www.extremraym.com/en/wavesurfer-wp
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2017-01-19
+ * Date: 2017-01-27
  * Text Domain: wavesurfer-wp
  */
 
@@ -120,10 +120,10 @@ class WaveSurfer_WP {
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_color_picker' ) );
 
 		// Add Premium Page Text
-		add_action( 'display_premium_page', array( $this, 'render_premium_page_free') );
+		add_action( 'wavesurfer_wp_display_premium_page', array( $this, 'render_premium_page_free') );
 
 		// Add Donation Tag Line
-		add_action( 'display_donation_tagline', array( $this, 'render_donation_tagline') );
+		add_action( 'wavesurfer_wp_display_donation_tagline', array( $this, 'render_donation_tagline') );
 
 		// Shortcode Override Functions
 		if ( !is_admin() ) {
@@ -503,7 +503,7 @@ class WaveSurfer_WP {
 	<!-- Header: Infos	-->
 	<p><?php _e( 'A WordPress Integration of <a href="https://github.com/katspaugh">katspaugh</a>\'s <a href="http://wavesurfer-js.org/">wavesurfer.js</a> by <a href="http://www.extremraym.com/en/wavesurfer-wp/" target="_blank">X-Raym</a>.', 'wavesurfer-wp' ); ?></p>
 
-	<?php do_action( 'display_donation_tagline', array( $this, 'render_donation_header') );
+	<?php do_action( 'wavesurfer_wp_display_donation_tagline', array( $this, 'render_donation_header') );
 	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'general'; ?>
 
 	<h2 class="nav-tab-wrapper">
@@ -544,7 +544,7 @@ class WaveSurfer_WP {
 
 	</div>
 
-	<?php } else { do_action( 'display_premium_page' ); }; ?>
+	<?php } else { do_action( 'wavesurfer_wp_display_premium_page' ); }; ?>
 
 </div>
 <?php

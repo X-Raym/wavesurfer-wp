@@ -128,6 +128,9 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.7.1 (2017-01-27) =
+* Better internal hook names
+
 = 2.7 (2017-01-19) =
 * Add sound duration, title (fallback to post title), thumbnail and artist in playlist tracks
 * Fix 'default' shortcode attribute behavior for playlists
@@ -218,6 +221,9 @@ Please report other problems on the support forum.
 * First release.
 
 == Upgrade Notice ==
+= 2.7.1 (2017-01-27) =
+* Better internal hook names
+
 = 2.7 (2017-01-19) =
 * Add sound duration, title (fallback to post title), thumbnail and artist in playlist tracks
 * Fix 'default' shortcode attribute behavior for playlists
