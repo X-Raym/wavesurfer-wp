@@ -637,6 +637,7 @@ class WaveSurfer_WP {
 		if ( isset( $attr['mp3'] ) ) { $link = $attr['mp3']; }
 		if ( isset( $attr['m4a'] ) ) { $link = $attr['m4a']; }
 		if ( isset( $attr['ogg'] ) ) { $link = $attr['ogg']; }
+		if ( isset( $attr['wma'] ) ) { $link = $attr['wma']; }
 		if ( isset( $attr['src'] ) ) { $link = $attr['src']; }
 
 		// Begin render
