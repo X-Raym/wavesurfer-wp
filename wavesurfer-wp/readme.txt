@@ -128,6 +128,9 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.7.2 (2017-04-14) =
+* Continuous shortcode attribute for playlist support for the premium add-on
+
 = 2.7.1 (2017-01-27) =
 * Better internal hook names
 
@@ -221,6 +224,9 @@ Please report other problems on the support forum.
 * First release.
 
 == Upgrade Notice ==
+= 2.7.2 (2017-04-14) =
+* Continuous shortcode attribute for playlist support for the premium add-on
+
 = 2.7.1 (2017-01-27) =
 * Better internal hook names
 
