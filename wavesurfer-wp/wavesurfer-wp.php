@@ -2,7 +2,7 @@
 
 /**
  * @package WaveSurfer-WP
- * @version 2.7.2
+ * @version 2.7.3
  */
 
 /**
@@ -10,11 +10,11 @@
  * Plugin URI: https://wordpress.org/plugins/wavesurfer-wp/
  * Description: Customizable HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio and playlist shortcode.
  * Author: X-Raym
- * Version: 2.7.2
+ * Version: 2.7.3
  * Author URI: https://www.extremraym.com/en/wavesurfer-wp
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2017-04-14
+ * Date: 2017-04-18
  * Text Domain: wavesurfer-wp
  */
 
@@ -125,17 +125,49 @@ class WaveSurfer_WP {
 		// Add Donation Tag Line
 		add_action( 'wavesurfer_wp_display_donation_tagline', array( $this, 'render_donation_tagline') );
 
-		// Shortcode Override Functions
-		if ( !is_admin() ) {
+		if ( !is_admin() || $this->request_is_frontend_ajax() ) {
+			// Shortcode Override Functions
 			add_filter( 'wp_audio_shortcode_override' , array( $this, 'wp_audio_shortcode_override' ), 10, 2 );
 			add_filter( 'post_playlist' , array( $this, 'wp_playlist_shortcode_override' ), 10, 3 );
+
+			// Load Front End Ressources
+			add_action( 'wp_enqueue_scripts', array( $this, 'wavesurfer_register_ressources' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'wavesurfer_load_front_ressources' ) );
 		}
 
-		// Load Front End Ressources
-		add_action( 'wp_enqueue_scripts', array( $this, 'wavesurfer_register_ressources' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'wavesurfer_load_front_ressources' ) );
-
 	} /* includes() */
+
+	/**
+	 * See if an AJAX request come from front-end or Back-End
+	 * Prevents shortcode rendering in Post Editor (which uses AJAX)
+	 *
+	 * https://snippets.khromov.se/determine-if-wordpress-ajax-request-is-a-backend-of-frontend-request/
+	 * @since 2.7.3
+	 */
+	public function request_is_frontend_ajax() {
+
+		$script_filename = isset( $_SERVER['SCRIPT_FILENAME'] ) ? $_SERVER['SCRIPT_FILENAME'] : '';
+
+		//Try to figure out if frontend AJAX request... If we are DOING_AJAX; let's look closer
+		if ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+			//From wp-includes/functions.php, wp_get_referer() function.
+			//Required to fix: https://core.trac.wordpress.org/ticket/25294
+			$ref = '';
+			if ( ! empty( $_REQUEST['_wp_http_referer'] ) )
+				$ref = wp_unslash( $_REQUEST['_wp_http_referer'] );
+			elseif ( ! empty( $_SERVER['HTTP_REFERER'] ) )
+				$ref = wp_unslash( $_SERVER['HTTP_REFERER'] );
+
+			//If referer does not contain admin URL and we are using the admin-ajax.php endpoint, this is likely a frontend AJAX request
+			if ( ( ( strpos( $ref, admin_url() ) === false ) && ( basename( $script_filename ) === 'admin-ajax.php' ) ) )
+				return true;
+
+		}
+
+		//If no checks triggered, we end up here - not an AJAX request.
+		return false;
+
+	}
 
 
 	/**
@@ -143,19 +175,19 @@ class WaveSurfer_WP {
 	 */
 	public function wavesurfer_register_ressources() {
 
-		if ( !is_admin() ) {
+		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '.js' : '.min.js';
 
-			wp_register_script( 'wavesurfer', plugin_dir_url( __FILE__ ) . 'js/wavesurfer.js', array( 'jquery' ), '1.8.0', true );
-			wp_register_script( 'wavesurfer-wp_init', plugin_dir_url( __FILE__ ) . 'js/wavesurfer-wp.js', array( 'jquery' ), '1.8.0', true );
-			wp_register_script( 'download-js', plugin_dir_url( __FILE__ ) . 'js/download.min.js', array( 'jquery' ), '1.8.0', true );
+		wp_register_script( 'wavesurfer', plugin_dir_url( __FILE__ ) . 'js/wavesurfer' . $suffix, array( 'jquery' ), false, true );
+		wp_register_script( 'wavesurfer-wp_init', plugin_dir_url( __FILE__ ) . 'js/wavesurfer-wp.js', array( 'wavesurfer' ), false, true );
+		wp_register_script( 'download-js', plugin_dir_url( __FILE__ ) . 'js/download.min.js', array( 'jquery' ), false, true );
 
-			wp_register_style( 'wavesurfer_default', plugin_dir_url( __FILE__ ) . 'css/wavesurfer-wp_default.css' );
-			wp_register_style( 'wavesurfer_flat-icons', plugin_dir_url( __FILE__ ) . 'css/wavesurfer-wp_flat-icons.css' );
+		wp_register_style( 'wavesurfer_default', plugin_dir_url( __FILE__ ) . 'css/wavesurfer-wp_default.css' );
+		wp_register_style( 'wavesurfer_flat-icons', plugin_dir_url( __FILE__ ) . 'css/wavesurfer-wp_flat-icons.css' );
 
-			wp_register_style( 'wavesurfer_font', plugin_dir_url( __FILE__ ) . 'css/wavesurfer-wp_font.css' );
-		}
+		wp_register_style( 'wavesurfer_font', plugin_dir_url( __FILE__ ) . 'css/wavesurfer-wp_font.css' );
 
 		wp_localize_script( 'wavesurfer-wp_init', 'wavesurfer_localize', $this->get_player_translation_strings() );
+
 	}
 
 	/**
@@ -182,14 +214,14 @@ class WaveSurfer_WP {
 	 * Enqueue script for ajax
 	 */
 	public function my_enqueue_script( $script ) {
-		wp_enqueue_script( $script );
-
 		$wavesurfer_nonce = wp_create_nonce( 'wavesurfer_nonce' );
 
 		wp_localize_script( $script, 'my_ajax_obj', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce'    => $wavesurfer_nonce,
 		) );
+
+		wp_enqueue_script( $script );
 	}
 
 	/**
@@ -488,7 +520,7 @@ class WaveSurfer_WP {
 
 ?>
 
-<?php if( isset( $_GET['updated'] ) && is_multisite() ): ?>
+<?php if ( isset( $_GET['updated'] ) && is_multisite() ): ?>
 	<div id="message" class="updated notice is-dismissible">
 		<p><?php _e('Options saved.'); ?></p>
 	</div>
@@ -513,8 +545,8 @@ class WaveSurfer_WP {
 
 	<div id="tab_container">
 
-	<?php if( $active_tab == 'general' ) { ?>
-		<form method="post" action="<?php if( is_multisite() && is_network_admin() ) { echo 'edit.php?action=update_network_options'; } else { echo 'options.php'; } ?> "> <!-- options.php is important -->
+	<?php if ( $active_tab == 'general' ) { ?>
+		<form method="post" action="<?php if ( is_multisite() && is_network_admin() ) { echo 'edit.php?action=update_network_options'; } else { echo 'options.php'; } ?> "> <!-- options.php is important -->
 			<?php
 
 				settings_fields( 'wavesurfer' );
@@ -606,6 +638,8 @@ class WaveSurfer_WP {
 		<p><?php _e( 'Add time markers, to create chapters or events list, or even interactive transcripts!', 'wavesurfer-wp'); ?> <a href="https://www.extremraym.com/en/wavesurfer-wp-markers/"><?php _e( 'Demo.', 'wavesurfer-wp'); ?></a></p>
 		<h4><?php _e( 'Plug and Play', 'wavesurfer-wp'); ?></h4>
 		<p><?php _e( 'These extra features are packed as an add-on. No need to delete and replace the original plugin.', 'wavesurfer-wp'); ?><br/><?php _e( 'You will still be able to benefit from translations made by the community. Also, the core is still open source, to allow contribution.', 'wavesurfer-wp'); ?></p>
+		<h4><?php _e( 'Timeline', 'wavesurfer-wp'); ?></h4>
+		<p><?php _e( 'When activated thanks to a shortcode attribute, a customizable time ruler will appear below your waveform.', 'wavesurfer-wp'); ?></p>
 		<h3><?php _e( 'Documentation', 'wavesurfer-wp'); ?></h3>
 		<p><?php _e( 'All infos about this add-on are avaible on it\'s <a href="https://www.extremraym.com/en/downloads/wavesurfer-wp-premium">official product page</a>.', 'wavesurfer-wp'); ?></p>
 
@@ -646,7 +680,7 @@ class WaveSurfer_WP {
 		// Split channels
 		$split = false;
 		if ( isset( $attr['split_channels'] ) ) {
-			if( $attr['split_channels'] == true )
+			if ( $attr['split_channels'] == true )
 				$split = true;
 				$html .= 'data-split-channels="true" ';
 		}
@@ -699,7 +733,7 @@ class WaveSurfer_WP {
 		$html .= 'data-url="' . $link . '"';
 
 		// Add WaveSurfer-WP Premium Data (peaks-url...)
-		$html .= apply_filters( 'wavesurfer_wp_shortcode_data', '', $link, $split );
+		$html = apply_filters( 'wavesurfer_wp_shortcode_data', $html, $link, $split, $attr );
 
 		// End div
 		$html .= '></div>';
@@ -714,19 +748,19 @@ class WaveSurfer_WP {
 
 		// Mute button
 		if ( isset( $attr['mute_button'] ) ) {
-			if( $attr['mute_button'] == true )
+			if ( $attr['mute_button'] == true )
 			$html .= '<button type="button" class="wavesurfer-mute"><span>' . __('Mute', 'wavesurfer') . '</span></button>';
 		}
 
 		// Loop button channels
 		if ( isset( $attr['loop_button'] ) ) {
-			if( $attr['loop_button'] == true )
+			if ( $attr['loop_button'] == true )
 			$html .= '<button type="button" class="wavesurfer-loop"><span>' . __('Loop', 'wavesurfer') . '</span></button>';
 		}
 
 		// Download button
 		if ( isset( $attr['download_button'] ) ) {
-			if( $attr['download_button'] == true )
+			if ( $attr['download_button'] == true )
 			$html .= '<button type="button" class="wavesurfer-download"><span>' . __('Download', 'wavesurfer') . '</span></button>';
 			wp_enqueue_script( 'download-js' );
 		}
@@ -791,13 +825,13 @@ class WaveSurfer_WP {
 		// Split channels
 		$split = false;
 		if ( isset( $attr['split_channels'] ) ) {
-			if( $attr['split_channels'] == true )
+			if ( $attr['split_channels'] == true )
 				$split = true;
 				$html .= 'data-split-channels="true" ';
 		}
 
 		// Continuous play
-		if( isset( $attr['continuous'] ) && $attr['continuous'] == true )
+		if ( isset( $attr['continuous'] ) && $attr['continuous'] == true )
 			$html .= 'data-continuous="false" ';
 
 		// Get Options
@@ -848,7 +882,7 @@ class WaveSurfer_WP {
 		$html .= 'data-url="' . $link . '"';
 
 		// Add WaveSurfer-WP Premium Data (peaks-url...)
-		$html .= apply_filters( 'wavesurfer_wp_shortcode_data', '', $link, $split );
+		$html = apply_filters( 'wavesurfer_wp_shortcode_data', $html, $link, $split, $attr );
 
 		$html .= '></div>';
 
@@ -862,19 +896,19 @@ class WaveSurfer_WP {
 
 		// Mute button
 		if ( isset( $attr['mute_button'] ) ) {
-			if( $attr['mute_button'] == true )
+			if ( $attr['mute_button'] == true )
 			$html .= '<button type="button" class="wavesurfer-mute"><span>' . __('Mute', 'wavesurfer') . '</span></button>';
 		}
 
 		// Loop button channels
 		if ( isset( $attr['loop_button'] ) ) {
-			if( $attr['loop_button'] == true )
+			if ( $attr['loop_button'] == true )
 			$html .= '<button type="button" class="wavesurfer-loop"><span>' . __('Loop', 'wavesurfer') . '</span></button>';
 		}
 
 		// Download button
 		if ( isset( $attr['download_button'] ) ) {
-			if( $attr['download_button'] == true )
+			if ( $attr['download_button'] == true )
 			$html .= '<button type="button" class="wavesurfer-download"><span>' . __('Download', 'wavesurfer') . '</span></button>';
 			wp_enqueue_script( 'download-js' );
 		}
@@ -890,7 +924,8 @@ class WaveSurfer_WP {
 		foreach ( $attachments as $attachment ) {
 			$track_id++;
 			// Add WaveSurfer-WP Premium Data (peaks-url...)
-			$data_extras = apply_filters( 'wavesurfer_wp_shortcode_data', '', $attachment->guid, $split );
+			$data_extras = '';
+			$data_extras = apply_filters( 'wavesurfer_wp_shortcode_data', $data_extras, $attachment->guid, $split );
 			$image = get_the_post_thumbnail( $attachment, 'thumbnail' );
 			$attachment_metadata = wp_get_attachment_metadata( $attachment->ID );
 			$title = ( isset( $attachment_metadata['title'] ) ) ? $attachment_metadata['title'] : $attachment->post_title;
@@ -903,7 +938,7 @@ class WaveSurfer_WP {
 				$html .= '<div class="wavesurfer-playlist-track-thumbnail">' . $image . '</div>';
 			}
 			$html .= '<div class="wavesurfer-playlist-track-id">' . $track_id . '. </div>';
-			if( isset( $attachment_metadata['artist'] ) && $attachment_metadata['artist'] !== "" ) {
+			if ( isset( $attachment_metadata['artist'] ) && $attachment_metadata['artist'] !== "" ) {
 				$html .= '<div class="wavesurfer-playlist-track-artist">' . $attachment_metadata['artist'] . '</div>';
 				$html .= '<div class="wavesurfer-playlist-track-separator">' . $separator . '</div>';
 			}

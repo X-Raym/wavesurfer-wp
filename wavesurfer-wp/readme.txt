@@ -3,7 +3,7 @@ Contributors: X-Raym
 Tags: audio, player, waveform, visualization, media
 Donate link: https://www.extremraym.com/en/donation/
 Requires at least: 4.0
-Tested up to: 4.7.1
+Tested up to: 4.7.4
 Stable tag: trunk
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -50,7 +50,7 @@ Extra features :
 * AJAX Page loading compatibility
 * MultiSite Friendly
 
-The default style requires some icons of [Font-Awesome 1.0](https://fortawesome.github.io/), but this are included in the plugin. Because this icon-font is already used in a lot of themes and plugins, you can deactivate this custom font if needed.
+The default style requires some icons of [Font-Awesome 1.0](https://fortawesome.github.io/). These are included in the plugin as a small custom font. Because this icon-font is already used in a lot of themes and plugins, you can deactivate this custom font if needed.
 
 You can deactivate the default WaveSurder-WP theme, and use your own theme style. I strongly encourage you to do that as custom CSS is the only way to make it fit your theme perfectly. There is a lot of dedicated CSS selectors for that. You can take one of the included theme as reference.
 This will allow you to have more control on icons, responsivity, mouse hover behavior etc...
@@ -66,14 +66,12 @@ No need for that on the back-end, only for front-end.
 
 This player doesn't have and will not have Like Button, Sharing Button, Play count and Download count.
 If you are looking for a WordPress player with such Social Features and advanced statistics like [SoundCloud](http://www.soundcloud.com) or [Hearthis.at](http://www.hearthis.at), take a look at [ZoomSounds](http://codecanyon.net/item/zoomsounds-neat-html5-audio-player/4525354).
-For another advanced WordPress integration of wavesurfer-js, with peak file generation for cache, auto-play and other nice features, consider using the premium [WavePlayer](http://codecanyon.net/item/waveplayer-a-wordpress-audio-player/14349799) plugin by luigipulcini.
+For other advanced WordPress integration of wavesurfer-js, you can check [WavePlayer](http://codecanyon.net/item/waveplayer-a-wordpress-audio-player/14349799) by luigipulcini or [WaveSurfer-Plus](https://codecanyon.net/item/wavesurfer-plus-mp3-player-module-for-gmedia-plugin/19242349) by GalleryCreator.
 
-Notes: Some audio formats / browsers combo are not possible. This cannot be fixed by our side. (For ex, wav 24 bits in FireFox).
+Contrary to the other WordPress plugin based on wavesurfer-js, wavesurfer-js hasn't been modified in this plugin. This means that you can extend feature of this plugin using the wavesurfer-js [methods](http://wavesurfer-js.org/), and that updates from the wavesurfer-js community will be pushed in WaveSurfer-WP regularly.
 
 = WaveSurfer-WP Premium Add-on =
 A premium add-on is available to add extra features to WaveSurfer-WP.
-
-Features
 
 *   Cache Peaks File
 This add-on creates and loads peaks from small files, containing peaks values. No need to wait for the full audio to be decoded to display its waveform.
@@ -83,6 +81,9 @@ You can add custom clickable element on your pages to seek WaveSurfer-WP player 
 
 *   Plug and Play
 These extra features are packed as an add-on. No need to delete and replace the original plugin. You will still be able to benefit from translations made by the community. Also, the core is still open source, to allow contribution.
+
+*   TimeLine Plugin
+When activated thanks to a shortcode attribute, a customizable time ruler will appear below your waveform.
 
 You can buy it from the official [product page](https://www.extremraym.com/en/downloads/wavesurfer-wp-premium).
 Thanks for considering this way to support WaveSurfer-WP !
@@ -116,6 +117,8 @@ So, you can choose one of these solutions :
 *   Host your file on your main server
 
 II/ This problem may also occurs if your file is not supported by your browser.
+
+Some audio formats / browsers combo are not possible. This cannot be fixed by our side. (For ex, wav 24 bits in FireFox).
 Convert the file to a more web-friendly format and try again.
 
 III/ Also, check that your file is accessible via http (aka, check if the link is valid).
@@ -128,6 +131,10 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.7.3 (2017-04-18) =
+* Filters: better logic.
+* Scripts: dependencies minification. Dev versions could be loaded thanks to WordPress SCRIPT_DEBUG variable.
+
 = 2.7.2 (2017-04-14) =
 * Continuous shortcode attribute for playlist support for the premium add-on
 
@@ -224,6 +231,10 @@ Please report other problems on the support forum.
 * First release.
 
 == Upgrade Notice ==
+= 2.7.3 (2017-04-18) =
+* Filters: better logic.
+* Scripts: dependencies minification. Dev versions could be loaded thanks to WordPress SCRIPT_DEBUG variable.
+
 = 2.7.2 (2017-04-14) =
 * Continuous shortcode attribute for playlist support for the premium add-on
 
