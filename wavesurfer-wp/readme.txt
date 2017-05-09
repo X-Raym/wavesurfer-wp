@@ -134,6 +134,7 @@ Please report other problems on the support forum.
 = 2.7.3 (2017-04-18) =
 * Filters: better logic.
 * Scripts: dependencies minification. Dev versions could be loaded thanks to WordPress SCRIPT_DEBUG variable.
+* Better compatibility with AJAX
 
 = 2.7.2 (2017-04-14) =
 * Continuous shortcode attribute for playlist support for the premium add-on
@@ -234,6 +235,7 @@ Please report other problems on the support forum.
 = 2.7.3 (2017-04-18) =
 * Filters: better logic.
 * Scripts: dependencies minification. Dev versions could be loaded thanks to WordPress SCRIPT_DEBUG variable.
+* Better compatibility with AJAX
 
 = 2.7.2 (2017-04-14) =
 * Continuous shortcode attribute for playlist support for the premium add-on
