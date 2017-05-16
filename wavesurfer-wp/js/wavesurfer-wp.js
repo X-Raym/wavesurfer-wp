@@ -81,14 +81,20 @@ function init(i, container, object, split) {
 	// Create WaveSurfer object
 	wavesurfer[i] = WaveSurfer.create(options);
 
+	// Prevent error if the player can't be initialized
+	if ( typeof wavesurfer[i] === 'undefined' ) return;
+
 	// File
 	wavesurfer[i].load(file_url, peaks, preload);
 
 	// Responsive Waveform
 	$j(window).resize(function() {
-		wavesurfer[i].drawer.containerWidth = wavesurfer[i].drawer.container.clientWidth;
-		wavesurfer[i].drawBuffer();
+		if ( typeof wavesurfer[i] !== 'undefined') {
+			wavesurfer[i].drawer.containerWidth = wavesurfer[i].drawer.container.clientWidth;
+			wavesurfer[i].drawBuffer();
+		}
 	});
+
 
 	// Buttons
 

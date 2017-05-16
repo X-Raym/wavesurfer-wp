@@ -131,6 +131,9 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.7.5 (2017-05-16) =
+* Prevent some errors with AJAX init
+
 = 2.7.4 (2017-05-16) =
 * Support arrays of IDs for playlist shortcode
 
@@ -235,6 +238,9 @@ Please report other problems on the support forum.
 * First release.
 
 == Upgrade Notice ==
+= 2.7.5 (2017-05-16) =
+* Prevent some errors with AJAX init
+
 = 2.7.4 (2017-05-16) =
 * Support arrays of IDs for playlist shortcode
 
