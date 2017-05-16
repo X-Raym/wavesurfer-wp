@@ -2,7 +2,7 @@
 
 /**
  * @package WaveSurfer-WP
- * @version 2.7.3
+ * @version 2.7.4
  */
 
 /**
@@ -10,11 +10,11 @@
  * Plugin URI: https://wordpress.org/plugins/wavesurfer-wp/
  * Description: Customizable HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio and playlist shortcode.
  * Author: X-Raym
- * Version: 2.7.3
+ * Version: 2.7.4
  * Author URI: https://www.extremraym.com/en/wavesurfer-wp
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2017-04-18
+ * Date: 2017-05-16
  * Text Domain: wavesurfer-wp
  */
 
@@ -803,17 +803,26 @@ class WaveSurfer_WP {
 		wp_enqueue_script( 'wavesurfer' );
 		$this->my_enqueue_script( 'wavesurfer-wp_init' );
 
+
 		// Parse IDs
-		if ( strpos( $attr['ids'], ',' ) !== false )
+		if( is_array( $attr['ids'] ) )
+			$ids = $attr['ids'];
+
+		if ( ! isset( $ids ) && strpos( $attr['ids'], ',' ) !== false )
 			$ids = explode( ',', $attr['ids'] );
-		if ( ! isset( $ids) ) {
+
+
+		if ( ! isset( $ids ) ) {
 			$ids = array();
 			$ids[0] = $attr['ids'];
 		};
+
 		$attachments = array();
+
 		foreach ( $ids as $id ) {
 			array_push( $attachments, get_post( $include = $id ) );
 		};
+
 
 		// Check audio type to determine the link
 		$link = $attachments[0]->guid;

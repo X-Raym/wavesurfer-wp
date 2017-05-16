@@ -131,9 +131,12 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.7.4 (2017-05-16) =
+* Support arrays of IDs for playlist shortcode
+
 = 2.7.3 (2017-04-18) =
 * Filters: better logic.
-* Scripts: dependencies minification. Dev versions could be loaded thanks to WordPress SCRIPT_DEBUG variable.
+* Scripts: dependencies minification. Dev versions can be loaded thanks to WordPress SCRIPT_DEBUG variable.
 * Better compatibility with AJAX
 
 = 2.7.2 (2017-04-14) =
@@ -232,6 +235,9 @@ Please report other problems on the support forum.
 * First release.
 
 == Upgrade Notice ==
+= 2.7.4 (2017-05-16) =
+* Support arrays of IDs for playlist shortcode
+
 = 2.7.3 (2017-04-18) =
 * Filters: better logic.
 * Scripts: dependencies minification. Dev versions could be loaded thanks to WordPress SCRIPT_DEBUG variable.
