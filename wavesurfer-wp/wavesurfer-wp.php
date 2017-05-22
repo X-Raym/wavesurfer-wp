@@ -729,6 +729,12 @@ class WaveSurfer_WP {
 		if ( $bar_width > 0 )
 			$html .= 'data-bar-width="' . $bar_width . '" ';
 
+		// Time Format
+		if ( isset( $attr['time_format'] ) ) {
+			if ( $attr['time_format'] === 'seconds' )
+				$html .= 'data-time-format="seconds" ';
+		}
+
 		// File URL
 		$html .= 'data-url="' . $link . '"';
 
@@ -889,6 +895,12 @@ class WaveSurfer_WP {
 
 		// File URL
 		$html .= 'data-url="' . $link . '"';
+
+        // Time Format
+		if ( isset( $attr['time_format'] ) ) {
+			if ( $attr['time_format'] === 'seconds' )
+				$html .= 'data-time-format="seconds" ';
+		}
 
 		// Add WaveSurfer-WP Premium Data (peaks-url...)
 		$html = apply_filters( 'wavesurfer_wp_shortcode_data', $html, $link, $split, $attr );
