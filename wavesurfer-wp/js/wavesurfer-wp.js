@@ -217,6 +217,7 @@ function init(i, container, object, split) {
 		if ( playlist === false ) {
 			if (buttonLoop.hasClass('wavesurfer-active-button') === false) {
 				buttonPlay.removeClass('wavesurfer-active-button');
+				buttonPlay.children('span').text(wavesurfer_localize.play);
 				buttonStop.addClass('wavesurfer-active-button');
 			}
 		}
@@ -320,6 +321,7 @@ function init(i, container, object, split) {
 				} else {
 					if (buttonLoop.hasClass('wavesurfer-active-button') === false) {
 						buttonPlay.removeClass('wavesurfer-active-button');
+						buttonPlay.children('span').text(wavesurfer_localize.play);
 						buttonStop.addClass('wavesurfer-active-button');
 					}
 				}// End if url not undefined
