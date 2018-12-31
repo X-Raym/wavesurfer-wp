@@ -72,6 +72,7 @@ function init(i, container, object, split) {
 		backend: 'MediaElement',
 		height: height,
 		barWidth: bar_width,
+		responsive: true
 	};
 
 	// Others parameters
@@ -86,15 +87,6 @@ function init(i, container, object, split) {
 
 	// File
 	wavesurfer[i].load(file_url, peaks, preload);
-
-	// Responsive Waveform
-	$j(window).resize(function() {
-		if ( typeof wavesurfer[i] !== 'undefined') {
-			wavesurfer[i].drawer.containerWidth = wavesurfer[i].drawer.container.clientWidth;
-			wavesurfer[i].drawBuffer();
-		}
-	});
-
 
 	// Buttons
 

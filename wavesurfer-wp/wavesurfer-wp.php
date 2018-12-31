@@ -2,7 +2,7 @@
 
 /**
  * @package WaveSurfer-WP
- * @version 2.7.5
+ * @version 2.8
  */
 
 /**
@@ -10,11 +10,11 @@
  * Plugin URI: https://wordpress.org/plugins/wavesurfer-wp/
  * Description: Customizable HTML5 Audio controller with waveform preview (mixed or split channels), using WordPress native audio and playlist shortcode.
  * Author: X-Raym
- * Version: 2.7.5
+ * Version: 2.8
  * Author URI: https://www.extremraym.com/en/wavesurfer-wp
  * License: GNU AGPLv3
  * License URI: http://www.gnu.org/licenses/agpl-3.0.html
- * Date: 2017-05-16
+ * Date: 2018-12-30
  * Text Domain: wavesurfer-wp
  */
 
@@ -896,7 +896,7 @@ class WaveSurfer_WP {
 		// File URL
 		$html .= 'data-url="' . $link . '"';
 
-        // Time Format
+		// Time Format
 		if ( isset( $attr['time_format'] ) ) {
 			if ( $attr['time_format'] === 'seconds' )
 				$html .= 'data-time-format="seconds" ';

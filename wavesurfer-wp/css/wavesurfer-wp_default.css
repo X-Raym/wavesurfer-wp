@@ -228,3 +228,7 @@ button.wavesurfer-mute.wavesurfer-active-button:before {
   max-height: 4em;
   width: auto;
 }
+
+.wavesurfer-block .wavesurfer-player wave {
+  overflow: hidden!important;
+}
