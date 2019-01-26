@@ -331,5 +331,6 @@ Thanks to our generous donators for supporting this plugin development !
 1. [SignalToNoize.com](http://signaltonoize.com/)
 2. [hawthonn](http://theopod.com)
 3. [Rob](http://soundpacks.com)
+4. [Robert Getzener](http://robertgetzner.com/)
 
 Do you want to contribute or sponsor one particular feature ? See you on the [donation page](https://www.extremraym.com/en/donation/). Thanks !
