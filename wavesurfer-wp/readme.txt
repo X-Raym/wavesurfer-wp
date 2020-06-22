@@ -3,7 +3,7 @@ Contributors: X-Raym
 Tags: audio, player, waveform, visualization, media
 Donate link: https://www.extremraym.com/en/donation/
 Requires at least: 4.0
-Tested up to: 5.0
+Tested up to: 5.4
 Stable tag: trunk
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -133,6 +133,9 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.8.1 (2020-06-22) =
+* Update dependencies( Wavesurfer 4.0.0)
+
 = 2.8 (2018-12-30) =
 * Update dependencies( Wavesurfer 2.1.1)
 
@@ -243,6 +246,12 @@ Please report other problems on the support forum.
 * First release.
 
 == Upgrade Notice ==
+= 2.8.1 (2020-06-22) =
+* Update dependencies( Wavesurfer 4.0.0)
+
+= 2.8 (2018-12-30) =
+* Update dependencies( Wavesurfer 2.1.1)
+
 = 2.7.5 (2017-05-16) =
 * Prevent some errors with AJAX init
 
