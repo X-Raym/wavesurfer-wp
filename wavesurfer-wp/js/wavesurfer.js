@@ -1,5 +1,5 @@
 /*!
- * wavesurfer.js 4.0.0 (2020-06-22)
+ * wavesurfer.js 4.0.1 (2020-06-28)
  * https://github.com/katspaugh/wavesurfer.js
  * @license BSD-3-Clause
  */
@@ -1799,13 +1799,14 @@ var MediaElementWebAudio = /*#__PURE__*/function (_MediaElement) {
      *
      * @param {HTMLMediaElement} media HTML5 Audio or Video element
      * @param {number[]|Number.<Array[]>} peaks Array of peak data
+     * @param {string} preload HTML 5 preload attribute value
      * @private
      */
 
   }, {
     key: "_load",
-    value: function _load(media, peaks) {
-      _get(_getPrototypeOf(MediaElementWebAudio.prototype), "_load", this).call(this, media, peaks);
+    value: function _load(media, peaks, preload) {
+      _get(_getPrototypeOf(MediaElementWebAudio.prototype), "_load", this).call(this, media, peaks, preload);
 
       this.createMediaElementSource(media);
     }
@@ -2088,7 +2089,7 @@ var MediaElement = /*#__PURE__*/function (_WebAudio) {
 
       container.appendChild(media);
 
-      this._load(media, peaks);
+      this._load(media, peaks, preload);
     }
     /**
      * Load existing media element.
@@ -2103,7 +2104,7 @@ var MediaElement = /*#__PURE__*/function (_WebAudio) {
       elt.controls = this.params.mediaControls;
       elt.autoplay = this.params.autoplay || false;
 
-      this._load(elt, peaks);
+      this._load(elt, peaks, elt.preload);
     }
     /**
      * Method called by both `load` (from url)
@@ -2111,6 +2112,7 @@ var MediaElement = /*#__PURE__*/function (_WebAudio) {
      *
      * @param {HTMLMediaElement} media HTML5 Audio or Video element
      * @param {number[]|Number.<Array[]>} peaks Array of peak data
+     * @param {string} preload HTML 5 preload attribute value
      * @throws Will throw an error if the `media` argument is not a valid media
      * element.
      * @private
@@ -2118,15 +2120,18 @@ var MediaElement = /*#__PURE__*/function (_WebAudio) {
 
   }, {
     key: "_load",
-    value: function _load(media, peaks) {
+    value: function _load(media, peaks, preload) {
       // verify media element is valid
       if (!(media instanceof HTMLMediaElement) || typeof media.addEventListener === 'undefined') {
         throw new Error('media parameter is not a valid media element');
       } // load must be called manually on iOS, otherwise peaks won't draw
       // until a user interaction triggers load --> 'ready' event
+      //
+      // note that we avoid calling media.load here when given peaks and preload == 'none'
+      // as this almost always triggers some browser fetch of the media.
 
 
-      if (typeof media.load == 'function') {
+      if (typeof media.load == 'function' && !(peaks && preload == 'none')) {
         // Resets the media element and restarts the media resource. Any
         // pending events are discarded. How much media data is fetched is
         // still affected by the preload attribute.
@@ -3431,6 +3436,16 @@ var Observer = /*#__PURE__*/function () {
       this._disabledEventEmissions = eventNames;
     }
     /**
+     * plugins borrow part of this class without calling the constructor,
+     * so we have to be careful about _disabledEventEmissions
+     */
+
+  }, {
+    key: "_isDisabledEventEmission",
+    value: function _isDisabledEventEmission(event) {
+      return this._disabledEventEmissions && this._disabledEventEmissions.includes(event);
+    }
+    /**
      * Manually fire an event
      *
      * @param {string} event The event to fire manually
@@ -3444,7 +3459,7 @@ var Observer = /*#__PURE__*/function () {
         args[_key2 - 1] = arguments[_key2];
       }
 
-      if (!this.handlers || this._disabledEventEmissions.includes(event)) {
+      if (!this.handlers || this._isDisabledEventEmission(event)) {
         return;
       }
 
@@ -5458,7 +5473,7 @@ var WaveSurfer = /*#__PURE__*/function (_util$Observer) {
 }(util.Observer);
 
 exports.default = WaveSurfer;
-WaveSurfer.VERSION = "4.0.0";
+WaveSurfer.VERSION = "4.0.1";
 WaveSurfer.util = util;
 module.exports = exports.default;
 

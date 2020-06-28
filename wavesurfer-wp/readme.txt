@@ -133,11 +133,14 @@ Please report other problems on the support forum.
 1. Mute, Loop and Download buttons with the Flat Icons Style
 
 == Changelog ==
+= 2.8.2 (2020-06-28) =
+* Update dependencies (Wavesurfer 4.0.1)
+
 = 2.8.1 (2020-06-22) =
-* Update dependencies( Wavesurfer 4.0.0)
+* Update dependencies (Wavesurfer 4.0.0)
 
 = 2.8 (2018-12-30) =
-* Update dependencies( Wavesurfer 2.1.1)
+* Update dependencies (Wavesurfer 2.1.1)
 
 = 2.7.5 (2017-05-16) =
 * Prevent some errors with AJAX init
@@ -246,11 +249,14 @@ Please report other problems on the support forum.
 * First release.
 
 == Upgrade Notice ==
+= 2.8.2 (2020-06-28) =
+* Update dependencies (Wavesurfer 4.0.1)
+
 = 2.8.1 (2020-06-22) =
 * Update dependencies( Wavesurfer 4.0.0)
 
 = 2.8 (2018-12-30) =
-* Update dependencies( Wavesurfer 2.1.1)
+* Update dependencies (Wavesurfer 2.1.1)
 
 = 2.7.5 (2017-05-16) =
 * Prevent some errors with AJAX init
