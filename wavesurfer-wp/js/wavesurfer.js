@@ -1,5 +1,5 @@
 /*!
- * wavesurfer.js 4.0.1 (2020-06-28)
+ * wavesurfer.js 4.0.1 (2020-08-01)
  * https://github.com/katspaugh/wavesurfer.js
  * @license BSD-3-Clause
  */
@@ -2707,51 +2707,6 @@ module.exports = exports.default;
 
 /***/ }),
 
-/***/ "./src/util/extend.js":
-/*!****************************!*\
-  !*** ./src/util/extend.js ***!
-  \****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = extend;
-
-/* eslint no-console: ["error", { allow: ["warn"] }] */
-
-/**
- * Extend an object shallowly with others
- *
- * @param {Object} dest The target object
- * @param {Object[]} sources The objects to use for extending
- *
- * @return {Object} Merged object
- * @deprecated since version 3.3.0
- */
-function extend(dest) {
-  console.warn('util.extend is deprecated; use Object.assign instead');
-
-  for (var _len = arguments.length, sources = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    sources[_key - 1] = arguments[_key];
-  }
-
-  sources.forEach(function (source) {
-    Object.keys(source).forEach(function (key) {
-      dest[key] = source[key];
-    });
-  });
-  return dest;
-}
-
-module.exports = exports.default;
-
-/***/ }),
-
 /***/ "./src/util/fetch.js":
 /*!***************************!*\
   !*** ./src/util/fetch.js ***!
@@ -3127,12 +3082,6 @@ Object.defineProperty(exports, "Observer", {
     return _observer.default;
   }
 });
-Object.defineProperty(exports, "extend", {
-  enumerable: true,
-  get: function get() {
-    return _extend.default;
-  }
-});
 Object.defineProperty(exports, "style", {
   enumerable: true,
   get: function get() {
@@ -3179,8 +3128,6 @@ var _max = _interopRequireDefault(__webpack_require__(/*! ./max */ "./src/util/m
 var _min = _interopRequireDefault(__webpack_require__(/*! ./min */ "./src/util/min.js"));
 
 var _observer = _interopRequireDefault(__webpack_require__(/*! ./observer */ "./src/util/observer.js"));
-
-var _extend = _interopRequireDefault(__webpack_require__(/*! ./extend */ "./src/util/extend.js"));
 
 var _style = _interopRequireDefault(__webpack_require__(/*! ./style */ "./src/util/style.js"));
 
@@ -5219,13 +5166,15 @@ var WaveSurfer = /*#__PURE__*/function (_util$Observer) {
         }
       }), this.backend.once('error', function (err) {
         return _this12.fireEvent('error', err);
-      })); // If no pre-decoded peaks provided or pre-decoded peaks are
-      // provided with forceDecode flag, attempt to download the
-      // audio file and decode it with Web Audio.
+      }));
 
       if (peaks) {
         this.backend.setPeaks(peaks, duration);
-      }
+        this.drawBuffer();
+      } // If no pre-decoded peaks are provided, or are provided with
+      // forceDecode flag, attempt to download the audio file and decode it
+      // with Web Audio.
+
 
       if ((!peaks || this.params.forceDecode) && this.backend.supportsWebAudio()) {
         this.getArrayBuffer(url, function (arraybuffer) {
